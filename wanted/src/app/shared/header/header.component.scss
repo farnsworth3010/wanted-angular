@@ -1,0 +1,13 @@
+.spacer {
+    flex: 1 1 auto;
+}
+.user-firstname {
+    margin-right: 1rem;    
+}
+:host {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}

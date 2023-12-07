@@ -1,0 +1,15 @@
+<app-header class="header"/>
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav class="sidenav-sidenav" mode="side" [opened]="sidenavOpened">
+        <ul>
+            <li>Home</li>
+            <li>News</li>
+            <li>List</li>
+            <li>Profile</li>
+            <li>Log out</li>
+        </ul>
+    </mat-sidenav>
+    <mat-sidenav-content class="sidenav-content">
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

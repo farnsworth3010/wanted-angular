@@ -1,0 +1,11 @@
+<mat-toolbar>
+  FBI
+  <span class="spacer"></span>
+  @if(router.url !== "/login" && router.url !== '/') {
+  <h3 class="user-firstname">Welcome, {{ userInfo.firstname }}!</h3>
+  <button (click)="logOut()" mat-raised-button color="primary">
+    Выйти
+    <mat-icon>logout</mat-icon>
+  </button>
+  }
+</mat-toolbar>

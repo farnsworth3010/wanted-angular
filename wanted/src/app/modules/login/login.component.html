@@ -1,0 +1,46 @@
+<mat-card>
+  <mat-card-header>
+    <h2>Login</h2>
+  </mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="onSubmit()">
+      <mat-form-field class="form-input">
+        <mat-label>username</mat-label>
+        <input
+          [formControl]="userName"
+          class="form-input"
+          required="true"
+          matInput
+        />
+      </mat-form-field>
+      <mat-form-field class="form-input">
+        <mat-label>password</mat-label>
+        <input
+          [formControl]="password"
+          required="true"
+          type="password"
+          matInput
+        />
+      </mat-form-field>
+      <mat-card-actions class="form-actions">
+        <button
+          color="primary"
+          class="form-guest"
+          type="submit"
+          mat-raised-button
+          (click)="signInAsGuest()"
+        >
+          Guest
+        </button>
+        <button
+          color="primary"
+          class="form-sign-in"
+          type="submit"
+          mat-raised-button
+        >
+          Sign in
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>

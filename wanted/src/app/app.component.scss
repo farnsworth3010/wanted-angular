@@ -1,0 +1,36 @@
+.sidenav-container {
+  position: absolute;
+  top: var(--mat-toolbar-standard-height);
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #eee;
+}
+.header {
+    z-index: 999;
+}
+.sidenav-sidenav {
+    padding: 1rem;
+    width: 10rem;
+    ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+        li {
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+.sidenav-content {
+    padding: 1rem;
+}
+.mat-sidenav-content{
+    transition: none !important;
+}
+.mat-sidenav {
+    transition: none !important;
+}
