@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { AuthService } from '../../core/services/auth.service';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -21,20 +22,23 @@ import { filter } from 'rxjs';
 export class HeaderComponent implements OnChanges {
   constructor(
     public router: Router,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private authService: AuthService
   ) {
-    router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(() => {
-      this.userInfo.firstname = localStorage.getItem('firstname')!;
-      changeDetector.detectChanges();
-    });
+    router.events
+      .pipe(filter((e) => e instanceof NavigationEnd))
+      .subscribe(() => {
+        if (localStorage.getItem('userInfo')) {
+          this.userInfo = JSON.parse(localStorage.getItem('userInfo')!);
+        }
+        changeDetector.detectChanges();
+      });
   }
   userInfo = {
     firstname: 'guest',
   };
   logOut(): void {
-    this.router.navigate(['/login']);
-    localStorage.clear();
+    this.authService.Logout() 
   }
-  ngOnChanges() {
-  }
+  ngOnChanges() {}
 }

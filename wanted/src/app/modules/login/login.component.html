@@ -18,15 +18,24 @@
         <input
           [formControl]="password"
           required="true"
-          type="password"
+          [type]="hide ? 'password' : 'text'"
           matInput
         />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
       </mat-form-field>
       <mat-card-actions class="form-actions">
         <button
           color="primary"
           class="form-guest"
-          type="submit"
+          type="button"
           mat-raised-button
           (click)="signInAsGuest()"
         >

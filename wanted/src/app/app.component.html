@@ -2,11 +2,9 @@
 <mat-sidenav-container class="sidenav-container">
     <mat-sidenav class="sidenav-sidenav" mode="side" [opened]="sidenavOpened">
         <ul>
-            <li>Home</li>
-            <li>News</li>
-            <li>List</li>
-            <li>Profile</li>
-            <li>Log out</li>
+            <li [routerLink]="'home'"><mat-icon>home</mat-icon> Home</li>
+            <li [routerLink]="'wanted'"><mat-icon>star</mat-icon> Wanted</li>
+            <li [routerLink]="'settings'"><mat-icon>settings</mat-icon> Settings</li>
         </ul>
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content">

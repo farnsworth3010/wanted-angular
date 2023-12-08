@@ -1,5 +1,7 @@
 <mat-toolbar>
-  FBI
+  <figure class="logo-container">
+    <img class="logo" src="../../../assets/logo.png" />FBI
+  </figure>
   <span class="spacer"></span>
   @if(router.url !== "/login" && router.url !== '/') {
   <h3 class="user-firstname">Welcome, {{ userInfo.firstname }}!</h3>

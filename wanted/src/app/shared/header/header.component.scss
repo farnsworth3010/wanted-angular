@@ -11,3 +11,15 @@
     width: 100%;
     z-index: 999;
 }
+.logo {
+    width: 30px;
+    margin-right: 0.5rem;
+}
+.mat-toolbar {
+    background: #fff;
+    border-bottom: 1px solid var(--mat-sidenav-container-divider-color);
+}
+.logo-container {
+    display: flex;
+    align-items: center;
+}

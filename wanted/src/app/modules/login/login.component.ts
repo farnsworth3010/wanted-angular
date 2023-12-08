@@ -7,6 +7,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
+
 import {
   FormControl,
   FormGroup,
@@ -36,6 +37,7 @@ import {
 export class LoginComponent implements OnChanges{
   userName = new FormControl('');
   password = new FormControl('');
+  hide = true
   constructor(private authService: AuthService, private changeDetector: ChangeDetectorRef) {}
   onSubmit() {
     this.authService.signIn(this.userName.value, this.password.value);

@@ -7,30 +7,39 @@
   background: #eee;
 }
 .header {
-    z-index: 999;
+  z-index: 999;
 }
 .sidenav-sidenav {
-    padding: 1rem;
-    width: 10rem;
-    ul {
-        list-style: none;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
-        padding: 0;
-        li {
-            margin-bottom: 1rem;
-        }
+  padding: 1rem;
+  width: 10rem;
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0;
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 2rem;
+    li {
+      margin-bottom: 2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      mat-icon {
+        margin-right: 0.5rem;
+      }
     }
+  }
 }
 
 .sidenav-content {
-    padding: 1rem;
+  padding: 1rem;
 }
-.mat-sidenav-content{
-    transition: none !important;
+.mat-sidenav-content {
+  transition: none !important;
 }
 .mat-sidenav {
-    transition: none !important;
+  transition: none !important;
 }
