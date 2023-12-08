@@ -11,7 +11,7 @@
 }
 .sidenav-sidenav {
   padding: 1rem;
-  width: 10rem;
+  width: 12rem;
   ul {
     list-style: none;
     display: flex;
@@ -39,6 +39,7 @@
 }
 .mat-sidenav-content {
   transition: none !important;
+  box-sizing: border-box;
 }
 .mat-sidenav {
   transition: none !important;
