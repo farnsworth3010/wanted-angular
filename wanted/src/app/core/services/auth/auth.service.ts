@@ -50,11 +50,12 @@ export class AuthService {
           if (user) {
             localStorage.setItem('user', JSON.stringify(result.user));
             this.router.navigate(['home']);
+            this.snackBar.dismiss();
           }
         });
       })
       .catch((error) => {
-        this.snackBar.open(error.message);
+        this.snackBar.open(error.message, '', { duration: 3000 });
       });
   }
   SignInAsGuest() {
@@ -66,11 +67,14 @@ export class AuthService {
     this.userData = user;
     this.stateItem.next(user);
     this.router.navigate(['home']);
+    this.snackBar.dismiss();
   }
   // Sign up with email/password
   SignUp(email: string, password: string, password1: string) {
     if (password !== password1) {
-      this.snackBar.open('Passwords have to be the same');
+      this.snackBar.open('Passwords have to be the same', '', {
+        duration: 3000,
+      });
       return;
     } else {
       return this.afAuth
@@ -83,7 +87,7 @@ export class AuthService {
           this.SetUserData(result.user);
         })
         .catch((error) => {
-          this.snackBar.open(error.message);
+          this.snackBar.open(error.message, '', { duration: 3000 });
         });
     }
   }
@@ -93,6 +97,7 @@ export class AuthService {
       .then((u: any) => u.sendEmailVerification())
       .then(() => {
         this.router.navigate(['verify-email-address']);
+        this.snackBar.dismiss();
       });
   }
   // Reset Forggot password
@@ -109,13 +114,14 @@ export class AuthService {
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
-    console.log(user)
+    console.log(user);
     return user !== null && user.emailVerified !== false ? true : false;
   }
   // Sign in with Google
   GoogleAuth() {
     return this.AuthLogin(new auth.GoogleAuthProvider()).then((res: any) => {
       this.router.navigate(['home']);
+      this.snackBar.dismiss();
     });
   }
   // Auth logic to run auth providers
@@ -124,6 +130,7 @@ export class AuthService {
       .signInWithPopup(provider)
       .then((result) => {
         this.router.navigate(['home']);
+        this.snackBar.dismiss();
         this.SetUserData(result.user);
         this.stateItem.next(result.user);
       })
@@ -155,6 +162,7 @@ export class AuthService {
       localStorage.removeItem('user');
       this.stateItem.next(null);
       this.router.navigate(['signin']);
+      this.snackBar.dismiss();
     });
   }
 }
