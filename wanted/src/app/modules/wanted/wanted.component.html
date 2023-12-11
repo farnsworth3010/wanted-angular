@@ -16,7 +16,7 @@
         both.
       </mat-card-content>
     </mat-card>
-    <div *ngIf="data.length" class="pagination pagination-top">
+    <div *ngIf="data?.length" class="pagination pagination-top">
       <button mat-raised-button color="primary" (click)="prevPage()">
         Prev
       </button>
@@ -44,7 +44,7 @@
         </mat-card>
       </div>
     </div>
-    <div *ngIf="data.length" class="pagination">
+    <div *ngIf="data?.length" class="pagination">
       <button mat-raised-button color="primary" (click)="prevPage()">
         Prev
       </button>
@@ -55,7 +55,7 @@
     </div>
   </div>
   <div class="wanted-right-menu">
-    <ul *ngIf="data.length">
+    <ul *ngIf="data?.length">
       <li>Sex: {{ selectedPerson.sex ?? "-" }}</li>
       <li>Hair: {{ selectedPerson.hair ?? "-" }}</li>
       <li>Race: {{ selectedPerson.race ?? "-" }}</li>

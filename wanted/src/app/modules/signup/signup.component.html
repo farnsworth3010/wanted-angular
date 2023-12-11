@@ -1,13 +1,14 @@
 <mat-card>
   <mat-card-header>
-    <h2>Login</h2>
+    <h2>Sign Up</h2>
   </mat-card-header>
   <mat-card-content>
-    <form (ngSubmit)="onSubmit()">
+    <form autocomplete="off" (ngSubmit)="onSubmit()">
       <mat-form-field class="form-input">
-        <mat-label>username</mat-label>
+        <mat-label>E-Mail</mat-label>
         <input
-          [formControl]="userName"
+        autocomplete="off"
+          [formControl]="email"
           class="form-input"
           required="true"
           matInput
@@ -16,6 +17,7 @@
       <mat-form-field class="form-input">
         <mat-label>password</mat-label>
         <input
+        autocomplete="off"
           [formControl]="password"
           required="true"
           [type]="hide ? 'password' : 'text'"
@@ -31,15 +33,33 @@
           <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
         </button>
       </mat-form-field>
+      <mat-form-field class="form-input">
+        <mat-label>repeat password</mat-label>
+        <input
+          [formControl]="password1"
+          required="true"
+          [type]="hide ? 'password' : 'text'"
+          matInput
+          autocomplete="off"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
       <mat-card-actions class="form-actions">
         <button
-          color="primary"
           class="form-guest"
           type="button"
-          mat-raised-button
-          (click)="signInAsGuest()"
+          mat-button
+          [routerLink]="['/signin']"
         >
-          Guest
+          Sign in
         </button>
         <button
           color="primary"
@@ -47,7 +67,7 @@
           type="submit"
           mat-raised-button
         >
-          Sign in
+          Sign up
         </button>
       </mat-card-actions>
     </form>

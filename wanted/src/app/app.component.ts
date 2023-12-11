@@ -13,10 +13,12 @@ import {
   RouterOutlet,
 } from '@angular/router';
 import { HeaderComponent } from './shared/header/header.component';
-import { LoginComponent } from './modules/login/login.component';
+import { LoginComponent } from './modules/signin/login.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { filter } from 'rxjs';
+import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { environment } from '../environments/environment';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -27,12 +29,15 @@ import { filter } from 'rxjs';
     LoginComponent,
     MatSidenavModule,
     RouterLink,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+  ]
 })
+
 export class AppComponent {
   sidenavOpened = false;
   constructor(
@@ -42,8 +47,8 @@ export class AppComponent {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
-        this.sidenavOpened = router.url !== '/login' && router.url !== '/';
-        changeDetector.detectChanges();
+        this.sidenavOpened = router.url !== '/signin' && router.url!=='/signup' && router.url !== '/' && router.url !== '/verify-email-address';
+        // changeDetector.detectChanges();
       });
   }
   title = 'wanted';

@@ -1,5 +1,5 @@
 import { AuthGuardService } from './core/services/auth.guard.service';
-import { LoginResolveService } from './core/services/login.resolve.service';
+// import { LoginResolveService } from './core/services/login.resolve.service';
 import { HomeComponent } from './modules/home/home.component';
 import { Routes } from '@angular/router';
 
@@ -9,12 +9,25 @@ export const routes: Routes = [
     loadComponent: ()=> import('./modules/public/public.component').then((m)=>m.PublicComponent),
   },
   {
-    path: 'login',
+    path: 'signin',
     resolve: {
-      ready: LoginResolveService
+      // ready: LoginResolveService
     },
     loadComponent: () =>
-      import('./modules/login/login.component').then((m) => m.LoginComponent),
+      import('./modules/signin/login.component').then((m) => m.LoginComponent),
+  },
+  {
+    path: 'signup',
+    resolve: {
+      // ready: LoginResolveService
+    },
+    loadComponent: () =>
+      import('./modules/signup/signup.component').then((m) => m.SignupComponent),
+  },
+  {
+    path: 'verify-email-address',
+    loadComponent: () =>
+      import('./modules/verify-email-address/verify-email-address.component').then((m) => m.VerifyEmailAddressComponent),
   },
   {
     path: 'home',

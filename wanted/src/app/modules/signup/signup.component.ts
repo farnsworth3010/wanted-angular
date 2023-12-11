@@ -1,5 +1,11 @@
-import { AuthService } from './../../core/services/auth.service';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnChanges, SimpleChanges } from '@angular/core';
+import { AuthService } from '../../core/services/auth/auth.service';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,9 +21,10 @@ import {
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-signup',
   standalone: true,
   imports: [
     MatSelectModule,
@@ -28,23 +35,27 @@ import {
     MatDividerModule,
     MatButtonModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    RouterLink,
   ],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  templateUrl: './signup.component.html',
+  styleUrl: './signup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent implements OnChanges{
-  userName = new FormControl('');
+export class SignupComponent implements OnChanges {
   password = new FormControl('');
-  hide = true
-  constructor(private authService: AuthService, private changeDetector: ChangeDetectorRef) {}
+  password1 = new FormControl('');
+  email = new FormControl('');
+  hide = true;
+  constructor(
+    private authService: AuthService,
+    private changeDetector: ChangeDetectorRef
+  ) {}
   onSubmit() {
-    this.authService.signIn(this.userName.value, this.password.value);
+      this.authService.SignUp(this.email.value!, this.password.value!, this.password1.value!);
   }
   signInAsGuest() {
-    this.authService.signInAsGuest() 
+    // this.authService.signInAsGuest();
   }
-  ngOnChanges(changes: SimpleChanges): void {
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 }

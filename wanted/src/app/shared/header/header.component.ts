@@ -10,7 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { NavigationEnd, Router, RouterLink } from '@angular/router';
 import { filter } from 'rxjs';
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../core/services/auth/auth.service';
+import { User } from 'firebase/auth';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -19,26 +20,27 @@ import { AuthService } from '../../core/services/auth.service';
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnChanges {
+export class HeaderComponent implements OnChanges, OnInit {
   constructor(
     public router: Router,
     private changeDetector: ChangeDetectorRef,
-    private authService: AuthService
+    private authService: AuthService 
   ) {
     router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
-        if (localStorage.getItem('userInfo')) {
-          this.userInfo = JSON.parse(localStorage.getItem('userInfo')!);
-        }
-        changeDetector.detectChanges();
+        this.changeDetector.detectChanges()
       });
   }
-  userInfo = {
-    firstname: 'guest',
-  };
+  userData:any = {}
+  ngOnInit(): void {
+    this.authService.stateItem$.subscribe(()=> {
+      this.userData = this.authService.userData
+      this.changeDetector.detectChanges()
+    })
+  }
   logOut(): void {
-    this.authService.Logout() 
+    this.authService.SignOut() 
   }
   ngOnChanges() {}
 }
