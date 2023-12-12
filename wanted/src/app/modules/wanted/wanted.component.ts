@@ -70,6 +70,7 @@ export class WantedComponent implements OnInit {
     if (this.page > 1) {
       this.page -= 1;
       this.getData();
+      this.router.navigate(['/wanted', this.page]);
     }
   }
   paginator: any = [];
