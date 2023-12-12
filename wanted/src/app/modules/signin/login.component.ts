@@ -21,7 +21,8 @@ import {
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ import { RouterLink } from '@angular/router';
     MatButtonModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -48,14 +49,31 @@ export class LoginComponent implements OnChanges {
   hide = true;
   constructor(
     private authService: AuthService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
   onSubmit() {
-    this.authService.SignIn(this.email.value!, this.password.value!);
+    this.authService
+      .signIn(this.email.value!, this.password.value!)
+      .subscribe((result) => {
+        if (result.message) {
+          this.snackBar.open(result.message, '', { duration: 3000 });
+        } else {
+          this.authService.setUserData(result.user);
+          this.router.navigate(['home']);
+          this.snackBar.dismiss();
+        }
+      });
+  }
+  google() {
+    this.authService.googleAuth().subscribe(()=> {
+      this.router.navigate(['home']);
+      this.snackBar.dismiss();
+    })
   }
   signInAsGuest() {
-    console.log('sdf')
-    this.authService.SignInAsGuest();
+    this.authService.signInAsGuest();
   }
   ngOnChanges(changes: SimpleChanges): void {}
 }

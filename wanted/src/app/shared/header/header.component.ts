@@ -24,23 +24,25 @@ export class HeaderComponent implements OnChanges, OnInit {
   constructor(
     public router: Router,
     private changeDetector: ChangeDetectorRef,
-    private authService: AuthService 
+    private authService: AuthService
   ) {
     router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
-        this.changeDetector.detectChanges()
+        this.changeDetector.detectChanges();
       });
   }
-  userData:any = {}
+  userData: any = {};
   ngOnInit(): void {
-    this.authService.stateItem$.subscribe(()=> {
-      this.userData = this.authService.userData
-      this.changeDetector.detectChanges()
-    })
+    this.authService.stateItem$.subscribe(() => {
+      this.userData = this.authService.userData;
+      this.changeDetector.detectChanges();
+    });
   }
   logOut(): void {
-    this.authService.SignOut() 
+    this.authService.signOut().subscribe(() => {
+      this.authService.clearUser();
+    });
   }
   ngOnChanges() {}
 }

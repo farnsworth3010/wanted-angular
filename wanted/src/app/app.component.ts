@@ -10,6 +10,7 @@ import {
   NavigationEnd,
   Router,
   RouterLink,
+  RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
 import { HeaderComponent } from './shared/header/header.component';
@@ -30,14 +31,13 @@ import { environment } from '../environments/environment';
     MatSidenavModule,
     RouterLink,
     MatIconModule,
+    RouterLinkActive
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [
-  ]
+  providers: [],
 })
-
 export class AppComponent {
   sidenavOpened = false;
   constructor(
@@ -47,11 +47,15 @@ export class AppComponent {
     this.router.events
       .pipe(filter((e) => e instanceof NavigationEnd))
       .subscribe(() => {
-        this.sidenavOpened = router.url !== '/signin' && router.url!=='/signup' && router.url !== '/' && router.url !== '/verify-email-address';
+        this.sidenavOpened =
+          router.url !== '/signin' &&
+          router.url !== '/signup' &&
+          router.url !== '/' &&
+          router.url !== '/verify-email-address' &&
+          router.url !== '/forgot-password'
         // changeDetector.detectChanges();
       });
   }
   title = 'wanted';
-  @HostBinding('@.disabled')
-  public animationsDisabled = true;
+  @HostBinding('@.disabled') public animationsDisabled = true;
 }

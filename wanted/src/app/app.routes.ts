@@ -30,10 +30,21 @@ export const routes: Routes = [
       import('./modules/verify-email-address/verify-email-address.component').then((m) => m.VerifyEmailAddressComponent),
   },
   {
+    path: 'forgot-password',
+    loadComponent: () =>
+      import('./modules/forgot-password/forgot-password.component').then((m) => m.ForgotPasswordComponent),
+  },
+  {
     path: 'home',
     canActivate: [AuthGuardService],
     loadComponent: () =>
       import('./modules/home/home.component').then((m) => m.HomeComponent),
+  },
+  {
+    path: 'wanted/:id',
+    canActivate: [AuthGuardService],
+    loadComponent: () =>
+      import('./modules/wanted/wanted.component').then((m) => m.WantedComponent),
   },
   {
     path: 'wanted',

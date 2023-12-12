@@ -10,6 +10,7 @@ mat-grid-list {
 }
 .welcome {
   margin-bottom: 1rem;
+  width: 100%;
 }
 .info {
   font-size: 0.8em;
@@ -23,6 +24,13 @@ mat-grid-list {
   background-color: #cecece;
 }
 .header-container {
+}
+.page-number {
+  text-decoration: none;
+  color: #000;
+  &.active {
+    opacity: 0.5;
+  }
 }
 .wanted-grid {
   display: grid;
@@ -43,8 +51,7 @@ mat-grid-list {
 }
 .wanted-container {
   position: relative;
-  display: flex;
-  padding-right: 15rem;
+  padding-right: 15.6rem;
 }
 .wanted-right-menu {
   position: fixed;
@@ -55,6 +62,9 @@ mat-grid-list {
   width: 15.6rem;
   height: 100%;
   background-color: var(--mat-sidenav-content-background-color);
+border-left-color: var(--mat-sidenav-container-divider-color);
+  border-left-width: 1px;
+  border-left-style: solid;
   ul {
     list-style: none;
     padding: 0;
@@ -63,6 +73,9 @@ mat-grid-list {
     box-sizing: border-box;
     height: 90%;
     padding-right: 0.9rem;
+    .title {
+      margin-bottom: 0;
+    }
     li {
       margin-bottom: 0.5rem;
       padding-bottom: 0.5rem;
@@ -80,4 +93,13 @@ mat-grid-list {
     button:last-child {
         margin-left: 1rem;
     }
+}
+mat-spinner {
+  display: block;
+  margin: 0 auto;
+  margin-top: 6rem;
+}
+
+.wanted-left {
+  position: relative;
 }

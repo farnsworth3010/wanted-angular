@@ -21,3 +21,14 @@
 .form-guest {
     margin-right: 1rem;
 }
+.password-input {
+    z-index: 1;
+}
+.forgot-password {
+    text-decoration: none;
+    color: var(--mdc-text-button-label-text-color);
+    margin-bottom: 1rem;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+}

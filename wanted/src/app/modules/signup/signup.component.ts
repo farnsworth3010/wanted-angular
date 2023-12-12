@@ -1,11 +1,5 @@
 import { AuthService } from '../../core/services/auth/auth.service';
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnChanges,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,14 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 
-import {
-  FormControl,
-  FormGroup,
-  FormArray,
-  ReactiveFormsModule,
-  FormsModule,
-} from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-signup',
@@ -42,20 +31,32 @@ import { RouterLink } from '@angular/router';
   styleUrl: './signup.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignupComponent implements OnChanges {
+export class SignupComponent {
   password = new FormControl('');
   password1 = new FormControl('');
   email = new FormControl('');
   hide = true;
   constructor(
     private authService: AuthService,
-    private changeDetector: ChangeDetectorRef
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
   onSubmit() {
-      this.authService.SignUp(this.email.value!, this.password.value!, this.password1.value!);
+    this.authService
+      .signUp(this.email.value!, this.password.value!, this.password1.value!)!
+      .subscribe((result) => {
+        if (result.message) {
+          this.snackBar.open(result.message, '', { duration: 3000 });
+        } else {
+          this.authService.sendVerificationMail();
+          this.authService.setUserData(result.user);
+        }
+      });
   }
-  signInAsGuest() {
-    // this.authService.signInAsGuest();
+  google() {
+    this.authService.googleAuth().subscribe(()=> {
+      this.router.navigate(['home']);
+      this.snackBar.dismiss();
+    })
   }
-  ngOnChanges(changes: SimpleChanges): void {}
 }

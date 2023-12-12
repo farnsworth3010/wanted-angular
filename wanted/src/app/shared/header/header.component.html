@@ -3,7 +3,7 @@
     <img class="logo" src="../../../assets/logo.png" />FBI
   </figure>
   <span class="spacer"></span>
-  @if(router.url !== "/signin" && router.url !== '/' && router.url !== '/signup' && router.url !== '/verify-email-address') {
+  @if(router.url !== "/signin" && router.url !== '/' && router.url !== '/signup' && router.url !== '/verify-email-address' && router.url !== '/forgot-password') {
   <span class="user-firstname">{{ userData?.email ?? ''}}</span>
   <button (click)="logOut()" mat-raised-button color="primary">
     Выйти
