@@ -20,6 +20,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ImageFallbackDirective } from '../../../shared/directives/image-fallback.directive';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { Subject, debounceTime } from 'rxjs';
+import { DefaultFieldValuePipe } from '../../../shared/pipes/default-field-value.pipe';
 @Component({
   selector: 'app-wanted',
   standalone: true,
@@ -34,6 +35,7 @@ import { Subject, debounceTime } from 'rxjs';
     RouterLink,
     RouterLinkActive,
     MatPaginatorModule,
+    DefaultFieldValuePipe
   ],
   templateUrl: './wanted.component.html',
   styleUrl: './wanted.component.scss',

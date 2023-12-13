@@ -39,10 +39,10 @@
               <h2>{{ tr.title }}</h2>
             </div>
             <div class="info">
-              <p>Sex: {{ tr.sex ?? "-" }}</p>
-              <p>Hair: {{ tr.hair ?? "-" }}</p>
-              <p>Race: {{ tr.race ?? "-" }}</p>
-              <p>Eyes: {{ tr.eyes ?? "-" }}</p>
+              <p>Sex: {{ tr.sex | defaultFieldValue }}</p>
+              <p>Hair: {{ tr.hair | defaultFieldValue }}</p>
+              <p>Race: {{ tr.race | defaultFieldValue }}</p>
+              <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
             </div>
           </mat-card-title>
           <mat-card-content> </mat-card-content>
@@ -77,18 +77,23 @@
         />
         <h2 class="title">{{ selectedPerson.title }}</h2>
       </li>
-      <li>Sex: {{ selectedPerson.sex ?? "-" }}</li>
-      <li>Hair: {{ selectedPerson.hair ?? "-" }}</li>
-      <li>Race: {{ selectedPerson.race ?? "-" }}</li>
-      <li>Eyes: {{ selectedPerson.eyes ?? "-" }}</li>
-      <li>Height max: {{ selectedPerson.heightMax ?? "-" }}</li>
-      <li>Publication: {{ selectedPerson.publication ?? "-" | date }}</li>
+      <li>Sex: {{ selectedPerson.sex | defaultFieldValue }}</li>
+      <li>Hair: {{ selectedPerson.hair | defaultFieldValue }}</li>
+      <li>Race: {{ selectedPerson.race | defaultFieldValue }}</li>
+      <li>Eyes: {{ selectedPerson.eyes | defaultFieldValue }}</li>
+      <li>Height max: {{ selectedPerson.heightMax | defaultFieldValue }}</li>
+      <li>
+        Publication:
+        {{ selectedPerson.publication | date | defaultFieldValue }}
+      </li>
       <li>
         Caution:
-        <div [innerHTML]="selectedPerson.caution"></div>
+        <span [innerHTML]="selectedPerson.caution | defaultFieldValue"></span>
       </li>
-      <li>Reward: {{ selectedPerson.reward_text ?? "-" }}</li>
-      <a [href]="selectedPerson.url" target="_blank">Link</a>
+      <li>
+        Reward: {{ selectedPerson.reward_text | defaultFieldValue }}
+        <a [href]="selectedPerson.url" target="_blank">Link</a>
+      </li>
     </ul>
   </div>
 </div>
