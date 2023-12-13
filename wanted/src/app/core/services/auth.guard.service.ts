@@ -2,10 +2,6 @@ import { AuthService } from './auth/auth.service';
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
-  CanActivate,
-  CanActivateChild,
-  CanActivateChildFn,
-  CanActivateFn,
   Router,
   RouterStateSnapshot,
   UrlTree,
@@ -21,9 +17,10 @@ export class AuthGuardService {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | UrlTree | boolean {
-    if (this.authService.isLoggedIn !== true) {
-      this.router.navigate(['signin']);
+    if (this.authService.isLoggedIn) return true;
+    else {
+      this.router.navigate(['auth/sign-in']);
+      return false;
     }
-    return true;
   }
 }

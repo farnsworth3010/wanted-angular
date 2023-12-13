@@ -1,25 +1,19 @@
 import {
-  APP_INITIALIZER,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   HostBinding,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
-  NavigationEnd,
   Router,
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
 import { HeaderComponent } from './shared/header/header.component';
-import { LoginComponent } from './modules/signin/login.component';
+import { SigninComponent} from './modules/auth/signin/sign-in.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
-import { filter } from 'rxjs';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
-import { environment } from '../environments/environment';
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -27,11 +21,11 @@ import { environment } from '../environments/environment';
     CommonModule,
     RouterOutlet,
     HeaderComponent,
-    LoginComponent,
+    SigninComponent,
     MatSidenavModule,
     RouterLink,
     MatIconModule,
-    RouterLinkActive
+    RouterLinkActive,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -39,23 +33,6 @@ import { environment } from '../environments/environment';
   providers: [],
 })
 export class AppComponent {
-  sidenavOpened = false;
-  constructor(
-    public router: Router,
-    private changeDetector: ChangeDetectorRef
-  ) {
-    this.router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe(() => {
-        this.sidenavOpened =
-          router.url !== '/signin' &&
-          router.url !== '/signup' &&
-          router.url !== '/' &&
-          router.url !== '/verify-email-address' &&
-          router.url !== '/forgot-password'
-        // changeDetector.detectChanges();
-      });
-  }
-  title = 'wanted';
+  constructor(public router: Router) {}
   @HostBinding('@.disabled') public animationsDisabled = true;
 }

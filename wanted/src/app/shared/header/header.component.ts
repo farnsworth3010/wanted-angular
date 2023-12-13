@@ -2,41 +2,48 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnChanges,
+  HostBinding,
+  Input,
   OnInit,
 } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NavigationEnd, Router, RouterLink } from '@angular/router';
-import { filter } from 'rxjs';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
-import { User } from 'firebase/auth';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [MatToolbarModule, MatIconModule, MatButtonModule, RouterLink],
+  imports: [
+    MatToolbarModule,
+    MatIconModule,
+    MatButtonModule,
+    RouterLink,
+    CommonModule,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnChanges, OnInit {
+export class HeaderComponent implements OnInit {
   constructor(
     public router: Router,
     private changeDetector: ChangeDetectorRef,
     private authService: AuthService
-  ) {
-    router.events
-      .pipe(filter((e) => e instanceof NavigationEnd))
-      .subscribe(() => {
-        this.changeDetector.detectChanges();
-      });
+  ) {}
+  @Input() noData: boolean = false;
+  @Input() opacity: number = 1;
+  @HostBinding('style.opacity') get getOpacity() {
+    return this.opacity;
   }
   userData: any = {};
   ngOnInit(): void {
-    this.authService.stateItem$.subscribe(() => {
-      this.userData = this.authService.userData;
-      this.changeDetector.detectChanges();
+    this.authService.stateItem$.subscribe((res) => {
+      if (res) {
+        this.userData = res;
+        this.changeDetector.detectChanges();
+      }
     });
   }
   logOut(): void {
@@ -44,5 +51,4 @@ export class HeaderComponent implements OnChanges, OnInit {
       this.authService.clearUser();
     });
   }
-  ngOnChanges() {}
 }

@@ -10,7 +10,7 @@ export class WantedService {
   getData(page: number) {
     return this.http.get(this.url, {
       params: {
-        page: page,
+        page,
       },
     });
   }

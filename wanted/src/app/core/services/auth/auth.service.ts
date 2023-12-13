@@ -15,7 +15,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class AuthService {
   userData: any; // Save logged in user data
-  private stateItem: BehaviorSubject<any> = new BehaviorSubject(null);
+  private stateItem: BehaviorSubject<any> = new BehaviorSubject(
+    JSON.parse(localStorage.getItem('user')!)
+  );
   stateItem$: Observable<any> = this.stateItem.asObservable();
   guest = {
     email: 'guest',
@@ -28,8 +30,6 @@ export class AuthService {
     public ngZone: NgZone, // NgZone service to remove outside scope warning
     private snackBar: MatSnackBar
   ) {
-    /* Saving user data in localstorage when 
-    logged in and setting up null when logged out */
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.setUserData(user);
@@ -48,7 +48,7 @@ export class AuthService {
     localStorage.setItem('user', JSON.stringify(this.guest));
     this.userData = this.guest;
     this.stateItem.next(this.guest);
-    this.router.navigate(['home']);
+    this.router.navigate(['/content/home']);
     this.snackBar.dismiss();
   }
   signUp(email: string, password: string, password1: string) {
@@ -88,7 +88,6 @@ export class AuthService {
       catchError((error) => of(error))
     );
   }
-  // Returns true when user is logged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user')!);
     return user !== null && user.emailVerified !== false ? true : false;
@@ -96,7 +95,6 @@ export class AuthService {
   googleAuth() {
     return from(this.authLogin(new auth.GoogleAuthProvider()));
   }
-  // Auth logic to run auth providers
   authLogin(provider: any) {
     return from(this.afAuth.signInWithPopup(provider)).pipe(
       catchError((error) => of(error))
@@ -110,7 +108,7 @@ export class AuthService {
   clearUser() {
     localStorage.removeItem('user');
     this.stateItem.next(null);
-    this.router.navigate(['signin']);
+    this.router.navigate(['auth/sign-in']);
     this.snackBar.dismiss();
   }
   signOut() {

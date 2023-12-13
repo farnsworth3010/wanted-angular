@@ -1,0 +1,19 @@
+<app-header class="header" />
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav class="sidenav-sidenav" mode="side" [opened]="true">
+    <ul>
+      <li routerLinkActive="active" [routerLink]="['/content/home']">
+        <mat-icon>home</mat-icon> Home
+      </li>
+      <li routerLinkActive="active" [routerLink]="['/content/wanted', 1]">
+        <mat-icon>star</mat-icon> Wanted
+      </li>
+      <li routerLinkActive="active" [routerLink]="['/content/settings']">
+        <mat-icon>settings</mat-icon> Settings
+      </li>
+    </ul>
+  </mat-sidenav>
+  <mat-sidenav-content class="sidenav-content">
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>
