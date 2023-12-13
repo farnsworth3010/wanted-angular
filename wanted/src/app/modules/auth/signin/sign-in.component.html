@@ -1,0 +1,73 @@
+<mat-card>
+  <mat-card-header>
+    <h2>FBI Sign in</h2>
+  </mat-card-header>
+  <mat-card-content>
+    <form (ngSubmit)="onSubmit()">
+      <mat-form-field class="form-input">
+        <mat-label>E-Mail</mat-label>
+        <input
+          [formControl]="email"
+          class="form-input"
+          required="true"
+          type="email"
+          matInput
+        />
+      </mat-form-field>
+      <mat-form-field class="form-input password-input">
+        <mat-label>password</mat-label>
+        <input
+          [formControl]="password"
+          required="true"
+          [type]="hide ? 'password' : 'text'"
+          matInput
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hide = !hide"
+          [attr.aria-label]="'Hide password'"
+          [attr.aria-pressed]="hide"
+        >
+          <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <a class="forgot-password" [routerLink]="['/auth/forgot-password']"
+        >forgot password</a
+      >
+      <mat-card-actions class="form-actions">
+        <div>
+          <button
+            class="form-guest"
+            type="button"
+            mat-button
+            (click)="signInAsGuest()"
+          >
+            Guest
+          </button>
+        </div>
+        <div>
+          <button type="button" mat-button (click)="google()">
+            Sign in with Google
+          </button>
+          <button
+            class="form-guest"
+            type="button"
+            mat-button
+            [routerLink]="['/auth/sign-up']"
+          >
+            Sign up
+          </button>
+          <button
+            color="primary"
+            class="form-sign-in"
+            type="submit"
+            mat-raised-button
+          >
+            Sign in
+          </button>
+        </div>
+      </mat-card-actions>
+    </form>
+  </mat-card-content>
+</mat-card>

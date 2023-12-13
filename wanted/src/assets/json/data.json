@@ -1,0 +1,14 @@
+{
+    "users": {
+        "chel123": {
+            "firstname": "chel",
+            "lastname": "noname",
+            "password": "12345678"
+        },
+        "chel100500": {
+            "firstname": "chel",
+            "lastname": "dd",
+            "password": "12345678"
+        }
+    }
+}
