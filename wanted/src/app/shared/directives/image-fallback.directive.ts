@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: 'img[appImageFallback]',
@@ -6,11 +6,13 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 })
 export class ImageFallbackDirective {
   @Input() fallbackUrl: string = '../../assets/wanted/anon.png';
-  constructor(private elementRef: ElementRef) {}
+
+  constructor(
+    private renderer: Renderer2,
+    private elementRef: ElementRef
+  ) {
+  }
   @HostListener('error') loadFallback() {
-    const el: HTMLImageElement = <HTMLImageElement>(
-      this.elementRef.nativeElement
-    );
-    el.src = this.fallbackUrl;
+    this.renderer.setAttribute(this.elementRef.nativeElement, 'src', this.fallbackUrl);
   }
 }

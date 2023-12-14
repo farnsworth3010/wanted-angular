@@ -42,7 +42,6 @@ export class HeaderComponent implements OnInit {
     this.authService.stateItem$.subscribe((res) => {
       if (res) {
         this.userData = res;
-        this.changeDetector.detectChanges();
       }
     });
   }

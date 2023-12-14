@@ -3,14 +3,13 @@
     <h2>FBI Sign Up</h2>
   </mat-card-header>
   <mat-card-content>
-    <form autocomplete="off" (ngSubmit)="onSubmit()">
+    <form [formGroup]="signUpForm" autocomplete="off" (ngSubmit)="onSubmit()">
       <mat-form-field class="form-input">
         <mat-label>E-Mail</mat-label>
         <input
           autocomplete="off"
-          [formControl]="email"
+          formControlName="email"
           class="form-input"
-          required="true"
           matInput
         />
       </mat-form-field>
@@ -18,8 +17,7 @@
         <mat-label>password</mat-label>
         <input
           autocomplete="off"
-          [formControl]="password"
-          required="true"
+          formControlName="password"
           [type]="hide ? 'password' : 'text'"
           matInput
         />
@@ -36,8 +34,7 @@
       <mat-form-field class="form-input">
         <mat-label>repeat password</mat-label>
         <input
-          [formControl]="password1"
-          required="true"
+          formControlName="passwordConfirm"
           [type]="hide ? 'password' : 'text'"
           matInput
           autocomplete="off"

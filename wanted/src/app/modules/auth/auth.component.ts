@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {provideRouter, RouterModule, RouterOutlet} from '@angular/router';
 import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
@@ -8,7 +8,8 @@ import { HeaderComponent } from '../../shared/header/header.component';
   imports: [RouterOutlet, HeaderComponent],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+
 })
 export class AuthComponent {
 
