@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
-import { User } from '../interfaces/user';
 import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import {
-  AngularFirestore,
-  AngularFirestoreDocument,
-} from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreDocument, } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, from, Observable, of } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,7 +19,6 @@ export class AuthService {
     email: 'guest',
     emailVerified: true,
   };
-
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
@@ -57,7 +52,7 @@ export class AuthService {
 
   setUserData(user: any) {
     this.userData = user;
-    const { uid, email, displayName, photoURL, emailVerified } = user;
+    const {uid, email, displayName, photoURL, emailVerified} = user;
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
     this.stateItem.next(user);
     localStorage.setItem('user', JSON.stringify(user));
