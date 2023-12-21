@@ -1,97 +1,83 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, } from '@angular/core';
-import { WantedService } from '../../../core/services/wanted/wanted.service';
-import { CommonModule } from '@angular/common';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { ActivatedRoute, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { ImageFallbackDirective } from '../../../shared/directives/image-fallback.directive';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { debounceTime, finalize, switchMap, tap } from 'rxjs';
-import { DefaultFieldValuePipe } from '../../../shared/pipes/default-field-value.pipe';
-
+import { CommonModule } from "@angular/common";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatCardModule } from "@angular/material/card";
+import { MatGridListModule } from "@angular/material/grid-list";
+import { MatIconModule } from "@angular/material/icon";
+import { MatPaginatorModule } from "@angular/material/paginator";
+import { MatTabsModule } from "@angular/material/tabs";
+import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet, RoutesRecognized } from "@angular/router";
+import { debounceTime, filter, switchMap, tap } from "rxjs";
+import { WantedService } from "../../../core/services/wanted/wanted.service";
+import { ImageFallbackDirective } from "../../../shared/directives/image-fallback.directive";
+import { DefaultFieldValuePipe } from "../../../shared/pipes/default-field-value.pipe";
 @Component({
-  selector: 'app-wanted',
+  selector: "app-wanted",
   standalone: true,
   imports: [
+    MatTabsModule,
     CommonModule,
     MatGridListModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    MatProgressSpinnerModule,
     ImageFallbackDirective,
     RouterLink,
     RouterLinkActive,
     MatPaginatorModule,
-    DefaultFieldValuePipe
+    DefaultFieldValuePipe,
+    RouterOutlet,
   ],
-  templateUrl: './wanted.component.html',
-  styleUrl: './wanted.component.scss',
+  templateUrl: "./wanted.component.html",
+  styleUrl: "./wanted.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WantedComponent implements OnInit {
+  navLinks!: any[];
+  activeLinkIndex: number = -1;
   private readonly debTime = 1000;
-
-  data: any;
-  page: number = 0;
-  pages: number = 0;
-  selectedPerson: any;
-  fetching: boolean = true;
-
-  length = 0;
-  pageSize = 20;
-
-  handlePageEvent({pageIndex}: PageEvent) {
-    this.setPage(pageIndex);
+  updateNavLinks() {
+    this.navLinks = [
+      {
+        label: "Wanted",
+        link: `/content/crimes/wanted/${this.wantedService.page}`,
+        index: 0,
+      },
+      {
+        label: "Edited",
+        link: "/content/crimes/edited",
+        index: 1,
+      },
+    ];
   }
-
-  constructor(
-    private wantedService: WantedService,
-    private changeDetector: ChangeDetectorRef,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
-  ) {
-  }
-
-  selectPerson(id: number): void {
-    this.selectedPerson = this.data[id];
-  }
-
-  getData() {
-    return this.wantedService.getData(this.page + 1)
-      .pipe(
-      finalize(() => {
-        this.fetching = false;
-        this.changeDetector.markForCheck();
-      })
-    );
-  }
-
-  setPage(page: number) {
-    this.router.navigate(['/content/wanted', page + 1]);
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private changeDetector: ChangeDetectorRef, private wantedService: WantedService) {
+    this.updateNavLinks();
   }
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap
+    this.router.events.pipe(
+      filter((e)=>e instanceof NavigationEnd)
+    ).subscribe(()=>{
+      console.log('ff')
+    })
+    this.router.events.pipe(
+      filter((e)=> e instanceof NavigationEnd)
+    ).subscribe(()=> {
+      console.log(gg)
+    })
+    let gg = this.activatedRoute.firstChild?.paramMap
       .pipe(
-        tap(()=> {
-          this.fetching = true;
-          this.changeDetector.markForCheck();
-        }),
+        tap(() => this.updateNavLinks()),
         debounceTime(this.debTime),
         switchMap((map) => {
-          this.page = Number(map.get('id')) - 1;
-          return this.getData();
+          this.wantedService.page = Number(map.get("id"));
+          return this.wantedService.getData();
         })
       )
       .subscribe((res: any) => {
-        this.data = res.items;
-        this.pages = res.page;
-        this.selectedPerson = this.data[0];
-        this.length = res.total;
-      })
+        this.wantedService.selectedPerson = res.items[0];
+        this.wantedService.setData({ data: res.items, pages: res.page, total: res.total });
+        this.changeDetector.detectChanges();
+      });
   }
 }

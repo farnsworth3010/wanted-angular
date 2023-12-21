@@ -1,0 +1,26 @@
+<div class="wanted-right-menu">
+  <ul *ngIf="selectedPerson; else loading">
+    <li>
+      <img class="wanted-photo" src="{{ selectedPerson?.images[0].original }}" appImageFallback />
+      <h2 class="title">{{ selectedPerson?.title }}</h2>
+    </li>
+    <li>Sex: {{ selectedPerson?.sex | defaultFieldValue }}</li>
+    <li>Hair: {{ selectedPerson?.hair | defaultFieldValue }}</li>
+    <li>Race: {{ selectedPerson?.race | defaultFieldValue }}</li>
+    <li>Eyes: {{ selectedPerson?.eyes | defaultFieldValue }}</li>
+    <li>Height max: {{ selectedPerson?.heightMax | defaultFieldValue }}</li>
+    <li>
+      Publication:
+      {{ selectedPerson?.publication | date | defaultFieldValue }}
+    </li>
+    <li>
+      Caution:
+      <span [innerHTML]="selectedPerson?.caution | defaultFieldValue"></span>
+    </li>
+    <li>Reward: {{ selectedPerson?.reward_text | defaultFieldValue }}</li>
+    <a [href]="selectedPerson?.url" target="_blank">Link</a>
+  </ul>
+</div>
+<ng-template #loading>
+  <mat-spinner></mat-spinner>
+</ng-template>
