@@ -15,6 +15,8 @@ import { debounceTime, switchMap, tap } from "rxjs";
 import { MatSelectModule } from "@angular/material/select";
 import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatSliderModule } from "@angular/material/slider";
+import { MatDialog, MatDialogRef, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent } from "@angular/material/dialog";
+import { EditCrimeComponent } from "../../../../shared/dialogs/edit-crime/edit-crime.component";
 @Component({
   selector: "app-global",
   standalone: true,
@@ -33,6 +35,10 @@ import { MatSliderModule } from "@angular/material/slider";
     FormsModule,
     ReactiveFormsModule,
     MatSliderModule,
+    MatDialogActions,
+    MatDialogClose,
+    MatDialogTitle,
+    MatDialogContent,
   ],
   templateUrl: "./global.component.html",
   styleUrl: "./global.component.scss",
@@ -69,20 +75,31 @@ export class GlobalComponent implements OnInit, OnDestroy {
     private changeDetector: ChangeDetectorRef,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    public dialog: MatDialog
   ) {}
 
   selectPerson(id: number): void {
     this.selectedPerson = this.data[id];
   }
   resetFilters() {
-    this.filtersForm.reset()
-    this.wantedService.filters = {}
-    this.filtersSub.unsubscribe()
+    this.filtersForm.reset();
+    this.wantedService.filters = {};
+    this.filtersSub.unsubscribe();
+  }
+  editHandle(event: Event) {
+    event.stopPropagation();
+    this.dialog.open(EditCrimeComponent, {
+      width: "500px",
+      enterAnimationDuration: 300,
+      exitAnimationDuration: 300,
+    });
   }
 
   ngOnInit(): void {
-    this.filtersSub = this.filtersForm.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+    this.filtersSub = this.filtersForm.valueChanges.pipe(
+      tap(()=>this.wantedService.fetching = true) ,
+      debounceTime(1000)).subscribe((res) => {
       this.wantedService.updateFilters(res);
       this.wantedService.getData().subscribe((res: any) => {
         this.wantedService.selectedPerson = res.items[0];

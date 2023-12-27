@@ -49,7 +49,7 @@
             <div class="header-container">
               <img appImageFallback class="wanted-photo" [src]="tr?.images[0]?.original" />
               <h2>{{ tr.title }}</h2>
-              <button mat-button color="primary" class="edit-button">
+              <button (click)="editHandle($event)" mat-button color="primary" class="edit-button">
                 Edit
                 <mat-icon>edit</mat-icon>
               </button>

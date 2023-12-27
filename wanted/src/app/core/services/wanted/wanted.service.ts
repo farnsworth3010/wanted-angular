@@ -11,7 +11,7 @@ export class WantedService {
   private url: string = "https://api.fbi.gov/wanted/v1/list";
   page: number = 1;
   data: any;
-  fetching: boolean = true
+  fetching: boolean = false
   selectedPerson: any;
   pages: number = 0;
   length: number = 0;

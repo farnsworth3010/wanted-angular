@@ -2,4 +2,4 @@
 <ng-template #noEdits>
   <div class="no-edits">There is no edited cards</div>
 </ng-template>
-<app-details [selectedPerson]="{}"/>
+<app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching" [data]="wantedService.data"/>
