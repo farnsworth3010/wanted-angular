@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router';
 import {authCanActivate} from "./core/services/auth.guard.service";
+import { NotFoundComponent } from './modules/not-found/not-found.component';
 
 export const routes: Routes = [
   {
@@ -22,4 +23,8 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./modules/auth/auth.routes').then((m) => m.authRoutes),
   },
+  {
+    path: '**',
+    component: NotFoundComponent
+  }
 ];

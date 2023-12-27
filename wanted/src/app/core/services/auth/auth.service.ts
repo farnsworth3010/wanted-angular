@@ -19,6 +19,7 @@ export class AuthService {
     email: 'guest',
     emailVerified: true,
   };
+
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,

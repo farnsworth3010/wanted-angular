@@ -1,12 +1,9 @@
 import { CommonModule } from '@angular/common';
-import {ChangeDetectionStrategy, Component, importProvidersFrom} from '@angular/core';
-import {provideRouter, RouterLink, RouterLinkActive, RouterModule, RouterOutlet} from '@angular/router';
-import { HeaderComponent } from '../../shared/header/header.component';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { FooterComponent } from '../../shared/footer/footer.component';
-import {contentRoutes} from "./content.routes";
-import {routes} from "../../app.routes";
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { HeaderComponent } from '../../shared/header/header.component';
 
 @Component({
   selector: 'app-content',
@@ -32,7 +29,7 @@ export class ContentComponent {
       name: 'Home'
     },
     {
-      link: ['/content/wanted', 1],
+      link: ['/content/crimes/'],
       icon: 'star',
       name: 'Wanted'
     },

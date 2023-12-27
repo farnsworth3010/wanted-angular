@@ -1,7 +1,7 @@
 <div class="wanted-right-menu">
-  <ul *ngIf="selectedPerson; else loading">
+  <ul *ngIf="selectedPerson?.url; else loading">
     <li>
-      <img class="wanted-photo" src="{{ selectedPerson?.images[0].original }}" appImageFallback />
+      <img class="wanted-photo" [src]="selectedPerson?.images[0]?.original" appImageFallback />
       <h2 class="title">{{ selectedPerson?.title }}</h2>
     </li>
     <li>Sex: {{ selectedPerson?.sex | defaultFieldValue }}</li>

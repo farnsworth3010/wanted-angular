@@ -14,5 +14,9 @@ export const wantedRoutes = [
     {
         path: 'edited',
         component: EditedComponent
+    },
+    {
+      path: '**',
+      redirectTo: 'wanted/1'
     }
 ]

@@ -15,12 +15,8 @@ export const contentRoutes: Routes = [
         component: HomeComponent
       },
       {
-        pathMatch: "full",
-        path: 'wanted',
-        redirectTo: 'wanted/1'
-      },
-      {
-        path: 'wanted/:id',
+        path: 'crimes',
+        loadChildren: ()=>import('./wanted/wanted.routes').then((m)=>m.wantedRoutes),
         component: WantedComponent
       },
       {
