@@ -1,26 +1,31 @@
 <div class="wanted-right-menu">
-  <ul *ngIf="selectedPerson?.url; else loading">
-    <li>
-      <img class="wanted-photo" [src]="selectedPerson?.images[0]?.original" appImageFallback />
-      <h2 class="title">{{ selectedPerson?.title }}</h2>
-    </li>
-    <li>Sex: {{ selectedPerson?.sex | defaultFieldValue }}</li>
-    <li>Hair: {{ selectedPerson?.hair | defaultFieldValue }}</li>
-    <li>Race: {{ selectedPerson?.race | defaultFieldValue }}</li>
-    <li>Eyes: {{ selectedPerson?.eyes | defaultFieldValue }}</li>
-    <li>Height max: {{ selectedPerson?.heightMax | defaultFieldValue }}</li>
-    <li>
-      Publication:
-      {{ selectedPerson?.publication | date | defaultFieldValue }}
-    </li>
-    <li>
-      Caution:
-      <span [innerHTML]="selectedPerson?.caution | defaultFieldValue"></span>
-    </li>
-    <li>Reward: {{ selectedPerson?.reward_text | defaultFieldValue }}</li>
-    <a [href]="selectedPerson?.url" target="_blank">Link</a>
-  </ul>
+  <ng-container *ngIf="!fetching; else loading">
+    <ul *ngIf="data?.length; else noData">
+      <li>
+        <img class="wanted-photo" appImageFallback [src]="selectedPerson?.images[0]?.original" />
+        <h2 class="title">{{ selectedPerson?.title }}</h2>
+      </li>
+      <li>Sex: {{ selectedPerson?.sex | defaultFieldValue }}</li>
+      <li>Age min: {{ selectedPerson?.age_min | defaultFieldValue }}</li>
+      <li>Age max: {{ selectedPerson?.age_max | defaultFieldValue }}</li>
+      <li>Hair: {{ selectedPerson?.hair | defaultFieldValue }}</li>
+      <li>Race: {{ selectedPerson?.race | defaultFieldValue }}</li>
+      <li>Eyes: {{ selectedPerson?.eyes | defaultFieldValue }}</li>
+      <li>Height max: {{ selectedPerson?.heightMax | defaultFieldValue }}</li>
+      <li>
+        Publication:
+        {{ selectedPerson?.publication | date | defaultFieldValue }}
+      </li>
+      <li>
+        Caution:
+        <span [innerHTML]="selectedPerson?.caution | defaultFieldValue"></span>
+      </li>
+      <li>Reward: {{ selectedPerson?.reward_text | defaultFieldValue }}</li>
+      <a [href]="selectedPerson?.url" target="_blank">Link</a>
+    </ul>
+  </ng-container>
 </div>
 <ng-template #loading>
   <mat-spinner></mat-spinner>
 </ng-template>
+<ng-template #noData>no data</ng-template>

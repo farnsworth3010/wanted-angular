@@ -12,7 +12,9 @@ import { ImageFallbackDirective } from "../../../../shared/directives/image-fall
 import { DefaultFieldValuePipe } from "../../../../shared/pipes/default-field-value.pipe";
 import { DetailsComponent } from "../details/details.component";
 import { debounceTime, switchMap, tap } from "rxjs";
-
+import { MatSelectModule } from "@angular/material/select";
+import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatSliderModule } from "@angular/material/slider";
 @Component({
   selector: "app-global",
   standalone: true,
@@ -27,6 +29,10 @@ import { debounceTime, switchMap, tap } from "rxjs";
     MatPaginatorModule,
     DefaultFieldValuePipe,
     DetailsComponent,
+    MatSelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatSliderModule,
   ],
   templateUrl: "./global.component.html",
   styleUrl: "./global.component.scss",
@@ -41,31 +47,61 @@ export class GlobalComponent implements OnInit, OnDestroy {
   pageSize = 20;
   edited: any;
 
+  // Filters
+  filtersForm = this.fb.group({
+    sex: [""],
+    race: [""],
+    age_min: [""],
+    age_max: [""],
+  });
+
   private readonly debTime = 1000;
-  subscription: any;
+  routeSub: any;
+  filtersSub: any;
   handlePageEvent({ pageIndex }: PageEvent) {
     this.data = null;
     this.selectedPerson = null;
     this.wantedService.page = pageIndex + 1;
     this.router.navigate(["/content/crimes/wanted/", this.wantedService.page]);
   }
-
-  constructor(public wantedService: WantedService, private changeDetector: ChangeDetectorRef, private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(
+    public wantedService: WantedService,
+    private changeDetector: ChangeDetectorRef,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   selectPerson(id: number): void {
     this.selectedPerson = this.data[id];
   }
+  resetFilters() {
+    this.filtersForm.reset()
+    this.wantedService.filters = {}
+    this.filtersSub.unsubscribe()
+  }
 
   ngOnInit(): void {
-    this.subscription = this.activatedRoute.paramMap
+    this.filtersSub = this.filtersForm.valueChanges.pipe(debounceTime(1000)).subscribe((res) => {
+      this.wantedService.updateFilters(res);
+      this.wantedService.getData().subscribe((res: any) => {
+        this.wantedService.selectedPerson = res.items[0];
+        this.wantedService.data = res.items;
+        this.wantedService.pages = res.page;
+        this.wantedService.length = res.total;
+        this.wantedService.fetching = false;
+        this.wantedService.stateItem.next(res.items);
+      });
+    });
+    this.routeSub = this.activatedRoute.paramMap
       .pipe(
         tap((map) => {
-          this.wantedService.clearForFetching()
+          this.wantedService.fetching = true;
+          this.changeDetector.detectChanges();
           if (Number(map.get("id"))) {
             this.wantedService.page = Number(map.get("id"));
-            this.wantedService.pageItem.next(this.wantedService.page)
+            this.wantedService.pageItem.next(this.wantedService.page);
           }
-          // this.updateNavLink();
         }),
         debounceTime(this.debTime),
         switchMap((map) => {
@@ -77,10 +113,11 @@ export class GlobalComponent implements OnInit, OnDestroy {
         this.wantedService.data = res.items;
         this.wantedService.pages = res.page;
         this.wantedService.length = res.total;
+        this.wantedService.fetching = false;
         this.wantedService.stateItem.next(res.items);
       });
 
-    this.wantedService.stateItem$.subscribe((trash) => {
+    this.wantedService.stateItem$.subscribe(() => {
       this.data = this.wantedService.data;
       this.page = this.wantedService.page;
       this.pages = this.wantedService.pages;
@@ -90,6 +127,7 @@ export class GlobalComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    this.routeSub.unsubscribe();
+    this.resetFilters();
   }
 }

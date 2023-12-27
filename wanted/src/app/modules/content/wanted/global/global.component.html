@@ -11,32 +11,62 @@
       [pageIndex]="page - 1"
       aria-label="Select page"
       [class.mat-elevation-z1]="true"
-    />
+    >
+    </mat-paginator>
   </div>
-  <div *ngIf="data?.length; else loading" class="wanted-grid">
-    <div class="wanted-grid-tile" *ngFor="let tr of data; index as i">
-      <mat-card (click)="selectPerson(i)">
-        <mat-card-title>
-          <div class="header-container">
-            <img appImageFallback class="wanted-photo" src="{{ tr.images[0].original }}" />
-            <h2>{{ tr.title }}</h2>
-            <button mat-button color="primary" class="edit-button">
-              Edit
-              <mat-icon>edit</mat-icon>
-            </button>
-          </div>
-          <div class="info">
-            <p>Sex: {{ tr.sex | defaultFieldValue }}</p>
-            <p>Hair: {{ tr.hair | defaultFieldValue }}</p>
-            <p>Race: {{ tr.race | defaultFieldValue }}</p>
-            <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
-          </div>
-        </mat-card-title>
-        <mat-card-content></mat-card-content>
-      </mat-card>
+  <mat-card class="filters">
+    <form [formGroup]="filtersForm">
+      <mat-form-field class="form-input">
+        <mat-label>Sex</mat-label>
+        <mat-select formControlName="sex">
+          <mat-option value="">-</mat-option>
+          <mat-option value="male">male</mat-option>
+          <mat-option value="female">female</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="form-input">
+        <mat-label>Race</mat-label>
+        <mat-select formControlName="race">
+          <mat-option value="">-</mat-option>
+          <mat-option value="white">white</mat-option>
+          <mat-option value="black">black</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="age-range">
+        <p>Age range:</p>
+        <mat-slider min="0" max="150" step="1" showTickMarks discrete>
+          <input formControlName="age_min" value="0" matSliderStartThumb />
+          <input formControlName="age_max" value="150" matSliderEndThumb />
+        </mat-slider>
+      </div>
+    </form>
+  </mat-card>
+  <ng-container *ngIf="!wantedService.fetching; else loading">
+    <div *ngIf="data?.length; else noData" class="wanted-grid">
+      <div class="wanted-grid-tile" *ngFor="let tr of data; index as i">
+        <mat-card (click)="selectPerson(i)">
+          <mat-card-title>
+            <div class="header-container">
+              <img appImageFallback class="wanted-photo" [src]="tr?.images[0]?.original" />
+              <h2>{{ tr.title }}</h2>
+              <button mat-button color="primary" class="edit-button">
+                Edit
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+            <div class="info">
+              <p>Sex: {{ tr.sex | defaultFieldValue }}</p>
+              <p>Hair: {{ tr.hair | defaultFieldValue }}</p>
+              <p>Race: {{ tr.race | defaultFieldValue }}</p>
+              <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
+            </div>
+          </mat-card-title>
+          <mat-card-content></mat-card-content>
+        </mat-card>
+      </div>
     </div>
-  </div>
-  <div *ngIf="data?.length" class="pagination">
+  </ng-container>
+  <div *ngIf="data?.length && !wantedService.fetching" class="pagination">
     <mat-paginator
       #paginator
       class="demo-paginator"
@@ -53,5 +83,6 @@
   <ng-template #loading>
     <mat-spinner></mat-spinner>
   </ng-template>
+  <ng-template #noData> no data for your search query </ng-template>
 </div>
-<app-details [selectedPerson]="selectedPerson" />
+<app-details [selectedPerson]="selectedPerson" [fetching]="wantedService.fetching" [data]="wantedService.data" />

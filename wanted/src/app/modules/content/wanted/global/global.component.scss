@@ -70,3 +70,28 @@ mat-tab-group {
 .tab-container {
     padding: 1rem;
 }
+.filters {
+  padding: 1rem;
+  padding-bottom: 0;
+  margin-bottom: 1rem;
+  display: flex;
+}
+mat-form-field {
+  width: fit-content;
+  display: block;
+}
+.age-range {
+  display: flex;
+  align-items: center;
+  p {
+    margin-right: 1rem;
+    margin-bottom: 5px;
+  }
+}
+form {
+  display: flex;
+  align-items: center;
+}
+.form-input {
+  margin-right: 1rem;
+}
