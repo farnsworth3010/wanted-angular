@@ -1,3 +1,57 @@
 <div class="content">
-    test
+  <mat-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+      <form class="form" [formGroup]="firstFormGroup">
+        <ng-template matStepLabel>Main info</ng-template>
+        <mat-button-toggle-group class="sex-toggle" formControlName="sex" name="fontStyle" aria-label="Font Style">
+          <mat-button-toggle value="Male"><i class="fa-solid fa-mars"></i></mat-button-toggle>
+          <mat-button-toggle value="Female"><i class="fa-solid fa-venus"></i></mat-button-toggle>
+        </mat-button-toggle-group>
+        <mat-form-field>
+          <mat-label>Title</mat-label>
+          <input matInput placeholder="Title" formControlName="title" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Hair</mat-label>
+          <input matInput placeholder="Title" formControlName="hair" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Race</mat-label>
+          <input matInput placeholder="Title" formControlName="race" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Eyes</mat-label>
+          <input matInput placeholder="Title" formControlName="eyes" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Reward</mat-label>
+          <input matInput placeholder="Title" formControlName="reward" />
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup" label="Additional info">
+      <form [formGroup]="secondFormGroup">
+        <mat-form-field>
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="test" placeholder="Ex. 1 Main St, New York, NY" />
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done, after sending the request you will have to wait for the administrator's aprooving...</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button (click)="sendRequest()">Send request</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
 </div>

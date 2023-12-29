@@ -17,6 +17,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatSliderModule } from "@angular/material/slider";
 import { MatDialog, MatDialogRef, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent } from "@angular/material/dialog";
 import { EditCrimeComponent } from "../../../../shared/dialogs/edit-crime/edit-crime.component";
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 @Component({
   selector: "app-global",
   standalone: true,
@@ -76,7 +77,8 @@ export class GlobalComponent implements OnInit, OnDestroy {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private afs: AngularFirestore
   ) {}
 
   selectPerson(id: number): void {
@@ -87,16 +89,18 @@ export class GlobalComponent implements OnInit, OnDestroy {
     this.wantedService.filters = {};
     this.filtersSub.unsubscribe();
   }
-  editHandle(event: Event) {
+  editHandle(event: Event, tr: any) {
     event.stopPropagation();
     this.dialog.open(EditCrimeComponent, {
-      width: "500px",
+      width: "50vw",
       enterAnimationDuration: 300,
       exitAnimationDuration: 300,
+      data: tr
     });
   }
 
   ngOnInit(): void {
+    console.log(this.afs)
     this.filtersSub = this.filtersForm.valueChanges.pipe(
       tap(()=>this.wantedService.fetching = true) ,
       debounceTime(1000)).subscribe((res) => {
@@ -144,7 +148,6 @@ export class GlobalComponent implements OnInit, OnDestroy {
     });
   }
   ngOnDestroy() {
-    this.routeSub.unsubscribe();
     this.resetFilters();
   }
 }
