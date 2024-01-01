@@ -1,0 +1,23 @@
+<mat-card (click)="selectPerson(i)" [class.edited]="edited">
+  <mat-card-title>
+    <div class="header-container">
+      <img appImageFallback class="wanted-photo" [src]="tr?.images[0]?.original" />
+      <h2>{{ tr.title }}</h2>
+      <button *ngIf="openToEdit" (click)="editHandle($event, tr)" mat-button color="primary" class="edit-button">
+        Edit
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button *ngIf="openToDelete" mat-button color="primary" class="edit-button">
+        Delete
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <div class="info">
+      <p>Sex: {{ tr.sex | defaultFieldValue }}</p>
+      <p>Hair: {{ tr.hair | defaultFieldValue }}</p>
+      <p>Race: {{ tr.race | defaultFieldValue }}</p>
+      <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
+    </div>
+  </mat-card-title>
+  <mat-card-content></mat-card-content>
+</mat-card>

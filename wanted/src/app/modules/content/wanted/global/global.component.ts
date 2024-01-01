@@ -18,6 +18,7 @@ import { MatSliderModule } from "@angular/material/slider";
 import { MatDialog, MatDialogRef, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent } from "@angular/material/dialog";
 import { EditCrimeComponent } from "../../../../shared/dialogs/edit-crime/edit-crime.component";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
+import { CriminalComponent } from "../criminal/criminal.component";
 @Component({
   selector: "app-global",
   standalone: true,
@@ -40,6 +41,7 @@ import { AngularFirestore } from "@angular/fire/compat/firestore";
     MatDialogClose,
     MatDialogTitle,
     MatDialogContent,
+    CriminalComponent,
   ],
   templateUrl: "./global.component.html",
   styleUrl: "./global.component.scss",
@@ -53,7 +55,7 @@ export class GlobalComponent implements OnInit, OnDestroy {
   length = 0;
   pageSize = 20;
   edited: any;
-
+  editedList: any[] = [];
   // Filters
   filtersForm = this.fb.group({
     sex: [""],
@@ -78,7 +80,7 @@ export class GlobalComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
     public dialog: MatDialog,
-    private afs: AngularFirestore
+    public afs: AngularFirestore
   ) {}
 
   selectPerson(id: number): void {
@@ -89,31 +91,33 @@ export class GlobalComponent implements OnInit, OnDestroy {
     this.wantedService.filters = {};
     this.filtersSub.unsubscribe();
   }
-  editHandle(event: Event, tr: any) {
-    event.stopPropagation();
+  editHandle(value: { tr: any; $event: Event }) {
+    value.$event.stopPropagation();
     this.dialog.open(EditCrimeComponent, {
       width: "50vw",
       enterAnimationDuration: 300,
       exitAnimationDuration: 300,
-      data: tr
+      data: value.tr,
     });
   }
 
   ngOnInit(): void {
-    console.log(this.afs)
-    this.filtersSub = this.filtersForm.valueChanges.pipe(
-      tap(()=>this.wantedService.fetching = true) ,
-      debounceTime(1000)).subscribe((res) => {
-      this.wantedService.updateFilters(res);
-      this.wantedService.getData().subscribe((res: any) => {
-        this.wantedService.selectedPerson = res.items[0];
-        this.wantedService.data = res.items;
-        this.wantedService.pages = res.page;
-        this.wantedService.length = res.total;
-        this.wantedService.fetching = false;
-        this.wantedService.stateItem.next(res.items);
+    this.filtersSub = this.filtersForm.valueChanges
+      .pipe(
+        tap(() => (this.wantedService.fetching = true)),
+        debounceTime(1000)
+      )
+      .subscribe((res) => {
+        this.wantedService.updateFilters(res);
+        this.wantedService.getData().subscribe((res: any) => {
+          this.wantedService.selectedPerson = res.items[0];
+          this.wantedService.data = res.items;
+          this.wantedService.pages = res.page;
+          this.wantedService.length = res.total;
+          this.wantedService.fetching = false;
+          this.wantedService.stateItem.next(res.items);
+        });
       });
-    });
     this.routeSub = this.activatedRoute.paramMap
       .pipe(
         tap((map) => {
@@ -130,12 +134,19 @@ export class GlobalComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((res: any) => {
-        this.wantedService.selectedPerson = res.items[0];
-        this.wantedService.data = res.items;
-        this.wantedService.pages = res.page;
-        this.wantedService.length = res.total;
-        this.wantedService.fetching = false;
-        this.wantedService.stateItem.next(res.items);
+        this.wantedService.getEdited().subscribe((ed) => {
+          ed.forEach((doc) => {
+            let t = doc.data();
+            this.editedList.push(t["@id"]);
+          });
+          console.log(this.editedList);
+          this.wantedService.selectedPerson = res.items[0];
+          this.wantedService.data = res.items;
+          this.wantedService.pages = res.page;
+          this.wantedService.length = res.total;
+          this.wantedService.fetching = false;
+          this.wantedService.stateItem.next(res.items);
+        });
       });
 
     this.wantedService.stateItem$.subscribe(() => {
