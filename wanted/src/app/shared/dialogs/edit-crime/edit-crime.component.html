@@ -32,17 +32,65 @@
         </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="secondFormGroup" label="Additional info">
-      <form [formGroup]="secondFormGroup">
-        <mat-form-field>
-          <mat-label>Address</mat-label>
-          <input matInput formControlName="test" placeholder="Ex. 1 Main St, New York, NY" />
-        </mat-form-field>
-        <div>
-          <button mat-button matStepperPrevious>Back</button>
-          <button mat-button matStepperNext>Next</button>
-        </div>
-      </form>
+    <mat-step [stepControl]="secondFormGroup" label="Add custom fields">
+      <div [formGroup]="secondFormGroup">
+        <form [formGroup]="addFieldFormGroup" class="custom-fields-adding">
+          <mat-form-field>
+            <mat-label>field type</mat-label>
+            <mat-select formControlName="type">
+              <mat-option value="text">text</mat-option>
+              <mat-option value="date">date</mat-option>
+              <mat-option value="number">number</mat-option>
+              <mat-option value="checkbox">checkbox</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Field name</mat-label>
+            <input matInput type="text" formControlName="name" placeholder="Address" />
+          </mat-form-field>
+          <button (click)="addField()" mat-raised-button color="primary">Add <mat-icon>add</mat-icon></button>
+        </form>
+        <form formArrayName="additional">
+          <div *ngFor="let input of additional.controls; let i = index" class="custom-field">
+            <ng-container *ngIf="customFields.at(i).isEditing; else field">
+              <form class="custom-field-editing">
+                <mat-form-field>
+                  <mat-label>field type</mat-label>
+                  <mat-select #edType>
+                    <mat-option value="text">text</mat-option>
+                    <mat-option value="date">date</mat-option>
+                    <mat-option value="number">number</mat-option>
+                    <mat-option value="checkbox">checkbox</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Field name</mat-label>
+                  <input #edName matInput type="text" placeholder="Address" />
+                </mat-form-field>
+                <button (click)="applyEditById(i, edName.value, edType.value)" mat-raised-button class="edit-custom-field-btn" color="primary">
+                  Apply <mat-icon>done</mat-icon>
+                </button>
+                <button (click)="toggleFieldEditById(i)" mat-raised-button color="primary">Cancel <mat-icon>block</mat-icon></button>
+              </form>
+            </ng-container>
+            <ng-template #field>
+              <mat-form-field *ngIf="customFields[i].type != 'checkbox'">
+                <mat-label>{{ customFields[i].name }}</mat-label>
+                <input matInput [type]="customFields[i].type" formControlName="{{ i }}" placeholder="" />
+              </mat-form-field>
+              <mat-checkbox *ngIf="customFields[i].type === 'checkbox'" matInput formControlName="{{ i }}" placeholder="">
+                {{ customFields[i].name }}
+              </mat-checkbox>
+              <button (click)="toggleFieldEditById(i)" mat-raised-button class="edit-custom-field-btn" color="primary"><mat-icon>edit</mat-icon> edit</button>
+              <button (click)="deleteCustomFieldById(i)" mat-raised-button color="primary"><mat-icon>delete</mat-icon> delete</button>
+            </ng-template>
+          </div>
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext>Next</button>
+          </div>
+        </form>
+      </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
@@ -50,7 +98,7 @@
       <div>
         <button mat-button matStepperPrevious>Back</button>
         <button mat-button (click)="stepper.reset()">Reset</button>
-        <button mat-button (click)="sendRequest()">Send request</button>
+        <button mat-button [mat-dialog-close]="true" (click)="sendRequest()">Send request</button>
       </div>
     </mat-step>
   </mat-stepper>

@@ -21,6 +21,9 @@
         <span [innerHTML]="selectedPerson?.caution | defaultFieldValue"></span>
       </li>
       <li>Reward: {{ selectedPerson?.reward_text | defaultFieldValue }}</li>
+      <ng-container *ngIf="selectedPerson.customFields?.length">
+        <li *ngFor="let field of selectedPerson?.customFields">{{ field.name }}: {{ field.value }}</li>
+      </ng-container>
       <a [href]="selectedPerson?.url" target="_blank">Link</a>
     </ul>
   </ng-container>
@@ -28,4 +31,4 @@
 <ng-template #loading>
   <mat-spinner></mat-spinner>
 </ng-template>
-<ng-template #noData>no data</ng-template>
+<ng-template #noData></ng-template>

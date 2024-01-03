@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@
 import { WantedService } from "../../../../core/services/wanted/wanted.service";
 import { DetailsComponent } from "../details/details.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { timeout } from "rxjs";
+import { delay, timeout } from "rxjs";
 import { CriminalComponent } from "../criminal/criminal.component";
 
 @Component({
@@ -17,25 +17,39 @@ import { CriminalComponent } from "../criminal/criminal.component";
 export class EditedComponent implements OnInit {
   constructor(public wantedService: WantedService, private changeDetector: ChangeDetectorRef) {}
   data: any;
-  ngOnInit(): void {
+  fetchData(): void {
     this.wantedService.fetching = true;
     this.wantedService.data = null;
     this.wantedService
       .getEdited()
-      .pipe(timeout(3000))
+      .pipe(delay(1000))
       .subscribe((res) => {
         this.wantedService.fetching = false;
         const temp: any[] = [];
         res.forEach((doc) => {
-          temp.push(doc.data());
+          temp.push({ data: doc.data(), id: doc.id });
         });
         this.data = temp;
-        this.wantedService.selectedPerson = this.data[0];
+        if (this.wantedService.editsOpenedFromGlobal) {
+          this.wantedService.editsOpenedFromGlobal = false;
+          this.wantedService.selectedPerson = this.data.find((obj: any)=>obj.data.uid === this.wantedService.selectedPerson.uid).data
+        } else {
+          this.wantedService.selectedPerson = this.data[0]?.data;
+        }
         this.changeDetector.detectChanges();
       });
   }
+  ngOnInit(): void {
+    this.fetchData();
+  }
+  deletePerson({ $event, id }: { $event: Event; id: string }) {
+    $event.stopPropagation();
+    this.wantedService.deleteEditedById(id).subscribe((res) => {
+      this.fetchData();
+    });
+  }
   selectPerson(id: number): void {
-    this.wantedService.selectedPerson = this.data[id];
+    this.wantedService.selectedPerson = this.data[id]?.data;
     this.changeDetector.detectChanges();
   }
 }

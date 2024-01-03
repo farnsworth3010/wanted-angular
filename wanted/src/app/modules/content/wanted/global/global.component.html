@@ -4,11 +4,11 @@
       #paginator
       class="demo-paginator"
       (page)="handlePageEvent($event)"
-      [length]="length"
+      [length]="wantedService.length"
       [pageSize]="pageSize"
       [showFirstLastButtons]="true"
       [hidePageSize]="false"
-      [pageIndex]="page - 1"
+      [pageIndex]="this.wantedService.page - 1"
       aria-label="Select page"
       [class.mat-elevation-z1]="true"
     />
@@ -42,11 +42,12 @@
   </mat-card>
 
   <ng-container *ngIf="!wantedService.fetching; else loading">
-    <div *ngIf="data?.length; else noData" class="wanted-grid">
-      <div class="wanted-grid-tile" *ngFor="let tr of data; index as i">
+    <div *ngIf="wantedService.data?.length else noData" class="wanted-grid">
+      <div class="wanted-grid-tile" *ngFor="let tr of wantedService.data; index as i">
         <app-criminal
           [tr]="tr"
           [openToEdit]="!editedList.includes(tr['@id'])"
+          (viewInEditsClick)="viewInEdits($event)"
           [edited]="editedList.includes(tr['@id'])"
           [i]="i"
           (personClick)="selectPerson(i)"
@@ -60,19 +61,19 @@
   </ng-template>
   <ng-template #noData> no data for your search query </ng-template>
 
-  <div *ngIf="data?.length && !wantedService.fetching" class="pagination">
+  <div *ngIf="wantedService.data?.length && !wantedService.fetching" class="pagination">
     <mat-paginator
       #paginator
       class="demo-paginator"
       (page)="handlePageEvent($event)"
-      [length]="length"
+      [length]="wantedService.length"
       [pageSize]="pageSize"
       [showFirstLastButtons]="true"
       [hidePageSize]="false"
-      [pageIndex]="page - 1"
+      [pageIndex]="this.wantedService.page - 1"
       aria-label="Select page"
       [class.mat-elevation-z1]="true"
     />
   </div>
 </div>
-<app-details [selectedPerson]="selectedPerson" [fetching]="wantedService.fetching" [data]="wantedService.data" />
+<app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching" [data]="wantedService.data" />

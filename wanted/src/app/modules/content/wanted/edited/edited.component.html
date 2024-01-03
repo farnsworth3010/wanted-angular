@@ -1,19 +1,24 @@
 <div class="tab-container">
   <ng-container *ngIf="!wantedService.fetching; else loading">
-    <div *ngIf="data; else noEdits">
-      <div *ngIf="data?.length; else noData" class="wanted-grid">
-        <div class="wanted-grid-tile" *ngFor="let tr of data; index as i">
-          <app-criminal [tr]="tr" [openToEdit]="false" [openToDelete]="true" [i]="i" (personClick)="selectPerson(i)"></app-criminal>
-        </div>
+    <div *ngIf="data?.length; else noData" class="wanted-grid">
+      <div class="wanted-grid-tile" *ngFor="let tr of data; index as i">
+        <app-criminal
+          [firebaseId]="tr.id"
+          [tr]="tr.data"
+          [openToEdit]="false"
+          [openToDelete]="true"
+          [i]="i"
+          (personClick)="selectPerson(i)"
+          (deleteClick)="deletePerson($event)"
+        ></app-criminal>
       </div>
     </div>
   </ng-container>
   <ng-template #loading>
     <mat-spinner></mat-spinner>
   </ng-template>
-  <ng-template #noData> no data for your search query </ng-template>
-  <ng-template #noEdits>
-    <div class="no-edits">There is no edited cards</div>
+  <ng-template #noData>
+    <div class="no-data">No edited data :c</div>
   </ng-template>
 </div>
 <app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching" [data]="data" />

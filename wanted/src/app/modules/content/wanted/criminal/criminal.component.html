@@ -1,4 +1,4 @@
-<mat-card (click)="selectPerson(i)" [class.edited]="edited">
+<mat-card (click)="selectPerson(i)">
   <mat-card-title>
     <div class="header-container">
       <img appImageFallback class="wanted-photo" [src]="tr?.images[0]?.original" />
@@ -7,9 +7,13 @@
         Edit
         <mat-icon>edit</mat-icon>
       </button>
-      <button *ngIf="openToDelete" mat-button color="primary" class="edit-button">
+      <button *ngIf="openToDelete" (click)="deleteHandle($event)" mat-button color="primary" class="edit-button">
         Delete
         <mat-icon>delete</mat-icon>
+      </button>
+      <button *ngIf="edited" (click)="viewInEditsHandle($event, tr)" mat-button color="primary" class="edit-button">
+        View in edits
+        <mat-icon>visibility</mat-icon>
       </button>
     </div>
     <div class="info">

@@ -1,16 +1,15 @@
+import { provideHttpClient } from "@angular/common/http";
 import { ApplicationConfig, importProvidersFrom } from "@angular/core";
-import { provideRouter, withComponentInputBinding } from "@angular/router";
-import { ScreenTrackingService, UserTrackingService, getAnalytics, provideAnalytics } from "@angular/fire/analytics";
+import { getAnalytics, provideAnalytics } from "@angular/fire/analytics";
 import { getAuth, provideAuth } from "@angular/fire/auth";
-import { getFirestore, provideFirestore } from "@angular/fire/firestore";
+import { AngularFireModule } from "@angular/fire/compat";
 import { getFunctions, provideFunctions } from "@angular/fire/functions";
 import { getPerformance, providePerformance } from "@angular/fire/performance";
 import { getStorage, provideStorage } from "@angular/fire/storage";
-import { routes } from "./app.routes";
 import { provideAnimations } from "@angular/platform-browser/animations";
-import { provideHttpClient } from "@angular/common/http";
+import { provideRouter, withComponentInputBinding } from "@angular/router";
 import { environment } from "../environments/environment";
-import { AngularFireModule } from "@angular/fire/compat";
+import { routes } from "./app.routes";
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),

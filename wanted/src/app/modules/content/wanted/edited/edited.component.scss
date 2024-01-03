@@ -23,3 +23,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+.no-data {
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 6rem;
+}
+mat-spinner {
+  display: block;
+  margin: 0 auto;
+  margin-top: 6rem;
+}

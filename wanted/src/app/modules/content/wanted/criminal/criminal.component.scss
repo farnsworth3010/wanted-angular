@@ -1,4 +1,6 @@
-
+:host:hover {
+  cursor: pointer;
+}
 
 .edit-button {
   position: absolute; 
@@ -21,3 +23,7 @@
   .edited {
     background-color: #fefff3;
   }
+.info {
+  font-size: 0.8em;
+  opacity: 0.8;
+}

@@ -23,14 +23,20 @@ export class CriminalComponent implements OnInit {
   @Output() selectClick = new EventEmitter();
   @Output() deleteClick = new EventEmitter();
   @Output() editClick = new EventEmitter();
-  @Input() edited: boolean = false
+  @Output() viewInEditsClick = new EventEmitter();
+  @Input() edited: boolean = false;
+  @Input() firebaseId!: string;
   public selectPerson(i: number) {
     this.personClick.emit(i);
   }
-  public editHandle($event: any, tr: any) {
+  public editHandle($event: Event, tr: any) {
     this.editClick.emit({ $event, tr });
   }
-  ngOnInit(): void {
-    console.log(this.tr['@id'])
+  public deleteHandle($event: Event) {
+    this.deleteClick.emit({ $event, id: this.firebaseId });
   }
+  public viewInEditsHandle($event: Event, tr: any) {
+    this.viewInEditsClick.emit({ $event, tr });
+  }
+  ngOnInit(): void {}
 }
