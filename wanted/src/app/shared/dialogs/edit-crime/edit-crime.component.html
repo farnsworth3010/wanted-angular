@@ -13,19 +13,19 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Hair</mat-label>
-          <input matInput placeholder="Title" formControlName="hair" />
+          <input matInput placeholder="Hair" formControlName="hair" />
         </mat-form-field>
         <mat-form-field>
           <mat-label>Race</mat-label>
-          <input matInput placeholder="Title" formControlName="race" />
+          <input matInput placeholder="Race" formControlName="race" />
         </mat-form-field>
         <mat-form-field>
           <mat-label>Eyes</mat-label>
-          <input matInput placeholder="Title" formControlName="eyes" />
+          <input matInput placeholder="Eyes" formControlName="eyes" />
         </mat-form-field>
         <mat-form-field>
           <mat-label>Reward</mat-label>
-          <input matInput placeholder="Title" formControlName="reward" />
+          <input matInput placeholder="Reward" formControlName="reward" />
         </mat-form-field>
         <div>
           <button mat-button matStepperNext>Next</button>
@@ -67,10 +67,12 @@
                   <mat-label>Field name</mat-label>
                   <input #edName matInput type="text" placeholder="Address" />
                 </mat-form-field>
-                <button (click)="applyEditById(i, edName.value, edType.value)" mat-raised-button class="edit-custom-field-btn" color="primary">
+                <button (click)="applyEditById(i, edName.value, edType.value)" mat-raised-button
+                  class="edit-custom-field-btn" color="primary">
                   Apply <mat-icon>done</mat-icon>
                 </button>
-                <button (click)="toggleFieldEditById(i)" mat-raised-button color="primary">Cancel <mat-icon>block</mat-icon></button>
+                <button (click)="toggleFieldEditById(i)" mat-raised-button color="primary">Cancel
+                  <mat-icon>block</mat-icon></button>
               </form>
             </ng-container>
             <ng-template #field>
@@ -78,11 +80,14 @@
                 <mat-label>{{ customFields[i].name }}</mat-label>
                 <input matInput [type]="customFields[i].type" formControlName="{{ i }}" placeholder="" />
               </mat-form-field>
-              <mat-checkbox *ngIf="customFields[i].type === 'checkbox'" matInput formControlName="{{ i }}" placeholder="">
+              <mat-checkbox *ngIf="customFields[i].type === 'checkbox'" matInput formControlName="{{ i }}"
+                placeholder="">
                 {{ customFields[i].name }}
               </mat-checkbox>
-              <button (click)="toggleFieldEditById(i)" mat-raised-button class="edit-custom-field-btn" color="primary"><mat-icon>edit</mat-icon> edit</button>
-              <button (click)="deleteCustomFieldById(i)" mat-raised-button color="primary"><mat-icon>delete</mat-icon> delete</button>
+              <button (click)="toggleFieldEditById(i)" mat-raised-button class="edit-custom-field-btn"
+                color="primary"><mat-icon>edit</mat-icon> edit</button>
+              <button (click)="deleteCustomFieldById(i)" mat-raised-button color="primary"><mat-icon>delete</mat-icon>
+                delete</button>
             </ng-template>
           </div>
           <div>

@@ -1,5 +1,5 @@
 import {Routes} from "@angular/router";
-import {LoginResolveService} from "../../core/services/login.resolve.service";
+import {LoginResolveFn} from "../../core/services/login.resolve";
 import {AuthComponent} from "./auth.component";
 
 export const authRoutes: Routes = [
@@ -10,7 +10,7 @@ export const authRoutes: Routes = [
       {
         path: 'sign-in',
         resolve: {
-          ready: LoginResolveService,
+          ready: LoginResolveFn,
         },
         loadComponent: () =>
           import('./signin/sign-in.component').then(
@@ -20,7 +20,7 @@ export const authRoutes: Routes = [
       {
         path: 'sign-up',
         resolve: {
-          ready: LoginResolveService,
+          ready: LoginResolveFn,
         },
         loadComponent: () =>
           import('./signup/sign-up.component').then(

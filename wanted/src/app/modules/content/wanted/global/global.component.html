@@ -1,17 +1,8 @@
 <div class="tab-container">
   <div class="pagination pagination-top">
-    <mat-paginator
-      #paginator
-      class="demo-paginator"
-      (page)="handlePageEvent($event)"
-      [length]="wantedService.length"
-      [pageSize]="pageSize"
-      [showFirstLastButtons]="true"
-      [hidePageSize]="false"
-      [pageIndex]="this.wantedService.page - 1"
-      aria-label="Select page"
-      [class.mat-elevation-z1]="true"
-    />
+    <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="wantedService.length"
+      [pageSize]="pageSize" [showFirstLastButtons]="true" [hidePageSize]="false"
+      [pageIndex]="this.wantedService.page - 1" aria-label="Select page" [class.mat-elevation-z1]="true" />
   </div>
   <mat-card class="filters">
     <form [formGroup]="filtersForm">
@@ -44,15 +35,9 @@
   <ng-container *ngIf="!wantedService.fetching; else loading">
     <div *ngIf="wantedService.data?.length else noData" class="wanted-grid">
       <div class="wanted-grid-tile" *ngFor="let tr of wantedService.data; index as i">
-        <app-criminal
-          [tr]="tr"
-          [openToEdit]="!editedList.includes(tr['@id'])"
-          (viewInEditsClick)="viewInEdits($event)"
-          [edited]="editedList.includes(tr['@id'])"
-          [i]="i"
-          (personClick)="selectPerson(i)"
-          (editClick)="editHandle($event)"
-        />
+        <app-criminal [tr]="tr" [openToEdit]="!editedList.includes(tr['@id'])" (viewInEditsClick)="viewInEdits($event)"
+          [edited]="editedList.includes(tr['@id'])" [i]="i" (personClick)="selectPerson(i)"
+          (editClick)="editHandle($event)" />
       </div>
     </div>
   </ng-container>
@@ -62,18 +47,10 @@
   <ng-template #noData> no data for your search query </ng-template>
 
   <div *ngIf="wantedService.data?.length && !wantedService.fetching" class="pagination">
-    <mat-paginator
-      #paginator
-      class="demo-paginator"
-      (page)="handlePageEvent($event)"
-      [length]="wantedService.length"
-      [pageSize]="pageSize"
-      [showFirstLastButtons]="true"
-      [hidePageSize]="false"
-      [pageIndex]="this.wantedService.page - 1"
-      aria-label="Select page"
-      [class.mat-elevation-z1]="true"
-    />
+    <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="wantedService.length"
+      [pageSize]="pageSize" [showFirstLastButtons]="true" [hidePageSize]="false"
+      [pageIndex]="this.wantedService.page - 1" aria-label="Select page" [class.mat-elevation-z1]="true" />
   </div>
 </div>
-<app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching" [data]="wantedService.data" />
+<app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching"
+  [data]="wantedService.data" />

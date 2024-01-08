@@ -11,14 +11,10 @@
         report suspicious activities and crime by contacting us 24/7 at
         tips.fbi.gov.
       </p>
-      <button
-        [routerLink]="['/auth/sign-in']"
-        mat-raised-button
-        color="primary"
-      >
+      <button [routerLink]="'/auth/sign-in'" mat-raised-button color="primary">
         Sign in
       </button>
-      <button [routerLink]="['/auth/sign-up']" class="signup-btn" mat-button>
+      <button [routerLink]="'/auth/sign-up'" class="signup-btn" mat-button>
         Sign up
       </button>
     </mat-card-content>

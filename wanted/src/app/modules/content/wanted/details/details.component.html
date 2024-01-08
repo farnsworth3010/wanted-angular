@@ -1,34 +1,40 @@
 <div class="wanted-right-menu">
-  <ng-container *ngIf="!fetching; else loading">
-    <ul *ngIf="data?.length; else noData">
-      <li>
-        <img class="wanted-photo" appImageFallback [src]="selectedPerson?.images[0]?.original" />
-        <h2 class="title">{{ selectedPerson?.title }}</h2>
-      </li>
-      <li>Sex: {{ selectedPerson?.sex | defaultFieldValue }}</li>
-      <li>Age min: {{ selectedPerson?.age_min | defaultFieldValue }}</li>
-      <li>Age max: {{ selectedPerson?.age_max | defaultFieldValue }}</li>
-      <li>Hair: {{ selectedPerson?.hair | defaultFieldValue }}</li>
-      <li>Race: {{ selectedPerson?.race | defaultFieldValue }}</li>
-      <li>Eyes: {{ selectedPerson?.eyes | defaultFieldValue }}</li>
-      <li>Height max: {{ selectedPerson?.heightMax | defaultFieldValue }}</li>
-      <li>
-        Publication:
-        {{ selectedPerson?.publication | date | defaultFieldValue }}
-      </li>
-      <li>
-        Caution:
-        <span [innerHTML]="selectedPerson?.caution | defaultFieldValue"></span>
-      </li>
-      <li>Reward: {{ selectedPerson?.reward_text | defaultFieldValue }}</li>
-      <ng-container *ngIf="selectedPerson.customFields?.length">
-        <li *ngFor="let field of selectedPerson?.customFields">{{ field.name }}: {{ field.value }}</li>
-      </ng-container>
-      <a [href]="selectedPerson?.url" target="_blank">Link</a>
-    </ul>
-  </ng-container>
+  @if(!fetching) {
+  @if(data?.length) {
+  <ul>
+    <li>
+      <img class="wanted-photo" appImageFallback [src]="selectedPerson?.images![0].original" />
+      <h2 class="title">{{ selectedPerson?.title }}</h2>
+    </li>
+    <li>Sex: {{ selectedPerson?.sex | defaultFieldValue }}</li>
+    <li>Age min: {{ selectedPerson?.age_min | defaultFieldValue }}</li>
+    <li>Age max: {{ selectedPerson?.age_max | defaultFieldValue }}</li>
+    <li>Hair: {{ selectedPerson?.hair | defaultFieldValue }}</li>
+    <li>Race: {{ selectedPerson?.race | defaultFieldValue }}</li>
+    <li>Eyes: {{ selectedPerson?.eyes | defaultFieldValue }}</li>
+    <li>Height max: {{ selectedPerson?.height_max | defaultFieldValue }}</li>
+    <li>
+      Publication:
+      {{ selectedPerson?.publication | date | defaultFieldValue }}
+    </li>
+    <li>
+      Caution:
+      <span [innerHTML]="selectedPerson?.caution | defaultFieldValue"></span>
+    </li>
+    <li>Reward: {{ selectedPerson?.reward_text | defaultFieldValue }}</li>
+    @if(selectedPerson?.customFields?.length) {
+    @for(field of selectedPerson?.customFields; track ) {
+    <li>{{ field.name }}: {{ field.value }}</li>
+    }
+    }
+    <a [href]="selectedPerson?.url" target="_blank">Link</a>
+  </ul>
+  }
+  @else {
+  no data
+  }
+  }
+  @else {
+  <mat-spinner />
+  }
 </div>
-<ng-template #loading>
-  <mat-spinner></mat-spinner>
-</ng-template>
-<ng-template #noData></ng-template>

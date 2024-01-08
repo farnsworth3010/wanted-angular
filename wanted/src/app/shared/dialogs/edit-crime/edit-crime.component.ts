@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Inject } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { addDoc, collection } from "@angular/fire/firestore";
 import { AbstractControl, FormArray, FormBuilder, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from "@angular/forms";
@@ -14,6 +14,7 @@ import { CommonModule } from "@angular/common";
 import { MatSelectModule } from "@angular/material/select";
 import { MatCheckboxModule } from "@angular/material/checkbox";
 import { MatIconModule } from "@angular/material/icon";
+
 @Component({
   selector: "app-edit-crime",
   standalone: true,
@@ -37,13 +38,13 @@ import { MatIconModule } from "@angular/material/icon";
 })
 export class EditCrimeComponent {
   constructor(
-    private fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    private fb: FormBuilder,
     public afs: AngularFirestore,
     public ws: WantedService,
-    private changeDetector: ChangeDetectorRef
-  ) {}
-  sendRequest() {
+  ) { }
+
+  sendRequest(): void {
     if (this.addFieldFormGroup.valid) {
       this.customFieldsData = this.customFields.map((x, index) => {
         return {
@@ -62,7 +63,7 @@ export class EditCrimeComponent {
           reward: this.firstFormGroup.controls.reward.value,
           customFields: this.customFieldsData,
         })
-      ).subscribe(() => {});
+      ).subscribe(() => { });
     }
   }
   addFieldFormGroup = this.fb.group({
@@ -71,12 +72,14 @@ export class EditCrimeComponent {
   });
   customFields: any[] = [];
   customFieldsData: any[] = [];
+
   noRepeatNamesValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const condition = this.customFields?.find((x) => x.name === control.value);
       return condition ? { error: "gg" } : null;
     };
   }
+
   addField() {
     if (this.addFieldFormGroup.valid && this.customFields.length < 3 && this.addFieldFormGroup.controls.name.value) {
       const control = this.fb.control("");
@@ -85,6 +88,7 @@ export class EditCrimeComponent {
       this.addFieldFormGroup.controls.name.reset();
     }
   }
+
   firstFormGroup = this.fb.group({
     title: [this.data.title ?? "-", Validators.required],
     sex: [this.data.sex ?? "Male", Validators.required],
@@ -94,18 +98,23 @@ export class EditCrimeComponent {
     reward: [this.data.reward],
     additional: this.fb.array([]),
   });
-  get additional() {
+
+  get additional(): FormArray {
     return this.secondFormGroup.get("additional") as FormArray;
   }
+
   secondFormGroup = this.fb.group({
     additional: this.fb.array([]),
   });
+
   toggleFieldEditById(id: number): void {
-    this.customFields.at(id).isEditing = !this.customFields.at(id).isEditing;
+    this.customFields[id].isEditing = !this.customFields[id].isEditing;
   }
+
   deleteCustomFieldById(id: number): void {
     this.secondFormGroup.controls.additional.removeAt(id);
   }
+
   applyEditById(id: number, name: string, type: string): void {
     if (name && type) {
       this.customFields.at(id).name = name;

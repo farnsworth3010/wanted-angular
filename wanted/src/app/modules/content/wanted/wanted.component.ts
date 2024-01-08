@@ -6,11 +6,11 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatIconModule } from "@angular/material/icon";
 import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatTabsModule } from "@angular/material/tabs";
-import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet, RoutesRecognized } from "@angular/router";
-import { debounceTime, filter, switchMap, tap } from "rxjs";
+import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { WantedService } from "../../../core/services/wanted/wanted.service";
 import { ImageFallbackDirective } from "../../../shared/directives/image-fallback.directive";
 import { DefaultFieldValuePipe } from "../../../shared/pipes/default-field-value.pipe";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-wanted",
@@ -33,7 +33,10 @@ import { DefaultFieldValuePipe } from "../../../shared/pipes/default-field-value
   styleUrl: "./wanted.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class WantedComponent implements OnInit, OnDestroy {
+export class WantedComponent implements OnInit {
+  constructor(private changeDetector: ChangeDetectorRef, private wantedService: WantedService) { }
+  wantedSubscription!: Subscription;
+  routerSubscription!: Subscription;
   navLinks = [
     {
       label: "Wanted",
@@ -44,17 +47,15 @@ export class WantedComponent implements OnInit, OnDestroy {
       link: "/content/crimes/edited",
     },
   ];
-  wantedSubscription: any;
-  routerSubscription: any;
-  updateNavLink() {
+
+  updateNavLink(): void {
     this.navLinks[0].link = `/content/crimes/wanted/${this.wantedService.page}`;
     this.changeDetector.detectChanges();
   }
-  constructor(private changeDetector: ChangeDetectorRef, private wantedService: WantedService) {}
+
   ngOnInit(): void {
-    this.wantedService.pageItem$.subscribe(()=> {
+    this.wantedService.pageItem$.subscribe(() => {
       this.updateNavLink()
     })
   }
-  ngOnDestroy(): void {}
 }

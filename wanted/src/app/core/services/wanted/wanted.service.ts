@@ -2,52 +2,62 @@ import { collection, deleteDoc, doc } from "@angular/fire/firestore";
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
-import { Router } from "@angular/router";
 import { getDocs } from "firebase/firestore";
 import { BehaviorSubject, Observable, from } from "rxjs";
+import { Crime } from "../interfaces/crime";
+import { Filters } from "../interfaces/filters";
+import { environment } from "../../../../environments/environment";
+import { wantedRes } from "../interfaces/wantedResult";
 
 @Injectable({
   providedIn: "root",
 })
 export class WantedService {
-  constructor(private http: HttpClient, private router: Router, private afs: AngularFirestore) {}
-  private url: string = "https://api.fbi.gov/wanted/v1/list";
-  page: number = 1;
-  data: any;
+  constructor(private http: HttpClient, private afs: AngularFirestore) { }
+
+  editsOpenedFromGlobal: boolean = false
+  selectedPerson!: null | Crime;
   fetching: boolean = false;
-  selectedPerson: any;
-  pages: number = 0;
+  data!: null | Crime[];
   length: number = 0;
-  filters!: {};
+  pages: number = 0;
+  page: number = 1;
+  filters!: any;
+
+  pageItem: BehaviorSubject<number> = new BehaviorSubject(this.page);
   stateItem: BehaviorSubject<any> = new BehaviorSubject(null);
   stateItem$: Observable<any> = this.stateItem.asObservable();
-  pageItem: BehaviorSubject<number> = new BehaviorSubject(this.page);
   pageItem$: Observable<number> = this.pageItem.asObservable();
-  editsOpenedFromGlobal: boolean = false
-  getData() {
-    return this.http.get(this.url, {
+
+  getData(): Observable<any> {
+    return this.http.get(environment.apiUrl, {
       params: {
         page: this.page,
         ...this.filters,
       },
     });
   }
-  getEdited() {
+
+  getEdited(): Observable<any> {
     return from(getDocs(collection(this.afs.firestore, "edited")));
   }
-  updateFilters(filters: any): void {
+
+  updateFilters(filters: Filters): void {
     this.page = 1;
     this.filters = filters;
   }
-  deleteEditedById(id: string) {
+
+  deleteEditedById(id: string): Observable<void> {
     return from(deleteDoc(doc(this.afs.firestore, `edited/${id}`)));
   }
-  updateData(res: any): void {
+
+  updateData(res: wantedRes): void {
+    console.log(res)
     this.selectedPerson = res.items[0];
+    this.stateItem.next(res.items);
+    this.length = res.total;
     this.data = res.items;
     this.pages = res.page;
-    this.length = res.total;
     this.fetching = false;
-    this.stateItem.next(res.items);
   }
 }

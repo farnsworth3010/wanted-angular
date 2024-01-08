@@ -1,5 +1,5 @@
-import {Routes} from '@angular/router';
-import {authCanActivate} from "./core/services/auth.guard.service";
+import { Routes } from '@angular/router';
+import { authCanActivate } from "./core/services/auth.guard";
 import { NotFoundComponent } from './modules/not-found/not-found.component';
 
 export const routes: Routes = [
@@ -7,7 +7,7 @@ export const routes: Routes = [
     path: '',
     loadComponent: () =>
       import('./modules/public/public.component').then(
-        (m) => m.PublicComponent
+        m => m.PublicComponent
       ),
   },
   {
@@ -15,13 +15,13 @@ export const routes: Routes = [
     canActivate: [authCanActivate],
     loadChildren: () =>
       import('./modules/content/content.routes').then(
-        (m) => m.contentRoutes
+        m => m.contentRoutes
       ),
   },
   {
     path: 'auth',
     loadChildren: () =>
-      import('./modules/auth/auth.routes').then((m) => m.authRoutes),
+      import('./modules/auth/auth.routes').then(m => m.authRoutes),
   },
   {
     path: '**',

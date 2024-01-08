@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatGridListModule } from "@angular/material/grid-list";
@@ -15,11 +15,13 @@ import { Subscription, debounceTime, switchMap, tap } from "rxjs";
 import { MatSelectModule } from "@angular/material/select";
 import { FormBuilder, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatSliderModule } from "@angular/material/slider";
-import { MatDialog, MatDialogRef, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent } from "@angular/material/dialog";
+import { MatDialog, MatDialogActions, MatDialogClose, MatDialogTitle, MatDialogContent } from "@angular/material/dialog";
 import { EditCrimeComponent } from "../../../../shared/dialogs/edit-crime/edit-crime.component";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { CriminalComponent } from "../criminal/criminal.component";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { Crime } from "../../../../core/services/interfaces/crime";
+import { NumberInput } from "@angular/cdk/coercion";
 @Component({
   selector: "app-global",
   standalone: true,
@@ -48,32 +50,32 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
   styleUrl: "./global.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GlobalComponent implements OnInit, OnDestroy {
-  pageSize = 20;
-  edited: any;
-  editedList: any[] = [];
+export class GlobalComponent implements OnInit {
+  private readonly debTime = 1000;
   filtersForm = this.fb.group({
     sex: [""],
     race: [""],
     age_min: [""],
     age_max: [""],
   });
-  private readonly debTime = 1000;
-  routeSub!: Subscription;
   filtersSub!: Subscription;
+  editedList: any[] = [];
+  routeSub!: Subscription;
+  pageSize: NumberInput = 20;
+  edited: any;
 
   constructor(
-    public wantedService: WantedService,
     private changeDetector: ChangeDetectorRef,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder,
-    public dialog: MatDialog,
+    public wantedService: WantedService,
+    private destroyRef: DestroyRef,
     public afs: AngularFirestore,
-    private destroyRef: DestroyRef
-  ) {}
+    public dialog: MatDialog,
+    private fb: FormBuilder,
+    private router: Router,
+  ) { }
 
-  handlePageEvent({ pageIndex }: PageEvent) {
+  handlePageEvent({ pageIndex }: PageEvent): void {
     this.wantedService.data = null;
     this.wantedService.selectedPerson = null;
     this.wantedService.page = pageIndex + 1;
@@ -81,16 +83,15 @@ export class GlobalComponent implements OnInit, OnDestroy {
   }
 
   selectPerson(id: number): void {
-    this.wantedService.selectedPerson = this.wantedService.data[id];
+    this.wantedService.selectedPerson = this.wantedService.data![id];
   }
 
-  resetFilters() {
+  resetFilters(): void {
     this.filtersForm.reset();
-    this.wantedService.filters = {};
+    this.wantedService.filters = null;
   }
 
-  editHandle(value: { tr: any; $event: Event }) {
-    value.$event.stopPropagation();
+  editHandle(value: { tr: Crime; }) {
     this.dialog
       .open(EditCrimeComponent, {
         width: "50vw",
@@ -105,7 +106,7 @@ export class GlobalComponent implements OnInit, OnDestroy {
             .getEdited()
             .pipe(
               tap((ed) => {
-                ed.forEach((doc) => {
+                ed.forEach((doc: any) => {
                   let t = doc.data();
                   this.editedList.push(t["@id"]);
                 });
@@ -121,14 +122,12 @@ export class GlobalComponent implements OnInit, OnDestroy {
         }
       });
   }
-
-  fetchData(): void {}
   ngOnInit(): void {
     this.filtersSub = this.filtersForm.valueChanges
       .pipe(
         tap(() => (this.wantedService.fetching = true)),
         debounceTime(3000),
-        switchMap((x) => {
+        switchMap((x: any) => {
           this.wantedService.updateFilters(x);
           return this.wantedService.getData();
         }),
@@ -154,7 +153,7 @@ export class GlobalComponent implements OnInit, OnDestroy {
       )
       .pipe(
         tap((ed) => {
-          ed.forEach((doc) => {
+          ed.forEach((doc: any) => {
             let t = doc.data();
             this.editedList.push(t["@id"]);
           });
@@ -170,10 +169,8 @@ export class GlobalComponent implements OnInit, OnDestroy {
         },
       });
   }
-  ngOnDestroy() {}
-  viewInEdits(value: { tr: any; $event: Event }) {
+  viewInEdits(value: { tr: any }) {
     this.wantedService.selectedPerson = value.tr;
-    value.$event.stopPropagation();
     this.router.navigate(["/content/crimes/edited"]);
     this.wantedService.editsOpenedFromGlobal = true;
   }

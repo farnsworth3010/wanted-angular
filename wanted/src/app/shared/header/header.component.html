@@ -1,10 +1,11 @@
 <mat-toolbar>
-  <figure [routerLink]="['/content/home']" class="logo-container">
-    <img class="logo" src="../../../assets/logo.png" />FBI
+  <figure [routerLink]="'/content/home'" class="logo-container">
+    <img class="logo" src="../../../assets/logo.png" />
+    FBI
   </figure>
   <span class="spacer"></span>
   <div *ngIf="!noData">
-    <span class="user-firstname">{{ userData?.email ?? "" }}</span>
+    <span class="user-firstname">{{ userData?.email }}</span>
     <button (click)="logOut()" mat-raised-button color="primary">
       Log out
       <mat-icon>logout</mat-icon>

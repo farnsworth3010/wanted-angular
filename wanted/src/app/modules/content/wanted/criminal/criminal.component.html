@@ -1,27 +1,34 @@
 <mat-card (click)="selectPerson(i)">
   <mat-card-title>
     <div class="header-container">
-      <img appImageFallback class="wanted-photo" [src]="tr?.images[0]?.original" />
+      <img appImageFallback class="wanted-photo" [src]="tr.images![0].original" />
       <h2>{{ tr.title }}</h2>
-      <button *ngIf="openToEdit" (click)="editHandle($event, tr)" mat-button color="primary" class="edit-button">
-        Edit
-        <mat-icon>edit</mat-icon>
-      </button>
-      <button *ngIf="openToDelete" (click)="deleteHandle($event)" mat-button color="primary" class="edit-button">
-        Delete
-        <mat-icon>delete</mat-icon>
-      </button>
-      <button *ngIf="edited" (click)="viewInEditsHandle($event, tr)" mat-button color="primary" class="edit-button">
-        View in edits
-        <mat-icon>visibility</mat-icon>
-      </button>
     </div>
+  </mat-card-title>
+  <mat-card-content>
+    @if(openToEdit){
+    <button (click)="editHandle($event, tr)" mat-button color="primary" class="edit-button">
+      Edit
+      <mat-icon>edit</mat-icon>
+    </button>
+    }
+    @if(openToDelete) {
+    <button (click)="deleteHandle($event)" mat-button color="primary" class="edit-button">
+      Delete
+      <mat-icon>delete</mat-icon>
+    </button>
+    }
+    @if(edited) {
+    <button (click)="viewInEditsHandle($event, tr)" mat-button color="primary" class="edit-button">
+      View in edits
+      <mat-icon>visibility</mat-icon>
+    </button>
+    }
     <div class="info">
       <p>Sex: {{ tr.sex | defaultFieldValue }}</p>
       <p>Hair: {{ tr.hair | defaultFieldValue }}</p>
       <p>Race: {{ tr.race | defaultFieldValue }}</p>
       <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
     </div>
-  </mat-card-title>
-  <mat-card-content></mat-card-content>
+  </mat-card-content>
 </mat-card>

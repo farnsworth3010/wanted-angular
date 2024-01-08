@@ -5,9 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true
 })
 export class DefaultFieldValuePipe implements PipeTransform {
-
-  transform(value: unknown, ...args: unknown[]): unknown {
-      return value ? value : 'unknown'
+  transform(value: string | number | null | undefined): string {
+    return String(value ?? 'unknown')
   }
-
 }

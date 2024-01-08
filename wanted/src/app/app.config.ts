@@ -1,4 +1,4 @@
-import { provideHttpClient } from "@angular/common/http";
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { ApplicationConfig, importProvidersFrom } from "@angular/core";
 import { getAnalytics, provideAnalytics } from "@angular/fire/analytics";
 import { getAuth, provideAuth } from "@angular/fire/auth";
@@ -10,11 +10,13 @@ import { provideAnimations } from "@angular/platform-browser/animations";
 import { provideRouter, withComponentInputBinding } from "@angular/router";
 import { environment } from "../environments/environment";
 import { routes } from "./app.routes";
+import { wantedInterceptor } from "./core/interceptors/wanted-interceptor";
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
     provideAnimations(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([wantedInterceptor])),
     importProvidersFrom(AngularFireModule.initializeApp(environment.firebase)),
     importProvidersFrom([
       provideAnalytics(() => getAnalytics()),

@@ -82,7 +82,7 @@ export class SignupComponent {
 
   google() {
     this.snackBar.open('Processing...', '');
-    this.authService.googleAuth().subscribe((result) => {
+    this.authService.googleAuth().subscribe((result: any) => {
       this.authService.setUserData(result.user);
       this.router.navigate(['/content/home']);
       this.snackBar.dismiss();

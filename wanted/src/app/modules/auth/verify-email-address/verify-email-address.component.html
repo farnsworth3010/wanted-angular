@@ -1,21 +1,16 @@
 <p>Thank You for registering!</p>
-<div *ngIf="authService.userData as user">
-  <p>
-    We have sent a confirmation email to <strong>{{ user.email }}</strong
-    >.
-  </p>
-  <p>
-    Please check your email and click on the link to verfiy your email address.
-  </p>
-</div>
+
+@if (authService.userData; as user) {
+<p>
+  We have sent a confirmation email to <strong>{{ user.email }}</strong>.
+</p>
+<p>
+  Please check your email and click on the link to verfiy your email address.
+</p>
+}
+
 <div>
-  <button
-    type="button"
-    class="signup-btn"
-    (click)="sendVerificationMail()"
-    mat-raised-button
-    color="primary"
-  >
+  <button type="button" class="signup-btn" (click)="sendVerificationMail()" mat-raised-button color="primary">
     Resend Verification Email
   </button>
 </div>

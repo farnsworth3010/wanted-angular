@@ -3,6 +3,7 @@ import { DefaultFieldValuePipe } from '../../../../shared/pipes/default-field-va
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ImageFallbackDirective } from '../../../../shared/directives/image-fallback.directive';
+import { Crime } from '../../../../core/services/interfaces/crime';
 @Component({
   selector: 'app-details',
   standalone: true,
@@ -17,7 +18,7 @@ import { ImageFallbackDirective } from '../../../../shared/directives/image-fall
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DetailsComponent {
-  @Input() selectedPerson: any
-  @Input() data: any
+  @Input() selectedPerson!: null | Crime
+  @Input() data!: null | Crime[]
   @Input() fetching: boolean = true
 }

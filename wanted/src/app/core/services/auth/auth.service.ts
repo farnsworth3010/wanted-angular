@@ -10,16 +10,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root',
 })
 export class AuthService {
-  userData: any; // Save logged in user data
-  private stateItem: BehaviorSubject<any> = new BehaviorSubject(
-    JSON.parse(localStorage.getItem('user')!)
-  );
-  stateItem$: Observable<any> = this.stateItem.asObservable();
-  guest = {
-    email: 'guest',
-    emailVerified: true,
-  };
-
   constructor(
     public afs: AngularFirestore,
     public afAuth: AngularFireAuth,
@@ -35,28 +25,37 @@ export class AuthService {
     });
   }
 
-  signIn(email: string, password: string) {
+  userData!: firebase.default.User; // Save logged in user data
+  private stateItem: BehaviorSubject<any> = new BehaviorSubject(
+    JSON.parse(localStorage.getItem('user')!)
+  );
+  stateItem$: Observable<any> = this.stateItem.asObservable();
+
+  signIn(email: string, password: string): Observable<any> {
     return from(this.afAuth.signInWithEmailAndPassword(email, password));
   }
 
-  signInAsGuest() {
-    localStorage.setItem('user', JSON.stringify(this.guest));
-    this.userData = this.guest;
-    this.stateItem.next(this.guest);
-    this.router.navigate(['/content/home']);
+  signInAsGuest(): void {
+    const guest = {
+      email: 'guest',
+      emailVerified: true,
+    };
+    localStorage.setItem('user', JSON.stringify(guest));
+    this.stateItem.next(guest);
     this.snackBar.dismiss();
+    this.router.navigate(['/content/home']);
   }
 
-  signUp(email: string, password: string) {
+  signUp(email: string, password: string): Observable<any> {
     return from(this.afAuth.createUserWithEmailAndPassword(email, password));
   }
 
-  setUserData(user: any) {
+  setUserData(user: firebase.default.User) {
     this.userData = user;
-    const {uid, email, displayName, photoURL, emailVerified} = user;
+    const { uid, email, displayName, photoURL, emailVerified } = user;
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
-    this.stateItem.next(user);
     localStorage.setItem('user', JSON.stringify(user));
+    this.stateItem.next(user);
     return userRef.set(
       {
         uid,
@@ -71,13 +70,13 @@ export class AuthService {
     );
   }
 
-  sendVerificationMail() {
+  sendVerificationMail(): Observable<void> {
     return from(
-      this.afAuth.currentUser.then((u: any) => u.sendEmailVerification())
+      this.afAuth.currentUser.then((u: firebase.default.User | null) => u?.sendEmailVerification())
     );
   }
 
-  forgotPassword(passwordResetEmail: string) {
+  forgotPassword(passwordResetEmail: string): Observable<void> {
     return from(this.afAuth.sendPasswordResetEmail(passwordResetEmail)).pipe(
       catchError((error) => of(error))
     );
@@ -88,29 +87,24 @@ export class AuthService {
     return user !== null && user.emailVerified;
   }
 
-  googleAuth() {
+  googleAuth(): Observable<auth.UserCredential> {
     return from(this.authLogin(new auth.GoogleAuthProvider()));
   }
 
-  authLogin(provider: any) {
+  authLogin(provider: auth.AuthProvider): Observable<auth.UserCredential> {
     return from(this.afAuth.signInWithPopup(provider)).pipe(
       catchError((error) => of(error))
     );
-    // .then((result) => {
-    //   this.router.navigate(['home']);
-    //   this.snackBar.dismiss();
-    //   this.setUserData(result.user);
-    // })
   }
 
-  clearUser() {
+  clearUser(): void {
     localStorage.removeItem('user');
     this.stateItem.next(null);
-    this.router.navigate(['auth/sign-in']);
     this.snackBar.dismiss();
+    this.router.navigate(['auth/sign-in']);
   }
 
-  signOut() {
+  signOut(): Observable<void> {
     return from(this.afAuth.signOut());
   }
 }

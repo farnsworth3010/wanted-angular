@@ -11,7 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { catchError } from "rxjs";
 
 @Component({
   selector: 'app-login',
@@ -61,7 +60,7 @@ export class SigninComponent {
 
   google() {
     this.snackBar.open('Processing...', '');
-    this.authService.googleAuth().subscribe((result) => {
+    this.authService.googleAuth().subscribe((result: any) => {
       this.authService.setUserData(result.user);
       this.router.navigate(['/content/home']);
       this.snackBar.dismiss();
