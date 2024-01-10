@@ -4,11 +4,11 @@
     FBI
   </figure>
   <span class="spacer"></span>
-  <div *ngIf="!noData">
+  @if(!noData) {
     <span class="user-firstname">{{ userData?.email }}</span>
     <button (click)="logOut()" mat-raised-button color="primary">
       Log out
       <mat-icon>logout</mat-icon>
     </button>
-  </div>
+  }
 </mat-toolbar>

@@ -4,6 +4,7 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { IError } from '../../../core/services/interfaces/error';
 @Component({
   selector: 'app-verify-email-address',
   standalone: true,
@@ -17,11 +18,19 @@ export class VerifyEmailAddressComponent {
     public authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
   sendVerificationMail() {
-    this.authService.sendVerificationMail().subscribe(() => {
-      this.router.navigate(['/auth/verify-email-address']);
-      this.snackBar.dismiss();
-    });
+    this.authService.sendVerificationMail().subscribe(
+      {
+        next: () => {
+          this.router.navigateByUrl('/auth/verify-email-address');
+          this.snackBar.dismiss();
+        }
+        ,
+        error: (error: IError) => {
+          this.snackBar.open(error.message, '', { duration: 3000 });
+        }
+      }
+    )
   }
 }

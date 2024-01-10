@@ -7,6 +7,16 @@
   right: 1rem;
   bottom: 1rem;
 }
+.deleting {
+  position: absolute; 
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  mat-spinner {
+    display: block;
+  }
+}
 .wanted-photo {
   width: 10vw;
   height: 10vw;
@@ -24,6 +34,8 @@
     background-color: #fefff3;
   }
 .info {
-  font-size: 0.8em;
-  opacity: 0.8;
+  opacity: 0.9;
+}
+mat-card-content {
+  padding: 0;
 }

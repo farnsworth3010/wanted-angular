@@ -7,7 +7,6 @@ export const wantedRoutes = [
         component: GlobalComponent
     },
       {
-        // pathMatch: "full",
         path: 'wanted',
         redirectTo: 'wanted/1'
       },

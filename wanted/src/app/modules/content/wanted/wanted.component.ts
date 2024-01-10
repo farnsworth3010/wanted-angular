@@ -1,15 +1,11 @@
 import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
-import { MatGridListModule } from "@angular/material/grid-list";
 import { MatIconModule } from "@angular/material/icon";
-import { MatPaginatorModule } from "@angular/material/paginator";
 import { MatTabsModule } from "@angular/material/tabs";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { WantedService } from "../../../core/services/wanted/wanted.service";
-import { ImageFallbackDirective } from "../../../shared/directives/image-fallback.directive";
-import { DefaultFieldValuePipe } from "../../../shared/pipes/default-field-value.pipe";
 import { Subscription } from "rxjs";
 
 @Component({
@@ -18,15 +14,11 @@ import { Subscription } from "rxjs";
   imports: [
     MatTabsModule,
     CommonModule,
-    MatGridListModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
-    ImageFallbackDirective,
     RouterLink,
     RouterLinkActive,
-    MatPaginatorModule,
-    DefaultFieldValuePipe,
     RouterOutlet,
   ],
   templateUrl: "./wanted.component.html",

@@ -1,20 +1,20 @@
 <div class="tab-container">
-  <ng-container *ngIf="!wantedService.fetching; else loading">
-    <div *ngIf="data.length; else noData" class="wanted-grid">
-      <div class="wanted-grid-tile" *ngFor="let tr of data; index as i">
-        <app-criminal [firebaseId]="tr.id" [tr]="tr.data" [openToEdit]="false" [openToDelete]="true" [i]="i"
-          (personClick)="selectPerson(i)" (deleteClick)="deletePerson($event)" />
-      </div>
+  @if(!wantedService.fetching) {
+  <div class="wanted-grid">
+    @for(tr of data; track $index) {
+    <div class="wanted-grid-tile">
+      <app-criminal [tr]="tr" [openToDelete]="true" [i]="$index"
+        (personClick)="selectPerson($index)" (deleteClick)="deletePerson($event)" />
     </div>
-  </ng-container>
+    }
+    @empty {
+    <div class="no-data">No edited data :c</div>
+    }
+  </div>
+  }
+  @else {
+  <mat-spinner />
+  }
 </div>
 
 <app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching" [data]="data" />
-
-<ng-template #loading>
-  <mat-spinner />
-</ng-template>
-
-<ng-template #noData>
-  <div class="no-data">No edited data :c</div>
-</ng-template>

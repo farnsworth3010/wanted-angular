@@ -24,17 +24,17 @@ import { HeaderComponent } from '../../shared/header/header.component';
 export class ContentComponent {
   menuItems: any = [
     {
-      link: ['/content/home'],
+      link: '/content/home',
       icon: 'home',
       name: 'Home'
     },
     {
-      link: ['/content/crimes/'],
+      link: '/content/crimes/',
       icon: 'star',
       name: 'Wanted'
     },
     {
-      link: ['/content/settings'],
+      link: '/content/settings',
       icon: 'settings',
       name: 'settings'
     },

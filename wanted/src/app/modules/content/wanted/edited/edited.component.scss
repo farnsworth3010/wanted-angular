@@ -25,9 +25,9 @@
 }
 
 .no-data {
-  text-align: center;
-  margin: 0 auto;
-  margin-top: 6rem;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 mat-spinner {
   display: block;

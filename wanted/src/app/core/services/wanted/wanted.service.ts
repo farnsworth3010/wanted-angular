@@ -25,8 +25,6 @@ export class WantedService {
   filters!: any;
 
   pageItem: BehaviorSubject<number> = new BehaviorSubject(this.page);
-  stateItem: BehaviorSubject<any> = new BehaviorSubject(null);
-  stateItem$: Observable<any> = this.stateItem.asObservable();
   pageItem$: Observable<number> = this.pageItem.asObservable();
 
   getData(): Observable<any> {
@@ -52,9 +50,7 @@ export class WantedService {
   }
 
   updateData(res: wantedRes): void {
-    console.log(res)
     this.selectedPerson = res.items[0];
-    this.stateItem.next(res.items);
     this.length = res.total;
     this.data = res.items;
     this.pages = res.page;

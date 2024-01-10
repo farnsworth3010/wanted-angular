@@ -5,11 +5,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { AbstractControl, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { IError } from '../../../core/services/interfaces/error';
 
 @Component({
   selector: 'app-signup',
@@ -18,12 +18,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
+    ReactiveFormsModule,
     MatCardModule,
     MatIconModule,
-    MatDividerModule,
     MatButtonModule,
-    ReactiveFormsModule,
-    FormsModule,
     RouterLink,
   ],
   templateUrl: './sign-up.component.html',
@@ -31,32 +29,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent {
-  matchValidator = (controlName: string, matchingControlName: string) => {
-    return (abstractControl: AbstractControl) => {
-      const control = abstractControl.get(controlName)
-      const matchingControl = abstractControl.get(matchingControlName)
-      if (matchingControl!.errors && !matchingControl!.errors?.['confirmedValidator']) {
-        return null;
-      }
-      if (control!.value !== matchingControl!.value) {
-        const error = {confirmedValidator: 'Passwords do not match'}
-        matchingControl!.setErrors(error)
-        return error;
-      } else {
-        return null;
-      }
-    }
-  }
-  hide = true;
-  passwordValidators = [Validators.required, Validators.minLength(8)]
-  signUpForm = this.fb.group({
-    password: ['', this.passwordValidators],
-    passwordConfirm: ['', this.passwordValidators],
-    email: ['', [Validators.required, Validators.email]],
-  }, {
-    validators: this.matchValidator('password', 'passwordConfirm')
-  })
-
   constructor(
     private authService: AuthService,
     private snackBar: MatSnackBar,
@@ -65,16 +37,43 @@ export class SignupComponent {
   ) {
   }
 
+  passValidator = (): ValidatorFn => {
+    return (abstractControl: AbstractControl): ValidationErrors | null => {
+      const firctCtrl = abstractControl.get('password')
+      const secondCtrl = abstractControl.get('passwordConfirm')
+      if (firctCtrl?.value !== secondCtrl?.value) {
+        secondCtrl?.setErrors({ ...secondCtrl.errors, confirmedValidator: 'Passwords do not match' })
+        return { confirmedValidator: 'Passwords do not match' }
+      }
+      else {
+        secondCtrl?.setErrors(null)
+        return null;
+      }
+    }
+  }
+
+  hidePassword = true;
+
+  signUpForm = this.fb.group({
+    password: ['', [Validators.required, Validators.minLength(8)]],
+    passwordConfirm: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.email]],
+  }, {
+    validators: [this.passValidator()]
+  })
+
   onSubmit() {
-    if (!this.signUpForm.invalid) {
+    if (this.signUpForm.valid) {
+      this.snackBar.open('Processing...', '');
       this.authService
         .signUp(this.signUpForm.value.email!, this.signUpForm.value.password!)
         .subscribe({
-          next: (result) => {
+          next: (result: firebase.default.auth.UserCredential) => {
             this.authService.sendVerificationMail();
-            this.authService.setUserData(result.user);
-          }, error: (error) => {
-            this.snackBar.open(error.message, '', {duration: 3000});
+            this.authService.setUserData(result.user!);
+          },
+          error: (error: IError) => {
+            this.snackBar.open(error.message, '', { duration: 3000 });
           }
         });
     }
@@ -82,10 +81,15 @@ export class SignupComponent {
 
   google() {
     this.snackBar.open('Processing...', '');
-    this.authService.googleAuth().subscribe((result: any) => {
-      this.authService.setUserData(result.user);
-      this.router.navigate(['/content/home']);
-      this.snackBar.dismiss();
-    });
+    this.authService.googleAuth().subscribe({
+      next: (result: firebase.default.auth.UserCredential) => {
+        this.authService.setUserData(result.user!);
+        this.snackBar.dismiss();
+        this.router.navigateByUrl('/content/home');
+      },
+      error: (error: IError) => {
+        this.snackBar.open(error.message, '', { duration: 3000 })
+      }
+    })
   }
 }

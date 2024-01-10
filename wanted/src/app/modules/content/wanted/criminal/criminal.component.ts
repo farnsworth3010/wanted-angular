@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { DefaultFieldValuePipe } from "../../../../shared/pipes/default-field-value.pipe";
@@ -6,18 +6,18 @@ import { CommonModule } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import { ImageFallbackDirective } from "../../../../shared/directives/image-fallback.directive";
 import { Crime } from "../../../../core/services/interfaces/crime";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   selector: "app-criminal",
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule, DefaultFieldValuePipe, MatButtonModule, ImageFallbackDirective],
+  imports: [CommonModule, MatCardModule, MatIconModule, DefaultFieldValuePipe, MatButtonModule, ImageFallbackDirective, MatProgressSpinnerModule],
   templateUrl: "./criminal.component.html",
   styleUrl: "./criminal.component.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CriminalComponent {
   @Input() openToDelete: boolean = false;
-  @Input() firebaseId!: string;
   @Input() openToEdit: boolean = false;
   @Input() edited: boolean = false;
   @Input() tr!: Crime;
@@ -40,7 +40,7 @@ export class CriminalComponent {
 
   public deleteHandle($event: Event): void {
     $event.stopPropagation()
-    this.deleteClick.emit({ id: this.firebaseId });
+    this.deleteClick.emit(this.tr['uid']);
   }
 
   public viewInEditsHandle($event: Event, tr: Crime): void {

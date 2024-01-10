@@ -53,5 +53,7 @@ export interface Crime {
     reward_min: null | number,
     suspects: null | string[],
     customFields?: { name: string, value: null | string | number }[],
+    deleting?: boolean,
+    editing?: boolean,
     "@id": string,
 }

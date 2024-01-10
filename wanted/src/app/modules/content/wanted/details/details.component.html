@@ -23,15 +23,12 @@
     </li>
     <li>Reward: {{ selectedPerson?.reward_text | defaultFieldValue }}</li>
     @if(selectedPerson?.customFields?.length) {
-    @for(field of selectedPerson?.customFields; track ) {
+    @for(field of selectedPerson?.customFields; track $index ) {
     <li>{{ field.name }}: {{ field.value }}</li>
     }
     }
     <a [href]="selectedPerson?.url" target="_blank">Link</a>
   </ul>
-  }
-  @else {
-  no data
   }
   }
   @else {

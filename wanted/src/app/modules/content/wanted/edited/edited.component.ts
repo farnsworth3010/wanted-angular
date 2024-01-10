@@ -3,8 +3,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@
 import { WantedService } from "../../../../core/services/wanted/wanted.service";
 import { DetailsComponent } from "../details/details.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { delay } from "rxjs";
+import { Observable, catchError, delay, of } from "rxjs";
 import { CriminalComponent } from "../criminal/criminal.component";
+import { Crime } from "../../../../core/services/interfaces/crime";
+import { DocumentData } from "@angular/fire/compat/firestore";
 
 @Component({
   selector: "app-edited",
@@ -16,39 +18,56 @@ import { CriminalComponent } from "../criminal/criminal.component";
 })
 export class EditedComponent implements OnInit {
   constructor(public wantedService: WantedService, private changeDetector: ChangeDetectorRef) { }
-  data: any;
+
+  data: Crime[] = [];
+
   fetchData(): void {
-    this.wantedService.fetching = true;
-    this.wantedService.data = null;
+    if (this.wantedService.editsOpenedFromGlobal) {
+      this.wantedService.data = null;
+    }
     this.wantedService
       .getEdited()
       .pipe(delay(1000))
-      .subscribe((res) => {
+      .subscribe((edited: Crime[]) => {
+        let oldData: Crime[] = [];
+        if (this.data) {
+          oldData = this.data
+        }
+        this.data = [];
         this.wantedService.fetching = false;
-        const temp: any[] = [];
-        res.forEach((doc: any) => {
-          temp.push({ data: doc.data(), id: doc.id });
+        edited.forEach((doc: DocumentData, index) => {
+          this.data.push(doc['data']());
+          if (oldData[index]?.deleting) {
+            this.data[index].deleting = true
+          }
         });
-        this.data = temp;
+        this.changeDetector.detectChanges()
+
         if (this.wantedService.editsOpenedFromGlobal) {
           this.wantedService.editsOpenedFromGlobal = false;
-          this.wantedService.selectedPerson = this.data.find((obj: any) => obj.data.uid === this.wantedService.selectedPerson?.uid).data
+          this.wantedService.selectedPerson = this.data.find((obj: Crime) => obj.uid === this.wantedService.selectedPerson?.uid)!
         } else {
-          this.wantedService.selectedPerson = this.data[0]?.data;
+          this.wantedService.selectedPerson = this.data[0];
         }
-        this.changeDetector.detectChanges();
+        this.changeDetector.markForCheck();
       });
   }
+
   ngOnInit(): void {
+    this.wantedService.fetching = true;
     this.fetchData();
   }
-  deletePerson({ id }: { id: string }) {
-    this.wantedService.deleteEditedById(id).subscribe((res) => {
+
+  deletePerson(id: string) {
+    this.data.find((obj: Crime) => id === obj.uid)!.deleting = true;
+    this.changeDetector.markForCheck()
+    this.wantedService.deleteEditedById(id).subscribe(() => {
       this.fetchData();
     });
   }
+
   selectPerson(id: number): void {
-    this.wantedService.selectedPerson = this.data[id]?.data;
-    this.changeDetector.detectChanges();
+    this.wantedService.selectedPerson = this.data[id];
+    this.changeDetector.markForCheck();
   }
 }

@@ -2,10 +2,12 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav class="sidenav-sidenav" mode="side" [opened]="true">
     <ul>
-      <li *ngFor="let i of menuItems" routerLinkActive="active" [routerLink]="i.link">
+      @for(i of menuItems; track $index) {
+      <li routerLinkActive="active" [routerLink]="i.link">
         <mat-icon>{{ i.icon }}</mat-icon>
         {{ i.name }}
       </li>
+      }
     </ul>
   </mat-sidenav>
   <mat-sidenav-content class="sidenav-content">

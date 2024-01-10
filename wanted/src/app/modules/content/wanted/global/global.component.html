@@ -31,26 +31,32 @@
       </div>
     </form>
   </mat-card>
-
-  <ng-container *ngIf="!wantedService.fetching; else loading">
-    <div *ngIf="wantedService.data?.length else noData" class="wanted-grid">
-      <div class="wanted-grid-tile" *ngFor="let tr of wantedService.data; index as i">
-        <app-criminal [tr]="tr" [openToEdit]="!editedList.includes(tr['@id'])" (viewInEditsClick)="viewInEdits($event)"
-          [edited]="editedList.includes(tr['@id'])" [i]="i" (personClick)="selectPerson(i)"
-          (editClick)="editHandle($event)" />
-      </div>
+  @if (!wantedService.fetching) {
+  <div class="wanted-grid">
+    @for(tr of wantedService.data; track $index) {
+    <div class="wanted-grid-tile">
+      <app-criminal [tr]="tr" [openToEdit]="!editedIds.includes(tr['@id'])" (viewInEditsClick)="viewInEdits($event)"
+        [edited]="editedIds.includes(tr['@id'])" [i]="$index" (personClick)="selectPerson($index)"
+        (editClick)="editHandle($event)" />
     </div>
-  </ng-container>
-  <ng-template #loading>
-    <mat-spinner></mat-spinner>
-  </ng-template>
-  <ng-template #noData> no data for your search query </ng-template>
+    }
+    @empty {
+    <p>no data for your search query</p>
+    }
+  </div>
+  }
+  @else {
+  <mat-spinner />
+  }
 
-  <div *ngIf="wantedService.data?.length && !wantedService.fetching" class="pagination">
+  @if(wantedService.data?.length && !wantedService.fetching) {
+  <div class="pagination">
     <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="wantedService.length"
       [pageSize]="pageSize" [showFirstLastButtons]="true" [hidePageSize]="false"
       [pageIndex]="this.wantedService.page - 1" aria-label="Select page" [class.mat-elevation-z1]="true" />
+
   </div>
+  }
 </div>
 <app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching"
   [data]="wantedService.data" />

@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {provideRouter, RouterModule, RouterOutlet} from '@angular/router';
-import { HeaderComponent } from '../../shared/header/header.component';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent],
-  templateUrl: './auth.component.html',
+  imports: [RouterOutlet],
+  template: `
+    <div class="background"></div>
+    <router-outlet/>
+  `,
   styleUrl: './auth.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 
