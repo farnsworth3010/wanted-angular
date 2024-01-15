@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SettingsService {
-
-  constructor() { }
+  animations: boolean = true;
+  constructor() {
+    this.animations = JSON.parse(localStorage.getItem('animations')!) ?? true;
+  }
 }

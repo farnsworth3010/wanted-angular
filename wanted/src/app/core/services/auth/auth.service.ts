@@ -1,12 +1,9 @@
 import { Injectable, OnInit } from '@angular/core';
 import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import {
-  AngularFirestore,
-  AngularFirestoreDocument,
-} from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { BehaviorSubject, from, Observable, switchMap } from 'rxjs';
+import { BehaviorSubject, from, Observable, switchMap, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FirebaseCredential, FirebaseUser, User } from '../interfaces/user';
 
@@ -21,9 +18,7 @@ export class AuthService implements OnInit {
     private snackBar: MatSnackBar
   ) {}
 
-  stateItem: BehaviorSubject<User | null> = new BehaviorSubject(
-    JSON.parse(localStorage.getItem('user')!)
-  );
+  stateItem: BehaviorSubject<User | null> = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
   stateItem$: Observable<User | null> = this.stateItem.asObservable();
 
   ngOnInit(): void {
@@ -41,14 +36,11 @@ export class AuthService implements OnInit {
   signUp(email: string, password: string): Observable<FirebaseCredential> {
     return from(this.afAuth.createUserWithEmailAndPassword(email, password));
   }
-  sendVerificationMail(): Observable<void> {
+  sendVerificationMail(): Observable<void | never> {
     return from(this.afAuth.currentUser).pipe(
       switchMap((user: FirebaseUser | null) => {
-        if (user) {
-          return user.sendEmailVerification();
-        } else {
-          throw 'error';
-        }
+        if (user) return user.sendEmailVerification();
+        return throwError(() => new Error('Error while sending verification mail...'));
       })
     );
   }
@@ -67,9 +59,7 @@ export class AuthService implements OnInit {
   }
   setUserData(user: FirebaseUser) {
     const { uid, email, displayName, photoURL, emailVerified } = user;
-    const userRef: AngularFirestoreDocument<any> = this.afs.doc(
-      `users/${user.uid}`
-    );
+    const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
     localStorage.setItem('user', JSON.stringify(user));
     this.stateItem.next(user);
     return userRef.set(

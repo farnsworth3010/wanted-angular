@@ -2,10 +2,7 @@
   @if(!fetching) { @if(data?.length) {
   <ul>
     <li>
-      <img
-        class="wanted-photo"
-        appImageFallback
-        [src]="(selectedPerson?.images)![0].original" />
+      <img class="wanted-photo" appImageFallback [src]="(selectedPerson?.images)![0].original" />
       <h2 class="title">{{ selectedPerson?.title }}</h2>
     </li>
     <li>Sex: {{ selectedPerson?.sex | defaultFieldValue }}</li>
@@ -24,13 +21,30 @@
       <span [innerHTML]="selectedPerson?.caution | defaultFieldValue"></span>
     </li>
     <li>Reward: {{ selectedPerson?.reward_text | defaultFieldValue }}</li>
-    @if(selectedPerson?.customFields?.length) { @for(field of
-    selectedPerson?.customFields; track $index ) {
+    @if(selectedPerson?.customFields?.length) { @for(field of selectedPerson?.customFields; track $index ) {
     <li>{{ field.name }}: {{ field.value }}</li>
     } }
     <a [href]="selectedPerson?.url" target="_blank">Link</a>
   </ul>
   } } @else {
-  <mat-spinner />
+  <ul class="skeleton-list">
+    <div class="shine wanted-photo"></div>
+    <li class="shine info-line skeleton-title"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+    <li class="info-line shine"></li>
+  </ul>
   }
 </div>

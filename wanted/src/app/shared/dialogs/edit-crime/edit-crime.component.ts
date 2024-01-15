@@ -83,12 +83,12 @@ export class EditCrimeComponent {
     if (
       JSON.stringify({ title, sex, hair, race, eyes, reward_text }) !==
         JSON.stringify({
-          formTitle,
-          formSex,
-          formHair,
-          formRace,
-          formEyes,
-          formReward_text,
+          title: formTitle,
+          sex: formSex,
+          hair: formHair,
+          race: formRace,
+          eyes: formEyes,
+          reward_text: formReward_text,
         }) ||
       this.addFieldForm.controls.fields.length
     ) {
@@ -100,12 +100,12 @@ export class EditCrimeComponent {
           .doc(this.data['uid'])
           .set({
             ...this.data,
-            formTitle,
-            formSex,
-            formHair,
-            formRace,
-            formEyes,
-            formReward_text,
+            title: formTitle,
+            sex: formSex,
+            hair: formHair,
+            race: formRace,
+            eyes: formEyes,
+            reward_text: formReward_text,
             customFields: this.customFields.map((name: string, index: number) => {
               return {
                 name,
@@ -113,8 +113,8 @@ export class EditCrimeComponent {
               };
             }),
           })
-      ).subscribe(()=> {
-        this.dialog.close(true)
+      ).subscribe(() => {
+        this.dialog.close(true);
       });
     } else {
       this.snackBar.open("You haven't changed anything!", '', {

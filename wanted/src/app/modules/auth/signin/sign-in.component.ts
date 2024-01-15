@@ -5,12 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FirebaseCredential } from '../../../core/services/interfaces/user';
@@ -45,8 +40,8 @@ export class SigninComponent {
   hidePassword = true;
 
   onSubmit() {
-    this.snackBar.open('Processing...', '');
     if (this.signInForm.valid) {
+      this.snackBar.open('Processing...', '');
       const { email, password } = this.signInForm.value;
       this.authService.signIn(email!, password!).subscribe({
         next: (result: FirebaseCredential) => {

@@ -6,6 +6,7 @@
   <span class="spacer"></span>
   @if(!hideUserData) {
   <span class="user-firstname">{{ userData?.email }}</span>
+  <img class="profile-photo" appImageFallback fallbackUrl="../../../assets/avatar.png" [src]="userData?.photoURL" />
   <button (click)="logOut()" mat-raised-button color="primary">
     Log out
     <mat-icon>logout</mat-icon>

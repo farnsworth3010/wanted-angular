@@ -15,17 +15,11 @@ import { User } from '../../../core/services/interfaces/user';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerifyEmailAddressComponent implements OnInit {
-  constructor(
-    public authService: AuthService,
-    private router: Router,
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(public authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
   userData: User | null = null;
   ngOnInit(): void {
     this.authService.stateItem$.subscribe((user: User | null) => {
-      if (user) {
-        this.userData = user;
-      }
+      if (user) this.userData = user;
     });
   }
   sendVerificationMail() {

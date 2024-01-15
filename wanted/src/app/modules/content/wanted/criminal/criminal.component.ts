@@ -43,7 +43,7 @@ export class CriminalComponent {
 
   public editHandle($event: Event, tr: Crime): void {
     $event.stopPropagation();
-    this.editClick.emit({ tr });
+    this.editClick.emit(tr);
   }
 
   public deleteHandle($event: Event): void {
@@ -53,6 +53,6 @@ export class CriminalComponent {
 
   public viewInEditsHandle($event: Event, tr: Crime): void {
     $event.stopPropagation();
-    this.viewInEditsClick.emit({ tr });
+    this.viewInEditsClick.emit(tr);
   }
 }

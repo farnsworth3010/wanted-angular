@@ -7,11 +7,12 @@ import { delay } from 'rxjs';
 import { CriminalComponent } from '../criminal/criminal.component';
 import { Crime } from '../../../../core/services/interfaces/crime';
 import { DocumentData } from '@angular/fire/compat/firestore';
+import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
 
 @Component({
   selector: 'app-edited',
   standalone: true,
-  imports: [CommonModule, DetailsComponent, CriminalComponent, MatProgressSpinnerModule],
+  imports: [CommonModule, DetailsComponent, CriminalComponent, MatProgressSpinnerModule, CriminalSkeletonComponent],
   templateUrl: './edited.component.html',
   styleUrl: './edited.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -27,14 +28,14 @@ export class EditedComponent implements OnInit {
     this.wantedService
       .getEdited()
       .pipe(delay(1000))
-      .subscribe((edited: Crime[]) => {
+      .subscribe((edited: DocumentData) => {
         let oldData: Crime[] = [];
         if (this.data) {
           oldData = this.data;
         }
         this.data = [];
         this.wantedService.fetching = false;
-        edited.forEach((doc: DocumentData, index) => {
+        edited['forEach']((doc: DocumentData, index: number) => {
           this.data.push(doc['data']());
           if (oldData[index]?.deleting) {
             this.data[index].deleting = true;

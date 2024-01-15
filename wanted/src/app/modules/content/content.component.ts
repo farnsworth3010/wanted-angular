@@ -9,41 +9,32 @@ import { slideInAnimation } from '../../core/animations';
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [
-    RouterOutlet,
-    CommonModule,
-    HeaderComponent,
-    MatSidenavModule,
-    RouterLink,
-    MatIconModule,
-    RouterLinkActive,
-  ],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, MatSidenavModule, RouterLink, MatIconModule, RouterLinkActive],
   templateUrl: './content.component.html',
   styleUrl: './content.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [slideInAnimation]
+  animations: [slideInAnimation],
 })
 export class ContentComponent {
-  menuItems: any = [
+  menuItems = [
     {
       link: '/content/home',
       icon: 'home',
-      name: 'Home'
+      name: 'Home',
     },
     {
       link: '/content/crimes/',
       icon: 'star',
-      name: 'Wanted'
+      name: 'Wanted',
     },
     {
       link: '/content/settings',
       icon: 'settings',
-      name: 'Settings'
+      name: 'Settings',
     },
-  ]
+  ];
   constructor(private contexts: ChildrenOutletContexts) {}
   getAnimationsData() {
-    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation']
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
-
 }

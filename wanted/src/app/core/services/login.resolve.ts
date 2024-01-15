@@ -1,14 +1,9 @@
-import {
-  ActivatedRouteSnapshot,
-  ResolveFn,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, ResolveFn, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 import { inject } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
-export const LoginResolveFn: ResolveFn<Observable<any>> = (
+export const LoginResolveFn: ResolveFn<Observable<boolean>> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {

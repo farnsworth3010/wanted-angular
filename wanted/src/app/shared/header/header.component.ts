@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { User } from '../../core/services/interfaces/user';
+import { ImageFallbackDirective } from '../directives/image-fallback.directive';
 
 @Component({
   selector: 'app-header',
@@ -21,6 +22,7 @@ import { User } from '../../core/services/interfaces/user';
     MatButtonModule,
     RouterLink,
     CommonModule,
+    ImageFallbackDirective
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

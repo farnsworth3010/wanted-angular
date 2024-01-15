@@ -5,6 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { SettingsService } from './core/services/settings.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,10 @@ import { RouterOutlet } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  // @HostBinding('@.disabled') public animationsDisabled = true;
+  constructor(private settingsService: SettingsService){}
+  @HostBinding('@.disabled') get animationsDisabled(){
+    return !this.settingsService.animations 
+  }
   ngOnInit(): void {
     // there will be settings check
   }

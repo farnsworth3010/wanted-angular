@@ -1,15 +1,23 @@
 <div class="tab-container">
   <div class="pagination pagination-top">
-    <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="wantedService.length"
-      [pageSize]="pageSize" [showFirstLastButtons]="true" [hidePageSize]="false"
-      [pageIndex]="this.wantedService.page - 1" aria-label="Select page" [class.mat-elevation-z1]="true" />
+    <mat-paginator
+      #paginator
+      class="demo-paginator"
+      (page)="handlePageEvent($event)"
+      [length]="wantedService.length"
+      [pageSize]="pageSize"
+      [showFirstLastButtons]="true"
+      [hidePageSize]="false"
+      [pageIndex]="this.wantedService.page - 1"
+      aria-label="Select page"
+      [class.mat-elevation-z1]="true" />
   </div>
   <mat-card class="filters">
     <form [formGroup]="filtersForm">
       <mat-form-field class="form-input">
         <mat-label>Sex</mat-label>
         <mat-select formControlName="sex">
-          <mat-option value="">-</mat-option>
+          <mat-option value="">any</mat-option>
           <mat-option value="male">male</mat-option>
           <mat-option value="female">female</mat-option>
         </mat-select>
@@ -17,7 +25,7 @@
       <mat-form-field class="form-input">
         <mat-label>Race</mat-label>
         <mat-select formControlName="race">
-          <mat-option value="">-</mat-option>
+          <mat-option value="">any</mat-option>
           <mat-option value="white">white</mat-option>
           <mat-option value="black">black</mat-option>
         </mat-select>
@@ -35,28 +43,69 @@
   <div class="wanted-grid">
     @for(tr of wantedService.data; track $index) {
     <div class="wanted-grid-tile">
-      <app-criminal [tr]="tr" [openToEdit]="!editedIds.includes(tr['@id'])" (viewInEditsClick)="viewInEdits($event)"
-        [edited]="editedIds.includes(tr['@id'])" [i]="$index" (personClick)="selectPerson($index)"
+      <app-criminal
+        [tr]="tr"
+        [openToEdit]="!editedIds.includes(tr['@id'])"
+        (viewInEditsClick)="viewInEdits($event)"
+        [edited]="editedIds.includes(tr['@id'])"
+        [i]="$index"
+        (personClick)="selectPerson($index)"
         (editClick)="editHandle($event)" />
     </div>
-    }
-    @empty {
+    } @empty {
     <p>no data for your search query</p>
     }
   </div>
-  }
-  @else {
-  <mat-spinner />
-  }
-
-  @if(wantedService.data?.length && !wantedService.fetching) {
+  } @else {
+  <div class="wanted-grid">
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+  </div>
+  } @if(wantedService.data?.length && !wantedService.fetching) {
   <div class="pagination">
-    <mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="wantedService.length"
-      [pageSize]="pageSize" [showFirstLastButtons]="true" [hidePageSize]="false"
-      [pageIndex]="this.wantedService.page - 1" aria-label="Select page" [class.mat-elevation-z1]="true" />
-
+    <mat-paginator
+      #paginator
+      class="demo-paginator"
+      (page)="handlePageEvent($event)"
+      [length]="wantedService.length"
+      [pageSize]="pageSize"
+      [showFirstLastButtons]="true"
+      [hidePageSize]="false"
+      [pageIndex]="this.wantedService.page - 1"
+      aria-label="Select page"
+      [class.mat-elevation-z1]="true" />
   </div>
   }
 </div>
-<app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching"
+<app-details
+  [selectedPerson]="wantedService.selectedPerson"
+  [fetching]="wantedService.fetching"
   [data]="wantedService.data" />
