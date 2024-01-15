@@ -1,6 +1,6 @@
 export interface Filters {
-    sex: null | string,
-    race: null | string,
-    age_min: null | number,
-    age_max: null | number
+  sex?: string;
+  race?: string;
+  age_min?: number;
+  age_max?: number;
 }

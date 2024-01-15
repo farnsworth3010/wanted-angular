@@ -5,11 +5,15 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-
-import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IError } from '../../../core/services/interfaces/error';
+import { FirebaseCredential } from '../../../core/services/interfaces/user';
 
 @Component({
   selector: 'app-login',
@@ -33,44 +37,42 @@ export class SigninComponent {
     private router: Router,
     private snackBar: MatSnackBar,
     private fb: FormBuilder
-  ) {
-  }
+  ) {}
   signInForm = this.fb.group({
     email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required)
-  })
+    password: new FormControl('', Validators.required),
+  });
   hidePassword = true;
 
   onSubmit() {
     this.snackBar.open('Processing...', '');
-    this.authService
-      .signIn(this.signInForm.controls.email.value!, this.signInForm.controls.password.value!)
-      .subscribe({
-        next: (result: firebase.default.auth.UserCredential) => {
+    if (this.signInForm.valid) {
+      const { email, password } = this.signInForm.value;
+      this.authService.signIn(email!, password!).subscribe({
+        next: (result: FirebaseCredential) => {
           this.authService.setUserData(result.user!);
           this.snackBar.dismiss();
           this.router.navigateByUrl('/content/home');
-        }, 
-        error: (error: IError) => {
+        },
+        error: (error: Error) => {
           this.snackBar.open(error.message, '', { duration: 3000 });
-        }
+        },
       });
+    }
   }
-
   google() {
     this.snackBar.open('Processing...', '');
     this.authService.googleAuth().subscribe({
-      next: (result: firebase.default.auth.UserCredential) => {
+      next: (result: FirebaseCredential) => {
         this.authService.setUserData(result.user!);
         this.snackBar.dismiss();
         this.router.navigateByUrl('/content/home');
       },
-      error: (error: IError) => {
-        this.snackBar.open(error.message, '', { duration: 3000 })
-      }
-    })
+      error: (error: Error) => {
+        this.snackBar.open(error.message, '', { duration: 3000 });
+      },
+    });
   }
-
   signInAsGuest() {
     this.authService.signInAsGuest();
   }

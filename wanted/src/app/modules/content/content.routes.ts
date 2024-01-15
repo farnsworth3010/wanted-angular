@@ -1,8 +1,8 @@
-import { Routes } from "@angular/router";
-import { SettingsComponent } from "./settings/settings.component";
-import { ContentComponent } from "./content.component";
-import { WantedComponent } from "./wanted/wanted.component";
-import { HomeComponent } from "./home/home.component";
+import { Routes } from '@angular/router';
+import { SettingsComponent } from './settings/settings.component';
+import { ContentComponent } from './content.component';
+import { WantedComponent } from './wanted/wanted.component';
+import { HomeComponent } from './home/home.component';
 
 export const contentRoutes: Routes = [
   {
@@ -11,17 +11,27 @@ export const contentRoutes: Routes = [
     children: [
       {
         path: 'home',
-        component: HomeComponent
+        component: HomeComponent,
+        data: {
+          animation: 'homePage',
+        },
       },
       {
         path: 'crimes',
-        loadChildren: () => import('./wanted/wanted.routes').then((m) => m.wantedRoutes),
-        component: WantedComponent
+        loadChildren: () =>
+          import('./wanted/wanted.routes').then((m) => m.wantedRoutes),
+        component: WantedComponent,
+        data: {
+          animation: 'crimesPage',
+        },
       },
       {
         path: 'settings',
-        component: SettingsComponent
+        component: SettingsComponent,
+        data: {
+          animation: 'settingsPage',
+        },
       },
-    ]
-  }
-]
+    ],
+  },
+];

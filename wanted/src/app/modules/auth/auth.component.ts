@@ -7,12 +7,9 @@ import { RouterOutlet } from '@angular/router';
   imports: [RouterOutlet],
   template: `
     <div class="background"></div>
-    <router-outlet/>
+    <router-outlet />
   `,
   styleUrl: './auth.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-
 })
-export class AuthComponent {
-
-}
+export class AuthComponent {}

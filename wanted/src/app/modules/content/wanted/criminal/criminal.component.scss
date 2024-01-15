@@ -3,12 +3,12 @@
 }
 
 .edit-button {
-  position: absolute; 
+  position: absolute;
   right: 1rem;
   bottom: 1rem;
 }
 .deleting {
-  position: absolute; 
+  position: absolute;
   right: 1rem;
   bottom: 1rem;
   display: flex;
@@ -25,14 +25,14 @@
   border-radius: 0.25rem;
   background-color: #cecece;
 }
-  mat-card {
-    width: 100%;
-    height: 100%;
-    padding: 1rem;
-  }
-  .edited {
-    background-color: #fefff3;
-  }
+mat-card {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+}
+.edited {
+  background-color: #fefff3;
+}
 .info {
   opacity: 0.9;
 }

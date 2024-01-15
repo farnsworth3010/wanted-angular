@@ -6,33 +6,25 @@
     </div>
   </mat-card-title>
   <mat-card-content>
-    @if(openToEdit){
-    @if(tr.editing) {
+    @if(openToEdit){ @if(tr.editing) {
     <button mat-button color="primary" class="deleting">
       <mat-spinner [diameter]="15" />
     </button>
-    }
-    @else {
+    } @else {
     <button (click)="editHandle($event, tr)" mat-button color="primary" class="edit-button">
       Edit
       <mat-icon>edit</mat-icon>
     </button>
-    }
-    }
-    @if(openToDelete) {
-    @if(tr.deleting) {
+    } } @if(openToDelete) { @if(tr.deleting) {
     <button mat-button color="primary" class="deleting">
       <mat-spinner [diameter]="15" />
     </button>
-    }
-    @else {
+    } @else {
     <button mat-button (click)="deleteHandle($event)" color="primary" class="edit-button">
       Delete
       <mat-icon>delete</mat-icon>
     </button>
-    }
-    }
-    @if(edited) {
+    } } @if(edited) {
     <button (click)="viewInEditsHandle($event, tr)" mat-button color="primary" class="edit-button">
       View in edits
       <mat-icon>visibility</mat-icon>

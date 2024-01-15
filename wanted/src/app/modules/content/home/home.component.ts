@@ -9,5 +9,4 @@ import { MatCardModule } from '@angular/material/card';
   styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
-}
+export class HomeComponent {}

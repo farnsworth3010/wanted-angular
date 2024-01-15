@@ -1,19 +1,27 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { MatCardModule } from "@angular/material/card";
-import { MatIconModule } from "@angular/material/icon";
-import { DefaultFieldValuePipe } from "../../../../shared/pipes/default-field-value.pipe";
-import { CommonModule } from "@angular/common";
-import { MatButtonModule } from "@angular/material/button";
-import { ImageFallbackDirective } from "../../../../shared/directives/image-fallback.directive";
-import { Crime } from "../../../../core/services/interfaces/crime";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { DefaultFieldValuePipe } from '../../../../shared/pipes/default-field-value.pipe';
+import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { ImageFallbackDirective } from '../../../../shared/directives/image-fallback.directive';
+import { Crime } from '../../../../core/services/interfaces/crime';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: "app-criminal",
+  selector: 'app-criminal',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule, DefaultFieldValuePipe, MatButtonModule, ImageFallbackDirective, MatProgressSpinnerModule],
-  templateUrl: "./criminal.component.html",
-  styleUrl: "./criminal.component.scss",
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatIconModule,
+    DefaultFieldValuePipe,
+    MatButtonModule,
+    ImageFallbackDirective,
+    MatProgressSpinnerModule,
+  ],
+  templateUrl: './criminal.component.html',
+  styleUrl: './criminal.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CriminalComponent {
@@ -34,17 +42,17 @@ export class CriminalComponent {
   }
 
   public editHandle($event: Event, tr: Crime): void {
-    $event.stopPropagation()
+    $event.stopPropagation();
     this.editClick.emit({ tr });
   }
 
   public deleteHandle($event: Event): void {
-    $event.stopPropagation()
+    $event.stopPropagation();
     this.deleteClick.emit(this.tr['uid']);
   }
 
   public viewInEditsHandle($event: Event, tr: Crime): void {
-    $event.stopPropagation()
+    $event.stopPropagation();
     this.viewInEditsClick.emit({ tr });
   }
 }

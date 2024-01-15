@@ -3,16 +3,18 @@
   <div class="wanted-grid">
     @for(tr of data; track $index) {
     <div class="wanted-grid-tile">
-      <app-criminal [tr]="tr" [openToDelete]="true" [i]="$index"
-        (personClick)="selectPerson($index)" (deleteClick)="deletePerson($event)" />
+      <app-criminal
+        [tr]="tr"
+        [openToDelete]="true"
+        [i]="$index"
+        (personClick)="selectPerson($index)"
+        (deleteClick)="deletePerson($event)" />
     </div>
-    }
-    @empty {
+    } @empty {
     <div class="no-data">No edited data :c</div>
     }
   </div>
-  }
-  @else {
+  } @else {
   <mat-spinner />
   }
 </div>

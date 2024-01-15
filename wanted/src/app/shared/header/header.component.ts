@@ -10,9 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth/auth.service';
 import { CommonModule } from '@angular/common';
-import { guest } from '../../core/services/interfaces/guest';
-import { IError } from '../../core/services/interfaces/error';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { User } from '../../core/services/interfaces/user';
 
 @Component({
   selector: 'app-header',
@@ -29,30 +27,17 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
-  constructor(
-    public router: Router,
-    private authService: AuthService,
-    private snackBar: MatSnackBar
-  ) { }
-
-  @Input() noData: boolean = false;
-
-  userData!: firebase.default.User | guest;
-
+  constructor(public router: Router, private authService: AuthService) {}
+  @Input() hideUserData: boolean = false;
+  userData!: User | null;
   ngOnInit(): void {
-    this.authService.stateItem$.subscribe((res: firebase.default.User | null | guest) => {
+    this.authService.stateItem$.subscribe((res: User | null) => {
       if (res) this.userData = res;
     });
   }
-
   logOut(): void {
-    this.authService.signOut().subscribe({
-      next: () => {
-        this.authService.clearUser()
-      },
-      error: (error: IError) => {
-        this.snackBar.open(error.message, '', { duration: 3000 });
-      }
+    this.authService.signOut().subscribe(() => {
+      this.authService.clearUser();
     });
   }
 }

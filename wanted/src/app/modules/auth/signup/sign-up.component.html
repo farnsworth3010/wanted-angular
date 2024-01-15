@@ -4,43 +4,71 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" autocomplete="off">
-
       <mat-form-field class="form-input">
         <mat-label>E-Mail</mat-label>
-        <input autocomplete="off" formControlName="email" class="form-input" matInput />
+        <input
+          autocomplete="off"
+          formControlName="email"
+          class="form-input"
+          matInput />
       </mat-form-field>
-
       <mat-form-field class="form-input">
         <mat-label>password</mat-label>
-        <input autocomplete="off" formControlName="password" [type]="hidePassword ? 'password' : 'text'" matInput />
-        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" aria-label='hidePassword'
+        <input
+          autocomplete="off"
+          formControlName="password"
+          [type]="hidePassword ? 'password' : 'text'"
+          matInput />
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="hidePassword = !hidePassword"
+          aria-label="hidePassword"
           aria-pressed="hidePassword">
-          <mat-icon>{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+          <mat-icon>
+            {{ hidePassword ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
         </button>
       </mat-form-field>
-
       <mat-form-field class="form-input">
         <mat-label>repeat password</mat-label>
-        <input formControlName="passwordConfirm" [type]="hidePassword ? 'password' : 'text'" matInput
+        <input
+          formControlName="passwordConfirm"
+          [type]="hidePassword ? 'password' : 'text'"
+          matInput
           autocomplete="off" />
-        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword" aria-label="hidePassword"
+        <button
+          type="button"
+          mat-icon-button
+          matSuffix
+          (click)="hidePassword = !hidePassword"
+          aria-label="hidePassword"
           aria-pressed="hidePassword">
-          <mat-icon>{{ hidePassword ? "visibility_off" : "visibility" }}</mat-icon>
+          <mat-icon>
+            {{ hidePassword ? 'visibility_off' : 'visibility' }}
+          </mat-icon>
         </button>
       </mat-form-field>
-
       <mat-card-actions class="form-actions">
         <button type="button" mat-button (click)="google()">
           Sign up with Google
         </button>
-        <button class="form-guest" type="button" mat-button [routerLink]="'/auth/sign-in'">
+        <button
+          class="form-guest"
+          type="button"
+          mat-button
+          [routerLink]="'/auth/sign-in'">
           Sign in
         </button>
-        <button color="primary" class="form-sign-in" type="submit" mat-raised-button>
+        <button
+          color="primary"
+          class="form-sign-in"
+          type="submit"
+          mat-raised-button>
           Sign up
         </button>
       </mat-card-actions>
-
     </form>
   </mat-card-content>
 </mat-card>

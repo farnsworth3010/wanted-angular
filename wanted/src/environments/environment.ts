@@ -9,6 +9,5 @@ export const environment = {
     appId: '1:169372099522:web:94f026f99a02ceb981ac5b',
     measurementId: 'G-HZBJ1NBJGG',
   },
-  apiUrl: "https://api.fbi.gov/wanted/v1/list"
+  apiUrl: 'https://api.fbi.gov/wanted/v1/list',
 };
-

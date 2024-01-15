@@ -1,15 +1,22 @@
 <mat-card>
   <mat-card-content>
     <h1>Settings</h1>
-    <mat-slide-toggle class="toggle" [formControl]="darkTheme">Dark theme</mat-slide-toggle>
+    <mat-slide-toggle
+      [disabled]="true"
+      class="toggle"
+      [formControl]="darkTheme">
+      Dark theme
+    </mat-slide-toggle>
     <br />
-    <mat-slide-toggle class="toggle" [formControl]="animations">Animations</mat-slide-toggle>
+    <mat-slide-toggle class="toggle" [formControl]="animations">
+      Animations
+    </mat-slide-toggle>
     <br />
     <mat-form-field>
       <mat-label>Field office</mat-label>
       <mat-select [formControl]="field_office">
         @for (office of offices; track $index) {
-        <mat-option [value]="office">{{office}}</mat-option>
+        <mat-option [value]="office">{{ office }}</mat-option>
         }
       </mat-select>
     </mat-form-field>

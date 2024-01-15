@@ -1,14 +1,14 @@
 <mat-toolbar>
-  <figure [routerLink]="'/content/home'" class="logo-container">
+  <figure routerLink="/content/home" class="logo-container">
     <img class="logo" src="../../../assets/logo.png" />
     FBI
   </figure>
   <span class="spacer"></span>
-  @if(!noData) {
-    <span class="user-firstname">{{ userData?.email }}</span>
-    <button (click)="logOut()" mat-raised-button color="primary">
-      Log out
-      <mat-icon>logout</mat-icon>
-    </button>
+  @if(!hideUserData) {
+  <span class="user-firstname">{{ userData?.email }}</span>
+  <button (click)="logOut()" mat-raised-button color="primary">
+    Log out
+    <mat-icon>logout</mat-icon>
+  </button>
   }
 </mat-toolbar>

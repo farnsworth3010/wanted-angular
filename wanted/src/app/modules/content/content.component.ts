@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ChildrenOutletContexts, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../../shared/header/header.component';
+import { slideInAnimation } from '../../core/animations';
 
 @Component({
   selector: 'app-content',
@@ -20,6 +21,7 @@ import { HeaderComponent } from '../../shared/header/header.component';
   templateUrl: './content.component.html',
   styleUrl: './content.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [slideInAnimation]
 })
 export class ContentComponent {
   menuItems: any = [
@@ -36,7 +38,12 @@ export class ContentComponent {
     {
       link: '/content/settings',
       icon: 'settings',
-      name: 'settings'
+      name: 'Settings'
     },
   ]
+  constructor(private contexts: ChildrenOutletContexts) {}
+  getAnimationsData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation']
+  }
+
 }

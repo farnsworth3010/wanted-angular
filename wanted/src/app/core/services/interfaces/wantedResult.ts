@@ -1,7 +1,7 @@
-import { Crime } from "./crime";
+import { Crime } from './crime';
 
 export interface wantedRes {
-    items: Crime[],
-    page: number,
-    total: number
+  items: Crime[];
+  page: number;
+  total: number;
 }

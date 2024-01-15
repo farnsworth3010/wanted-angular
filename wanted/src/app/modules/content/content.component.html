@@ -10,7 +10,10 @@
       }
     </ul>
   </mat-sidenav>
-  <mat-sidenav-content class="sidenav-content">
+  <mat-sidenav-content
+    [@routeAnimations]="getAnimationsData()"
+    class="sidenav-content"
+  >
     <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>
