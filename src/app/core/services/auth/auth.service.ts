@@ -49,7 +49,7 @@ export class AuthService implements OnInit {
   }
   signInAsGuest(): void {
     const guest = {
-      email: 'guest',
+      email: 'Guest',
       emailVerified: true,
     };
     this.stateItem.next(guest);

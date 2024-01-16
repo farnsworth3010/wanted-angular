@@ -9,11 +9,12 @@
       </li>
       }
     </ul>
+    <a class="about-project" target="_blank" href="https://github.com/farnsworth3010/wanted-angular/">
+      <mat-icon>lightbulb</mat-icon>
+      About project
+    </a>
   </mat-sidenav>
-  <mat-sidenav-content
-    [@routeAnimations]="getAnimationsData()"
-    class="sidenav-content"
-  >
+  <mat-sidenav-content [@routeAnimations]="getAnimationsData()" class="sidenav-content">
     <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

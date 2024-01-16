@@ -7,6 +7,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-settings',
@@ -19,13 +20,14 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
+    MatSnackBarModule
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsComponent implements OnInit {
-  constructor(private destroyRef: DestroyRef) {}
+  constructor(private destroyRef: DestroyRef, private snackBar: MatSnackBar) {}
 
   field_office: FormControl = new FormControl('any');
   animations: FormControl = new FormControl(false);
@@ -44,6 +46,9 @@ export class SettingsComponent implements OnInit {
     });
 
     this.animations.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.snackBar.open('Action requires page reloading', 'Reload', { duration: 3000 }).onAction().subscribe(()=> {
+        window.location.reload()
+      });
       localStorage.setItem('animations', this.animations.value);
     });
   }

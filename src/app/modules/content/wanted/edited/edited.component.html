@@ -11,7 +11,10 @@
         (deleteClick)="deletePerson($event)" />
     </div>
     } @empty {
-    <div class="no-data">No edited data :c</div>
+    <div class="no-data-block">
+      <img src="../../../../../assets/nodata.png" />
+      <p>No edited data</p>
+    </div>
     }
   </div>
   } @else {

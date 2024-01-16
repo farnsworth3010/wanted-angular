@@ -50,3 +50,18 @@
 .mat-sidenav {
   transition: none !important;
 }
+.about-project {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  text-decoration: none;
+  color: #00000084;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+  mat-icon {
+    margin-right: 0.5rem;
+  }
+}
