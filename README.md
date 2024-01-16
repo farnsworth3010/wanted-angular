@@ -15,7 +15,8 @@ wanted-angular is my demo project which uses public API [fbi.gov/wanted](https:/
 
 
 ## Prerequisites
-You have to create a file with api url and firebase key
+
+You have to create a file with the API URL and your firebase key
 ```ts
 // src/environments/environment.ts
 
