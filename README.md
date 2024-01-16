@@ -1,6 +1,6 @@
 # wanted-angular
 
-wanted-angular is my demo project, which uses public API [fbi.gov/wanted](https://fbi.gov/wanted)
+wanted-angular is my demo project which uses public API [fbi.gov/wanted](https://fbi.gov/wanted)
 
 <p align="center">
   <a href="http://echoesplayer.com" target="_blank">
