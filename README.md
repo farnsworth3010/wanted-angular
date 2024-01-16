@@ -17,6 +17,28 @@ wanted-angular is my demo project which uses public API [fbi.gov/wanted](https:/
 - Typescript
 - Firebase
 
+
+## Prerequisites
+You have to create a file with api url and firebase key
+```ts
+// src/environments/environment.ts
+
+export const environment = {
+  production: false,
+  firebase: {
+    apiKey: 'your key',
+    authDomain: 'your data',
+    projectId: 'your data',
+    storageBucket: 'your data',
+    messagingSenderId: 'your data',
+    appId: 'your data',
+    measurementId: 'your data',
+  },
+  apiUrl: 'https://api.fbi.gov/wanted/v1/list',
+};
+
+```
+
 ## 👾 Development server
 
 Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

@@ -11,3 +11,4 @@ export const environment = {
   },
   apiUrl: 'https://api.fbi.gov/wanted/v1/list',
 };
+
