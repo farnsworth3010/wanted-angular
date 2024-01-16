@@ -14,6 +14,4 @@ import { slideInAnimation } from '../../core/animations';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [slideInAnimation],
 })
-export class AuthComponent {
-
-}
+export class AuthComponent {}

@@ -29,7 +29,7 @@ mat-card {
   width: 100%;
   height: 100%;
   padding: 1rem;
-    transition: 0.2s;
+  transition: 0.2s;
   &:hover {
     box-shadow: none;
     transition: 0.2s;
@@ -44,7 +44,6 @@ mat-card {
 mat-card-content {
   padding: 0;
 }
-
 
 .info-line {
   width: 100%;
