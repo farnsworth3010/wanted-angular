@@ -7,9 +7,6 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./modules/public/public.component').then(m => m.PublicComponent),
-    resolve: {
-      ready: LoginResolveFn,
-    },
   },
   {
     path: 'content',
@@ -19,6 +16,9 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./modules/auth/auth.routes').then(m => m.authRoutes),
+    resolve: {
+      ready: LoginResolveFn,
+    },
   },
   {
     path: '**',

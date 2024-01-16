@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, Input, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,6 +7,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { User } from '../../core/interfaces/user';
 import { ImageFallbackDirective } from '../directives/image-fallback.directive';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -17,20 +18,31 @@ import { ImageFallbackDirective } from '../directives/image-fallback.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
-  constructor(public router: Router, private authService: AuthService) {}
+  constructor(
+    public router: Router,
+    private authService: AuthService,
+    private destroyRef: DestroyRef,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
+
   @Input() hideUserData: boolean = false;
-  userData!: User | null;
+  userData: User | null = null;
+
   ngOnInit(): void {
-    this.authService.stateItem$.subscribe((res: User | null) => {
+    this.authService.stateItem$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: User | null) => {
       if (res) {
         this.userData = res;
       }
-      // markforcheck
+      this.changeDetectorRef.markForCheck();
     });
   }
+
   logOut(): void {
-    this.authService.signOut().subscribe(() => {
-      this.authService.clearUser();
-    });
+    this.authService
+      .signOut()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.authService.clearUser();
+      });
   }
 }

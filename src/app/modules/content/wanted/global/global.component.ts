@@ -16,12 +16,12 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatDialog, MatDialogActions, MatDialogTitle, MatDialogContent } from '@angular/material/dialog';
 import { EditCrimeComponent } from '../../../../shared/dialogs/edit-crime/edit-crime.component';
-import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
+import { DocumentData } from '@angular/fire/compat/firestore';
 import { CriminalComponent } from '../criminal/criminal.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Crime } from '../../../../core/interfaces/crime';
 import { NumberInput } from '@angular/cdk/coercion';
-import { WantedRes } from '../../../../core/interfaces/wantedResult';
+import { WantedRes } from '../../../../core/interfaces/wanted-result';
 import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
 @Component({
   selector: 'app-global',
@@ -103,7 +103,7 @@ export class GlobalComponent implements OnInit {
     this.filtersSub = this.filtersForm.valueChanges
       .pipe(
         tap(() => (this.wantedService.fetching = true)),
-        // fetching - behaviour subject
+        // fetching -> behaviour subject
         debounceTime(1000),
         switchMap(() => {
           this.wantedService.updateFilters(this.filtersForm.value);
@@ -121,8 +121,10 @@ export class GlobalComponent implements OnInit {
         tap((map: ParamMap) => {
           this.wantedService.fetching = true;
           if (Number(map.get('id'))) {
-            this.wantedService.page = Number(map.get('id'));
+
             // page убрать
+            this.wantedService.page = Number(map.get('id'));
+
             this.wantedService.pageItem.next(this.wantedService.page); // needed to update links in content.ts
           }
         }),
@@ -153,8 +155,10 @@ export class GlobalComponent implements OnInit {
   }
   viewInEdits(tr: Crime) {
     this.wantedService.selectedPerson = tr;
+
     // behavioursubject
     this.wantedService.editsOpenedFromGlobal = true;
+
     this.router.navigateByUrl('/content/crimes/edited');
   }
 }

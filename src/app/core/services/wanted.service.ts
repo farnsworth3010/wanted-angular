@@ -6,8 +6,9 @@ import { getDocs } from 'firebase/firestore';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 import { Crime } from '../interfaces/crime';
 import { Filters, FiltersHTTPParam } from '../interfaces/filters';
-import { environment } from '../../../environments/environment'; 
-import { WantedRes } from '../interfaces/wantedResult';
+import { environment } from '../../../environments/environment';
+import { WantedRes } from '../interfaces/wanted-result';
+import { CustomField } from '../interfaces/custom-field';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class WantedService {
   pageItem: BehaviorSubject<number> = new BehaviorSubject(this.page);
   pageItem$: Observable<number> = this.pageItem.asObservable();
   getData(): Observable<WantedRes> {
-    this 
+    this;
     let filters!: FiltersHTTPParam;
     // reduce
     for (let key in this.filters) {
@@ -49,6 +50,29 @@ export class WantedService {
   }
   deleteEditedById(id: string): Observable<void> {
     return from(deleteDoc(doc(this.afs.firestore, `edited/${id}`)));
+  }
+  uploadEdited(
+    uid: string,
+    data: Crime,
+    newData: {
+      title: string;
+      sex: string;
+      hair: string;
+      race: string;
+      eyes: string;
+      reward_text: string;
+      customFields: any[];
+    }
+  ): Observable<any> {
+    return from(
+      this.afs
+        .collection('edited')
+        .doc(uid)
+        .set({
+          ...data,
+          ...newData,
+        })
+    );
   }
   updateData(res: WantedRes): void {
     this.selectedPerson = res.items[0];

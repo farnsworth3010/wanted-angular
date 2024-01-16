@@ -43,8 +43,8 @@ export class SigninComponent {
   onSubmit() {
     // fix btn
     if (this.signInForm.valid) {
-      this.snackBar.open('Processing...', 'dismiss', {duration: 3000});
-      const { email, password } = this.signInForm.value; // getrawvalue
+      this.snackBar.open('Processing...', 'dismiss', { duration: 3000 });
+      const { email, password } = this.signInForm.getRawValue();
       this.authService.signIn(email!, password!).subscribe({
         next: (result: FirebaseCredential) => {
           this.authService.setUserData(result.user!);
@@ -58,7 +58,7 @@ export class SigninComponent {
     }
   }
   google() {
-    this.snackBar.open('Processing...', 'dismiss', {duration: 3000});
+    this.snackBar.open('Processing...', 'dismiss', { duration: 3000 });
     this.authService.googleAuth().subscribe({
       next: (result: FirebaseCredential) => {
         this.authService.setUserData(result.user!);

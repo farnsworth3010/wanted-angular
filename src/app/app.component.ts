@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
     private destroyRef: DestroyRef,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
+
   animations: boolean = true;
 
   @HostBinding('@.disabled') get animationsDisabled() {
@@ -27,8 +28,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.settingsService.$animationsState.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: boolean) => {
       this.animations = res;
-      this.changeDetectorRef.markForCheck()
-      console.log('dfs')
+      this.changeDetectorRef.markForCheck();
     });
   }
 }

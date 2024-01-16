@@ -60,7 +60,7 @@ export class SignupComponent {
       }
     };
   };
-  // переделать с формы на контролы
+  // переделать валидатор с формы на контролы
 
   hidePassword = true;
 
