@@ -1,29 +1,17 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../core/services/auth/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
-import { User } from '../../core/services/interfaces/user';
+import { User } from '../../core/interfaces/user';
 import { ImageFallbackDirective } from '../directives/image-fallback.directive';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    RouterLink,
-    CommonModule,
-    ImageFallbackDirective
-  ],
+  imports: [MatToolbarModule, MatIconModule, MatButtonModule, RouterLink, CommonModule, ImageFallbackDirective],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,7 +22,10 @@ export class HeaderComponent implements OnInit {
   userData!: User | null;
   ngOnInit(): void {
     this.authService.stateItem$.subscribe((res: User | null) => {
-      if (res) this.userData = res;
+      if (res) {
+        this.userData = res;
+      }
+      // markforcheck
     });
   }
   logOut(): void {

@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, HostBinding, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, HostBinding, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SettingsService } from './core/services/settings.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +13,22 @@ import { SettingsService } from './core/services/settings.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
-  constructor(private settingsService: SettingsService) {}
+  constructor(
+    private settingsService: SettingsService,
+    private destroyRef: DestroyRef,
+    private changeDetectorRef: ChangeDetectorRef
+  ) {}
+  animations: boolean = true;
+
   @HostBinding('@.disabled') get animationsDisabled() {
-    return !this.settingsService.animations;
+    return !this.animations;
   }
+
   ngOnInit(): void {
-    // todo (theme check)
+    this.settingsService.$animationsState.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: boolean) => {
+      this.animations = res;
+      this.changeDetectorRef.markForCheck()
+      console.log('dfs')
+    });
   }
 }

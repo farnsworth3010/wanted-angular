@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { WantedService } from '../../../../core/services/wanted/wanted.service';
+import { WantedService } from '../../../../core/services/wanted.service';
 import { ImageFallbackDirective } from '../../../../shared/directives/image-fallback.directive';
 import { DetailsComponent } from '../details/details.component';
 import { Subscription, debounceTime, switchMap, tap } from 'rxjs';
@@ -19,9 +19,9 @@ import { EditCrimeComponent } from '../../../../shared/dialogs/edit-crime/edit-c
 import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
 import { CriminalComponent } from '../criminal/criminal.component';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Crime } from '../../../../core/services/interfaces/crime';
+import { Crime } from '../../../../core/interfaces/crime';
 import { NumberInput } from '@angular/cdk/coercion';
-import { wantedRes } from '../../../../core/services/interfaces/wantedResult';
+import { WantedRes } from '../../../../core/interfaces/wantedResult';
 import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
 @Component({
   selector: 'app-global',
@@ -93,6 +93,7 @@ export class GlobalComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((wasEdited: boolean) => {
+        // mutation убрать
         if (wasEdited) this.editedIds.push(tr.uid);
         this.changeDetector.markForCheck();
       });
@@ -102,14 +103,15 @@ export class GlobalComponent implements OnInit {
     this.filtersSub = this.filtersForm.valueChanges
       .pipe(
         tap(() => (this.wantedService.fetching = true)),
-        debounceTime(3000),
+        // fetching - behaviour subject
+        debounceTime(1000),
         switchMap(() => {
           this.wantedService.updateFilters(this.filtersForm.value);
           return this.wantedService.getData();
         }),
         takeUntilDestroyed(this.destroyRef)
       )
-      .subscribe((res: wantedRes) => {
+      .subscribe((res: WantedRes) => {
         this.wantedService.updateData(res);
         this.changeDetector.markForCheck();
       });
@@ -120,6 +122,7 @@ export class GlobalComponent implements OnInit {
           this.wantedService.fetching = true;
           if (Number(map.get('id'))) {
             this.wantedService.page = Number(map.get('id'));
+            // page убрать
             this.wantedService.pageItem.next(this.wantedService.page); // needed to update links in content.ts
           }
         }),
@@ -132,13 +135,14 @@ export class GlobalComponent implements OnInit {
           edited['forEach']((doc: DocumentData) => {
             let data = doc['data']();
             this.editedIds.push(data['uid']);
+            // mutation
           });
         }),
         switchMap(() => this.wantedService.getData()),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe({
-        next: (res: wantedRes) => {
+        next: (res: WantedRes) => {
           this.wantedService.updateData(res);
           this.changeDetector.markForCheck();
         },
@@ -149,6 +153,7 @@ export class GlobalComponent implements OnInit {
   }
   viewInEdits(tr: Crime) {
     this.wantedService.selectedPerson = tr;
+    // behavioursubject
     this.wantedService.editsOpenedFromGlobal = true;
     this.router.navigateByUrl('/content/crimes/edited');
   }

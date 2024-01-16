@@ -3,7 +3,7 @@ import { DefaultFieldValuePipe } from '../../../../shared/pipes/default-field-va
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ImageFallbackDirective } from '../../../../shared/directives/image-fallback.directive';
-import { Crime } from '../../../../core/services/interfaces/crime';
+import { Crime } from '../../../../core/interfaces/crime';
 @Component({
   selector: 'app-details',
   standalone: true,

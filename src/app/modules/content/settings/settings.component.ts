@@ -7,7 +7,7 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { SettingsService } from '../../../core/services/settings.service';
 
 @Component({
   selector: 'app-settings',
@@ -20,38 +20,35 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
-    MatSnackBarModule,
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsComponent implements OnInit {
-  constructor(private destroyRef: DestroyRef, private snackBar: MatSnackBar) {}
+  constructor(private destroyRef: DestroyRef, private settingsService: SettingsService) {}
 
   field_office: FormControl = new FormControl('any');
-  animations: FormControl = new FormControl(false);
+  animations: FormControl = new FormControl(true);
   darkTheme: FormControl = new FormControl(false);
   offices = ['any', 'miami', 'phoenix'];
 
   ngOnInit(): void {
-    const office: string | null = localStorage.getItem('field_office');
-    const animations: boolean | null = JSON.parse(localStorage.getItem('animations')!);
+    this.settingsService.$animationsState
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((res: boolean) => this.animations.setValue(res));
 
-    this.field_office.setValue(office ?? 'any');
-    this.animations.setValue(animations !== null ? animations : true);
+    this.settingsService.$officeState
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((res: string) => this.field_office.setValue(res));
 
     this.field_office.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.settingsService.officeState.next(this.field_office.value);
       localStorage.setItem('field_office', this.field_office.value);
     });
 
     this.animations.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.snackBar
-        .open('Action requires page reloading', 'reload', { duration: 3000 })
-        .onAction()
-        .subscribe(() => {
-          window.location.reload();
-        });
+      this.settingsService.animationsState.next(this.animations.value);
       localStorage.setItem('animations', this.animations.value);
     });
   }

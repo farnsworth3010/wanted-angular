@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { WantedService } from '../../../../core/services/wanted/wanted.service';
+import { WantedService } from '../../../../core/services/wanted.service';
 import { DetailsComponent } from '../details/details.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { delay } from 'rxjs';
 import { CriminalComponent } from '../criminal/criminal.component';
-import { Crime } from '../../../../core/services/interfaces/crime';
+import { Crime } from '../../../../core/interfaces/crime';
 import { DocumentData } from '@angular/fire/compat/firestore';
 import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
 

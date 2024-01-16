@@ -6,19 +6,16 @@ export const authRoutes: Routes = [
   {
     path: '',
     component: AuthComponent,
+    resolve: {
+      ready: LoginResolveFn,
+    },
     children: [
       {
         path: 'sign-in',
-        resolve: {
-          ready: LoginResolveFn,
-        },
         loadComponent: () => import('./signin/sign-in.component').then(m => m.SigninComponent),
       },
       {
         path: 'sign-up',
-        resolve: {
-          ready: LoginResolveFn,
-        },
         loadComponent: () => import('./signup/sign-up.component').then(m => m.SignupComponent),
       },
       {

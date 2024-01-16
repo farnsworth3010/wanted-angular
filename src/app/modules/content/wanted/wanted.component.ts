@@ -5,7 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { WantedService } from '../../../core/services/wanted/wanted.service';
+import { WantedService } from '../../../core/services/wanted.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -46,6 +46,7 @@ export class WantedComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // отписка
     this.wantedService.pageItem$.subscribe(() => {
       this.updateNavLink();
     });

@@ -19,6 +19,7 @@
           matSuffix
           (click)="hidePassword = !hidePassword"
           [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword"
+          tabindex="-1"
           >
           <mat-icon>
             {{ hidePassword ? 'visibility_off' : 'visibility' }}

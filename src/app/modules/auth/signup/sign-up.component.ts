@@ -1,4 +1,4 @@
-import { AuthService } from '../../../core/services/auth/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +16,7 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FirebaseCredential } from '../../../core/services/interfaces/user';
+import { FirebaseCredential } from '../../../core/interfaces/user';
 
 @Component({
   selector: 'app-signup',
@@ -43,6 +43,7 @@ export class SignupComponent {
     private fb: FormBuilder
   ) {}
 
+  // вынести в utils
   passValidator = (): ValidatorFn => {
     return (abstractControl: AbstractControl): ValidationErrors | null => {
       const firctCtrl = abstractControl.get('password');
@@ -59,6 +60,7 @@ export class SignupComponent {
       }
     };
   };
+  // переделать с формы на контролы
 
   hidePassword = true;
 

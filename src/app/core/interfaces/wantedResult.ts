@@ -1,6 +1,6 @@
 import { Crime } from './crime';
 
-export interface wantedRes {
+export interface WantedRes {
   items: Crime[];
   page: number;
   total: number;

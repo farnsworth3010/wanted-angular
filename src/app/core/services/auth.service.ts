@@ -10,43 +10,49 @@ import { FirebaseCredential, FirebaseUser, User } from '../interfaces/user';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnInit {
+export class AuthService {
   constructor(
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
     private router: Router,
     private snackBar: MatSnackBar
-  ) {}
-
-  stateItem: BehaviorSubject<User | null> = new BehaviorSubject(JSON.parse(localStorage.getItem('user')!));
-  stateItem$: Observable<User | null> = this.stateItem.asObservable();
-
-  ngOnInit(): void {
+  ) {
     this.afAuth.authState.subscribe((user: FirebaseUser | null) => {
       if (user) this.setUserData(user);
       else this.clearUser();
+      // app initialiser
     });
   }
+
+  private stateItem = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem('user')!));
+  public stateItem$: Observable<User | null> = this.stateItem.asObservable();
+
   signIn(email: string, password: string): Observable<FirebaseCredential> {
     return from(this.afAuth.signInWithEmailAndPassword(email, password));
   }
+
   signOut(): Observable<void> {
     return from(this.afAuth.signOut());
   }
+
   signUp(email: string, password: string): Observable<FirebaseCredential> {
     return from(this.afAuth.createUserWithEmailAndPassword(email, password));
   }
+
   sendVerificationMail(): Observable<void | never> {
     return from(this.afAuth.currentUser).pipe(
       switchMap((user: FirebaseUser | null) => {
         if (user) return user.sendEmailVerification();
+
         return throwError(() => new Error('Error while sending verification mail...'));
       })
     );
   }
+
   forgotPassword(passwordResetEmail: string): Observable<void> {
     return from(this.afAuth.sendPasswordResetEmail(passwordResetEmail));
   }
+
   signInAsGuest(): void {
     const guest = {
       email: 'Guest',
@@ -57,6 +63,7 @@ export class AuthService implements OnInit {
     localStorage.setItem('user', JSON.stringify(guest));
     this.router.navigateByUrl('/content/home');
   }
+
   setUserData(user: FirebaseUser) {
     const { uid, email, displayName, photoURL, emailVerified } = user;
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
@@ -79,16 +86,25 @@ export class AuthService implements OnInit {
     const user: User | null = JSON.parse(localStorage.getItem('user')!);
     return user?.emailVerified ?? false;
   }
+  // в сервис
+  // один раз используется
+
   googleAuth(): Observable<FirebaseCredential> {
     return from(this.authLogin(new auth.GoogleAuthProvider()));
   }
+
   authLogin(provider: auth.AuthProvider): Observable<FirebaseCredential> {
     return from(this.afAuth.signInWithPopup(provider));
   }
+
   clearUser(): void {
     localStorage.removeItem('user');
     this.stateItem.next(null);
     this.snackBar.dismiss();
     this.router.navigateByUrl('/auth/sign-in');
   }
+
 }
+
+// отступы
+// if

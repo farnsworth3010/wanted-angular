@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../core/services/auth/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { User } from '../../../core/services/interfaces/user';
+import { User } from '../../../core/interfaces/user';
 
 @Component({
   selector: 'app-verify-email-address',
@@ -19,7 +19,10 @@ export class VerifyEmailAddressComponent implements OnInit {
   userData: User | null = null;
   ngOnInit(): void {
     this.authService.stateItem$.subscribe((user: User | null) => {
-      if (user) this.userData = user;
+      if (user) {
+        this.userData = user;
+      }
+      // markforcheck
     });
   }
   sendVerificationMail() {

@@ -20,9 +20,9 @@ import { CommonModule } from '@angular/common';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
-import { Crime } from '../../../core/services/interfaces/crime';
+import { Crime } from '../../../core/interfaces/crime';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CustomField } from '../../../core/services/interfaces/customField';
+import { CustomField } from '../../../core/interfaces/customField';
 
 @Component({
   selector: 'app-edit-crime',
@@ -64,7 +64,7 @@ export class EditCrimeComponent {
   addFieldForm = this.fb.group({
     type: ['', Validators.required],
     name: ['', [Validators.required, this.noRepeatNamesValidator()]],
-    fields: this.fb.array([]),
+    fields: this.fb.array([], [Validators.maxLength(3)]),
   });
 
   customFields: CustomField[] = [];
@@ -79,6 +79,7 @@ export class EditCrimeComponent {
       eyes: formEyes,
       reward_text: formReward_text,
     } = this.customForm.value;
+    // if сравнить поля вместо stringify
     if (
       JSON.stringify({ title, sex, hair, race, eyes, reward_text }) !==
         JSON.stringify({
@@ -89,10 +90,12 @@ export class EditCrimeComponent {
           eyes: formEyes,
           reward_text: formReward_text,
         }) ||
+        // controls -> get
       this.addFieldForm.controls.fields.length
     ) {
       this.dialog.close(true);
       this.snackBar.dismiss();
+      // вынести в wanted
       from(
         this.afs
           .collection('edited')
@@ -110,6 +113,7 @@ export class EditCrimeComponent {
               return {
                 name,
                 value: this.addFieldForm.value.fields![index],
+                // посмотреть
               };
             }),
           })
@@ -124,7 +128,7 @@ export class EditCrimeComponent {
   }
 
   addField() {
-    if (this.addFieldForm.valid && this.addFieldForm.value.fields!.length < 3) {
+    if (this.addFieldForm.valid) {
       if (this.addFieldForm.value.name) {
         const control = this.fb.control('', Validators.required);
         const { name, type } = this.addFieldForm.getRawValue();
@@ -134,6 +138,8 @@ export class EditCrimeComponent {
           type,
           isEditing: false,
         });
+        // controls -> get
+        // name в отдельную переменную
         this.addFieldForm.controls.fields.push(control);
         this.addFieldForm.controls.name.reset();
         this.addFieldForm.controls.name.setErrors(null);
@@ -143,20 +149,27 @@ export class EditCrimeComponent {
     }
   }
   toggleFieldEditById(id: number): void {
+  
     this.customFields[id].isEditing = !this.customFields[id].isEditing;
   }
   deleteCustomFieldById(id: number): void {
     this.addFieldForm.controls.fields.removeAt(id);
   }
   applyEditById(id: number, nameInput: HTMLInputElement, typeInput: MatSelect): void {
+    // id -> name 
+    // деструктуризация
     if (nameInput.value && typeInput.value) {
       this.customFields[id].name = nameInput.value;
       this.customFields[id].type = typeInput.value;
       this.customFields[id].isEditing = false;
     } else {
       nameInput.setCustomValidity('sdf');
+      // fix
     }
   }
+  // вынести
+  // parent -> formarray fix
+  // git ветки!!!
   noRepeatNamesValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const condition = this.customFields?.find(x => x.name === control.value);

@@ -1,9 +1,11 @@
 <div class="content">
   <mat-stepper [linear]="true" #stepper>
+    <!-- каждый степ как компонент  -->
     <mat-step [stepControl]="customForm">
       <form class="form" [formGroup]="customForm">
         <ng-template matStepLabel>Main info</ng-template>
         <mat-button-toggle-group class="sex-toggle" formControlName="sex" name="fontStyle" aria-label="Font Style">
+          <!-- кастомный тоггл контрол  -->
           <mat-button-toggle value="Male">
             <i class="fa-solid fa-mars"></i>
           </mat-button-toggle>
@@ -11,6 +13,7 @@
             <i class="fa-solid fa-venus"></i>
           </mat-button-toggle>
         </mat-button-toggle-group>
+        <!-- foreach -->
         <mat-form-field>
           <mat-label>Title</mat-label>
           <input matInput placeholder="Title" formControlName="title" />
@@ -37,9 +40,11 @@
       </form>
     </mat-step>
     <mat-step [optional]="!addFieldForm.controls.fields.length" [stepControl]="addFieldForm" label="Add custom fields">
+      <!-- disabled > 3 -->
       <form [formGroup]="addFieldForm" class="custom-fields-adding">
         <mat-form-field>
           <mat-label>field type</mat-label>
+          <!-- в массив -->
           <mat-select formControlName="type">
             <mat-option value="text">text</mat-option>
             <mat-option value="date">date</mat-option>
@@ -61,9 +66,11 @@
           @for(input of addFieldForm.controls.fields.controls; track $index) {
           <div class="custom-field">
             @if(customFields[$index].isEditing) {
+              <!-- save type и name предыдущие -->
             <form class="custom-field-editing">
               <mat-form-field>
                 <mat-label>field type</mat-label>
+                <!-- в массив -->
                 <mat-select #edType>
                   <mat-option value="text">text</mat-option>
                   <mat-option value="date">date</mat-option>
@@ -74,6 +81,7 @@
               <mat-form-field>
                 <mat-label>Field name</mat-label>
                 <input #edName matInput required="true" type="text" placeholder="Address" />
+                <!-- ref fix -->
               </mat-form-field>
               <button
                 (click)="applyEditById($index, edName, edType)"

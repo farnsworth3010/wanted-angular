@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SettingsService {
-  animations: boolean = true;
+  animationsState = new BehaviorSubject<boolean>(true);
+  $animationsState = this.animationsState.asObservable();
+
+  officeState = new BehaviorSubject<string>('any');
+  $officeState = this.officeState.asObservable()
+
   constructor() {
-    this.animations = JSON.parse(localStorage.getItem('animations')!) ?? true;
+    this.animationsState.next(JSON.parse(localStorage.getItem('animations')!) ?? true);
+    this.officeState.next(localStorage.getItem('field_office')! ?? 'any')
   }
 }

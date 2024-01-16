@@ -64,3 +64,5 @@ export interface Crime {
   editing?: boolean;
   '@id': string;
 }
+
+// подтипы в отдельные типы

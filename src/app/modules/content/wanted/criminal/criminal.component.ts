@@ -5,7 +5,7 @@ import { DefaultFieldValuePipe } from '../../../../shared/pipes/default-field-va
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { ImageFallbackDirective } from '../../../../shared/directives/image-fallback.directive';
-import { Crime } from '../../../../core/services/interfaces/crime';
+import { Crime } from '../../../../core/interfaces/crime';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({

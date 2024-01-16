@@ -1,4 +1,4 @@
-import { AuthService } from './auth/auth.service';
+import { AuthService } from './auth.service';
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 
@@ -11,3 +11,4 @@ export const authCanActivate: CanActivateFn = (next: ActivatedRouteSnapshot, sta
     return false;
   }
 };
+// через stateitem
