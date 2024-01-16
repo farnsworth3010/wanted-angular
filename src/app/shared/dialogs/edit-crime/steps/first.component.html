@@ -1,0 +1,38 @@
+<mat-step [stepControl]="customForm">
+  <form class="form" [formGroup]="customForm">
+    <ng-template matStepLabel>Main info</ng-template>
+    <mat-button-toggle-group class="sex-toggle" formControlName="sex" name="fontStyle" aria-label="Font Style">
+      <!-- кастомный тоггл контрол  -->
+      <mat-button-toggle value="Male">
+        <i class="fa-solid fa-mars"></i>
+      </mat-button-toggle>
+      <mat-button-toggle value="Female">
+        <i class="fa-solid fa-venus"></i>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <!-- foreach -->
+    <mat-form-field>
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Title" formControlName="title" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Hair</mat-label>
+      <input matInput placeholder="Hair" formControlName="hair" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Race</mat-label>
+      <input matInput placeholder="Race" formControlName="race" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Eyes</mat-label>
+      <input matInput placeholder="Eyes" formControlName="eyes" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Reward</mat-label>
+      <input matInput placeholder="Reward" formControlName="reward_text" />
+    </mat-form-field>
+    <div>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </form>
+</mat-step>

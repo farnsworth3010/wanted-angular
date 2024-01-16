@@ -1,0 +1,9 @@
+<mat-step>
+  <ng-template matStepLabel>Done</ng-template>
+  <p>Now you can send your changes</p>
+  <div>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button (click)="stepper.reset()">Reset</button>
+    <button mat-button (click)="sendRequest()">Send request</button>
+  </div>
+</mat-step>

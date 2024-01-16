@@ -23,6 +23,7 @@ import { Crime } from '../../../core/interfaces/crime';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomField } from '../../../core/interfaces/custom-field';
 import { WantedService } from '../../../core/services/wanted.service';
+import { EditFirstStepComponent } from './steps/first.component';
 
 @Component({
   selector: 'app-edit-crime',
@@ -40,6 +41,7 @@ import { WantedService } from '../../../core/services/wanted.service';
     MatSelectModule,
     MatCheckboxModule,
     MatIconModule,
+    EditFirstStepComponent
   ],
   templateUrl: './edit-crime.component.html',
   styleUrl: './edit-crime.component.scss',
