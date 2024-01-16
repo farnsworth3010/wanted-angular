@@ -1,4 +1,4 @@
-# wanted-angular
+# 🚓  wanted-angular
 
 wanted-angular is my demo project which uses public API [fbi.gov/wanted](https://fbi.gov/wanted)
 
@@ -8,7 +8,7 @@ wanted-angular is my demo project which uses public API [fbi.gov/wanted](https:/
   </a>
 </p>
 
-# Tech Stack
+# 🔧 Tech Stack
 
 - Angular
 - Angular CLI
@@ -17,22 +17,22 @@ wanted-angular is my demo project which uses public API [fbi.gov/wanted](https:/
 - Typescript
 - Firebase
 
-## Development server
+## 👾 Development server
 
 Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Code scaffolding
+## 🤖 Code scaffolding
 
 Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
 
-## Build
+## 🏗 Build
 
 Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-### Build for Production
+### ✅ Build for Production
 
 Run `npm run build:prod` to build the project minified for production with AOT.
 
-## Further help
+## ❔ Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
