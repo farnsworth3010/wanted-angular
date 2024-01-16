@@ -3,14 +3,10 @@
     <h2>FBI Sign in</h2>
   </mat-card-header>
   <mat-card-content>
-    <form [formGroup]="signInForm">
+    <form (ngSubmit)="onSubmit()" [formGroup]="signInForm">
       <mat-form-field class="form-input">
         <mat-label>E-Mail</mat-label>
-        <input
-          formControlName="email"
-          class="form-input"
-          type="email"
-          matInput />
+        <input formControlName="email" class="form-input" type="email" matInput />
       </mat-form-field>
       <mat-form-field class="form-input password-input">
         <mat-label>password</mat-label>
@@ -22,44 +18,22 @@
           mat-icon-button
           matSuffix
           (click)="hidePassword = !hidePassword"
-          aria-label="Hide password"
-          aria-pressed="hide">
+          [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword"
+          >
           <mat-icon>
             {{ hidePassword ? 'visibility_off' : 'visibility' }}
           </mat-icon>
         </button>
       </mat-form-field>
-      <a class="forgot-password" routerLink="/auth/forgot-password">
-        forgot password
-      </a>
+      <a class="forgot-password" routerLink="/auth/forgot-password">forgot password</a>
       <mat-card-actions class="form-actions">
         <div>
-          <button
-            class="form-guest"
-            type="button"
-            mat-button
-            (click)="signInAsGuest()">
-            Guest
-          </button>
+          <button class="form-guest" type="button" mat-button (click)="signInAsGuest()">Guest</button>
         </div>
         <div>
-          <button type="button" mat-button (click)="google()">
-            Sign in with Google
-          </button>
-          <button
-            class="form-guest"
-            type="button"
-            mat-button
-            routerLink="/auth/sign-up">
-            Sign up
-          </button>
-          <button
-            color="primary"
-            class="form-sign-in"
-            (click)="onSubmit()"
-            mat-raised-button>
-            Sign in
-          </button>
+          <button type="button" mat-button (click)="google()">Sign in with Google</button>
+          <button class="form-guest" type="button" mat-button routerLink="/auth/sign-up">Sign up</button>
+          <button color="primary" class="form-sign-in" type="submit" mat-raised-button>Sign in</button>
         </div>
       </mat-card-actions>
     </form>

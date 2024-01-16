@@ -45,9 +45,9 @@
     <div class="wanted-grid-tile">
       <app-criminal
         [tr]="tr"
-        [openToEdit]="!editedIds.includes(tr['@id'])"
+        [openToEdit]="!editedIds.includes(tr.uid)"
         (viewInEditsClick)="viewInEdits($event)"
-        [edited]="editedIds.includes(tr['@id'])"
+        [edited]="editedIds.includes(tr.uid)"
         [i]="$index"
         (personClick)="selectPerson($index)"
         (editClick)="editHandle($event)" />

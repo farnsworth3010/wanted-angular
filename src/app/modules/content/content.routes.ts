@@ -18,8 +18,7 @@ export const contentRoutes: Routes = [
       },
       {
         path: 'crimes',
-        loadChildren: () =>
-          import('./wanted/wanted.routes').then((m) => m.wantedRoutes),
+        loadChildren: () => import('./wanted/wanted.routes').then(m => m.wantedRoutes),
         component: WantedComponent,
         data: {
           animation: 'crimesPage',

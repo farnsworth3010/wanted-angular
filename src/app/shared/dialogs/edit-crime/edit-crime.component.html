@@ -3,11 +3,7 @@
     <mat-step [stepControl]="customForm">
       <form class="form" [formGroup]="customForm">
         <ng-template matStepLabel>Main info</ng-template>
-        <mat-button-toggle-group
-          class="sex-toggle"
-          formControlName="sex"
-          name="fontStyle"
-          aria-label="Font Style">
+        <mat-button-toggle-group class="sex-toggle" formControlName="sex" name="fontStyle" aria-label="Font Style">
           <mat-button-toggle value="Male">
             <i class="fa-solid fa-mars"></i>
           </mat-button-toggle>
@@ -40,10 +36,7 @@
         </div>
       </form>
     </mat-step>
-    <mat-step
-      [optional]="!addFieldForm.controls.fields.length"
-      [stepControl]="addFieldForm"
-      label="Add custom fields">
+    <mat-step [optional]="!addFieldForm.controls.fields.length" [stepControl]="addFieldForm" label="Add custom fields">
       <form [formGroup]="addFieldForm" class="custom-fields-adding">
         <mat-form-field>
           <mat-label>field type</mat-label>
@@ -56,11 +49,7 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>Field name</mat-label>
-          <input
-            matInput
-            type="text"
-            formControlName="name"
-            placeholder="Address" />
+          <input matInput type="text" formControlName="name" placeholder="Address" />
         </mat-form-field>
         <button (click)="addField()" mat-raised-button color="primary">
           Add
@@ -84,12 +73,7 @@
               </mat-form-field>
               <mat-form-field>
                 <mat-label>Field name</mat-label>
-                <input
-                  #edName
-                  matInput
-                  required="true"
-                  type="text"
-                  placeholder="Address" />
+                <input #edName matInput required="true" type="text" placeholder="Address" />
               </mat-form-field>
               <button
                 (click)="applyEditById($index, edName, edType)"
@@ -99,10 +83,7 @@
                 Apply
                 <mat-icon>done</mat-icon>
               </button>
-              <button
-                (click)="toggleFieldEditById($index)"
-                mat-raised-button
-                color="primary">
+              <button (click)="toggleFieldEditById($index)" mat-raised-button color="primary">
                 Cancel
                 <mat-icon>block</mat-icon>
               </button>
@@ -111,11 +92,7 @@
             } @else { @if(customFields[$index].type !== 'checkbox') {
             <mat-form-field>
               <mat-label>{{ customFields[$index].name }}</mat-label>
-              <input
-                matInput
-                [type]="customFields[$index].type"
-                [formControlName]="$index"
-                placeholder="" />
+              <input matInput [type]="customFields[$index].type!" [formControlName]="$index" placeholder="" />
             </mat-form-field>
             } @else {
             <mat-checkbox matInput [formControlName]="$index" placeholder="">
@@ -130,10 +107,7 @@
               <mat-icon>edit</mat-icon>
               edit
             </button>
-            <button
-              (click)="deleteCustomFieldById($index)"
-              mat-raised-button
-              color="primary">
+            <button (click)="deleteCustomFieldById($index)" mat-raised-button color="primary">
               <mat-icon>delete</mat-icon>
               delete
             </button>

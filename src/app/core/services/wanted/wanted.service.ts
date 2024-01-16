@@ -25,7 +25,7 @@ export class WantedService {
   pageItem: BehaviorSubject<number> = new BehaviorSubject(this.page);
   pageItem$: Observable<number> = this.pageItem.asObservable();
   getData(): Observable<wantedRes> {
-    const filters: FiltersHTTPParam = {};
+    let filters!: FiltersHTTPParam;
     for (let key in this.filters) {
       if (this.filters[key] !== null) {
         filters[key] = this.filters[key]!;

@@ -75,7 +75,7 @@ export class SignupComponent {
 
   onSubmit() {
     if (this.signUpForm.valid) {
-      this.snackBar.open('Processing...', '');
+      this.snackBar.open('Processing...', 'dismiss', { duration: 3000 });
       const { email, password } = this.signUpForm.value;
       this.authService.signUp(email!, password!).subscribe({
         next: (result: FirebaseCredential) => {
@@ -83,13 +83,13 @@ export class SignupComponent {
           this.authService.setUserData(result.user!);
         },
         error: (error: Error) => {
-          this.snackBar.open(error.message, '', { duration: 3000 });
+          this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
         },
       });
     }
   }
   google() {
-    this.snackBar.open('Processing...', '');
+    this.snackBar.open('Processing...', 'dismiss', { duration: 3000 });
     this.authService.googleAuth().subscribe({
       next: (result: FirebaseCredential) => {
         this.authService.setUserData(result.user!);
@@ -97,7 +97,7 @@ export class SignupComponent {
         this.router.navigateByUrl('/content/home');
       },
       error: (error: Error) => {
-        this.snackBar.open(error.message, '', { duration: 3000 });
+        this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
       },
     });
   }

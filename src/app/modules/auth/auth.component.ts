@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { slideInAnimation } from '../../core/animations';
 
 @Component({
   selector: 'app-auth',
@@ -11,5 +12,8 @@ import { RouterOutlet } from '@angular/router';
   `,
   styleUrl: './auth.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [slideInAnimation],
 })
-export class AuthComponent {}
+export class AuthComponent {
+
+}

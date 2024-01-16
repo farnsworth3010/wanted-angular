@@ -16,13 +16,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
 import { from } from 'rxjs';
-import { WantedService } from '../../../core/services/wanted/wanted.service';
 import { CommonModule } from '@angular/common';
 import { MatSelect, MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { Crime } from '../../../core/services/interfaces/crime';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CustomField } from '../../../core/services/interfaces/customField';
 
 @Component({
   selector: 'app-edit-crime',
@@ -49,8 +49,7 @@ export class EditCrimeComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Crime,
     private fb: FormBuilder,
-    public afs: AngularFirestore,
-    public ws: WantedService,
+    private afs: AngularFirestore,
     private dialog: MatDialogRef<EditCrimeComponent>,
     private snackBar: MatSnackBar
   ) {}
@@ -68,7 +67,7 @@ export class EditCrimeComponent {
     fields: this.fb.array([]),
   });
 
-  customFields: any[] = [];
+  customFields: CustomField[] = [];
 
   sendRequest(): void {
     const { title, sex, hair, race, eyes, reward_text } = this.data;
@@ -97,7 +96,7 @@ export class EditCrimeComponent {
       from(
         this.afs
           .collection('edited')
-          .doc(this.data['uid'])
+          .doc(this.data.uid)
           .set({
             ...this.data,
             title: formTitle,
@@ -106,10 +105,11 @@ export class EditCrimeComponent {
             race: formRace,
             eyes: formEyes,
             reward_text: formReward_text,
-            customFields: this.customFields.map((name: string, index: number) => {
+            customFields: this.customFields.map((field: CustomField) => {
+              const { name, index } = field;
               return {
                 name,
-                value: this.addFieldForm.get('fields')?.value[index],
+                value: this.addFieldForm.value.fields![index],
               };
             }),
           })
@@ -117,18 +117,19 @@ export class EditCrimeComponent {
         this.dialog.close(true);
       });
     } else {
-      this.snackBar.open("You haven't changed anything!", '', {
+      this.snackBar.open("You haven't changed anything!", 'dismiss', {
         duration: 3000,
       });
     }
   }
 
   addField() {
-    if (this.addFieldForm.valid && this.addFieldForm.controls.fields.length < 3) {
+    if (this.addFieldForm.valid && this.addFieldForm.value.fields!.length < 3) {
       if (this.addFieldForm.value.name) {
         const control = this.fb.control('', Validators.required);
-        const { name, type } = this.addFieldForm.value;
+        const { name, type } = this.addFieldForm.getRawValue();
         this.customFields.push({
+          index: this.customFields.length,
           name,
           type,
           isEditing: false,

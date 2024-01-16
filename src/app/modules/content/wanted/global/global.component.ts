@@ -22,7 +22,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Crime } from '../../../../core/services/interfaces/crime';
 import { NumberInput } from '@angular/cdk/coercion';
 import { wantedRes } from '../../../../core/services/interfaces/wantedResult';
-import { Filters } from '../../../../core/services/interfaces/filters';
 import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
 @Component({
   selector: 'app-global',
@@ -56,8 +55,7 @@ export class GlobalComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     public wantedService: WantedService,
     private destroyRef: DestroyRef,
-    public afs: AngularFirestore,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
     private fb: FormBuilder,
     private router: Router
   ) {}
@@ -86,7 +84,6 @@ export class GlobalComponent implements OnInit {
   }
 
   editHandle(tr: Crime) {
-    this.changeDetector.markForCheck();
     this.dialog
       .open(EditCrimeComponent, {
         width: '50vw',
@@ -96,13 +93,12 @@ export class GlobalComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((wasEdited: boolean) => {
-        if (wasEdited) this.editedIds.push(tr['@id']);
+        if (wasEdited) this.editedIds.push(tr.uid);
         this.changeDetector.markForCheck();
       });
   }
 
   ngOnInit(): void {
-    this.filtersForm.getRawValue();
     this.filtersSub = this.filtersForm.valueChanges
       .pipe(
         tap(() => (this.wantedService.fetching = true)),
@@ -135,7 +131,7 @@ export class GlobalComponent implements OnInit {
           console.log(edited);
           edited['forEach']((doc: DocumentData) => {
             let data = doc['data']();
-            this.editedIds.push(data['@id']);
+            this.editedIds.push(data['uid']);
           });
         }),
         switchMap(() => this.wantedService.getData()),

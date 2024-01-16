@@ -20,7 +20,7 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatFormFieldModule,
     MatSelectModule,
     MatOptionModule,
-    MatSnackBarModule
+    MatSnackBarModule,
   ],
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.scss',
@@ -35,8 +35,8 @@ export class SettingsComponent implements OnInit {
   offices = ['any', 'miami', 'phoenix'];
 
   ngOnInit(): void {
-    const office = localStorage.getItem('field_office');
-    const animations = JSON.parse(localStorage.getItem('animations')!);
+    const office: string | null = localStorage.getItem('field_office');
+    const animations: boolean | null = JSON.parse(localStorage.getItem('animations')!);
 
     this.field_office.setValue(office ?? 'any');
     this.animations.setValue(animations !== null ? animations : true);
@@ -46,9 +46,12 @@ export class SettingsComponent implements OnInit {
     });
 
     this.animations.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.snackBar.open('Action requires page reloading', 'Reload', { duration: 3000 }).onAction().subscribe(()=> {
-        window.location.reload()
-      });
+      this.snackBar
+        .open('Action requires page reloading', 'reload', { duration: 3000 })
+        .onAction()
+        .subscribe(() => {
+          window.location.reload();
+        });
       localStorage.setItem('animations', this.animations.value);
     });
   }

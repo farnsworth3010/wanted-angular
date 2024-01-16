@@ -9,11 +9,9 @@ export const slideInAnimation = trigger('routeAnimations', [
         top: '-5%',
         left: 0,
         width: '100%',
-        opacity: 0
+        opacity: 0,
       }),
     ]),
-    query(':enter', [
-        animate('300ms ease-in-out', style({opacity: 1, top: 0}))
-    ])
+    query(':enter', [animate('300ms ease-in-out', style({ opacity: 1, top: 0 }))]),
   ]),
 ]);

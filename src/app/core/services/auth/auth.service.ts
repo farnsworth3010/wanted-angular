@@ -77,7 +77,7 @@ export class AuthService implements OnInit {
   }
   get isLoggedIn(): boolean {
     const user: User | null = JSON.parse(localStorage.getItem('user')!);
-    return user ? user.emailVerified : false;
+    return user?.emailVerified ?? false;
   }
   googleAuth(): Observable<FirebaseCredential> {
     return from(this.authLogin(new auth.GoogleAuthProvider()));

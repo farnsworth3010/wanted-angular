@@ -29,7 +29,7 @@ export class VerifyEmailAddressComponent implements OnInit {
         this.snackBar.dismiss();
       },
       error: (error: Error) => {
-        this.snackBar.open(error.message, '', { duration: 3000 });
+        this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
       },
     });
   }

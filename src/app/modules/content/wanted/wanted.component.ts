@@ -1,15 +1,15 @@
-import { CommonModule } from "@angular/common";
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { MatButtonModule } from "@angular/material/button";
-import { MatCardModule } from "@angular/material/card";
-import { MatIconModule } from "@angular/material/icon";
-import { MatTabsModule } from "@angular/material/tabs";
-import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
-import { WantedService } from "../../../core/services/wanted/wanted.service";
-import { Subscription } from "rxjs";
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { WantedService } from '../../../core/services/wanted/wanted.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: "app-wanted",
+  selector: 'app-wanted',
   standalone: true,
   imports: [
     MatTabsModule,
@@ -21,22 +21,22 @@ import { Subscription } from "rxjs";
     RouterLinkActive,
     RouterOutlet,
   ],
-  templateUrl: "./wanted.component.html",
-  styleUrl: "./wanted.component.scss",
+  templateUrl: './wanted.component.html',
+  styleUrl: './wanted.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WantedComponent implements OnInit {
-  constructor(private changeDetector: ChangeDetectorRef, private wantedService: WantedService) { }
+  constructor(private changeDetector: ChangeDetectorRef, private wantedService: WantedService) {}
   wantedSubscription!: Subscription;
   routerSubscription!: Subscription;
   navLinks = [
     {
-      label: "Wanted",
+      label: 'Wanted',
       link: `/content/crimes/wanted/1`,
     },
     {
-      label: "Edited",
-      link: "/content/crimes/edited",
+      label: 'Edited',
+      link: '/content/crimes/edited',
     },
   ];
 
@@ -47,7 +47,7 @@ export class WantedComponent implements OnInit {
 
   ngOnInit(): void {
     this.wantedService.pageItem$.subscribe(() => {
-      this.updateNavLink()
-    })
+      this.updateNavLink();
+    });
   }
 }

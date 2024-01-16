@@ -22,26 +22,14 @@ export class EditedComponent implements OnInit {
   data: Crime[] = [];
   ngOnInit(): void {
     this.wantedService.fetching = true;
-    if (this.wantedService.editsOpenedFromGlobal) {
-      this.wantedService.data = null;
-    }
     this.wantedService
       .getEdited()
       .pipe(delay(1000))
       .subscribe((edited: DocumentData) => {
-        let oldData: Crime[] = [];
-        if (this.data) {
-          oldData = this.data;
-        }
-        this.data = [];
         this.wantedService.fetching = false;
         edited['forEach']((doc: DocumentData, index: number) => {
           this.data.push(doc['data']());
-          if (oldData[index]?.deleting) {
-            this.data[index].deleting = true;
-          }
         });
-        this.changeDetector.detectChanges();
         if (this.wantedService.editsOpenedFromGlobal) {
           this.wantedService.editsOpenedFromGlobal = false;
           this.wantedService.selectedPerson = this.data.find(

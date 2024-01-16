@@ -24,20 +24,20 @@ export class ForgotPasswordComponent {
     private fb: FormBuilder
   ) {}
   passResetForm = this.fb.group({
-    email: new FormControl('', Validators.required),
+    email: ['', Validators.required],
   });
 
   resetPassword() {
     if (this.passResetForm.valid) {
       this.authService.forgotPassword(this.passResetForm.value.email!).subscribe({
         next: () => {
-          this.snackBar.open('Password reset email sent, check your inbox.', '', {
+          this.snackBar.open('Password reset email sent, check your inbox.', 'dismiss', {
             duration: 3000,
           });
           this.router.navigateByUrl('/auth/sign-in');
         },
         error: (error: Error) => {
-          this.snackBar.open(error.message, '', { duration: 3000 });
+          this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
         },
       });
     }
