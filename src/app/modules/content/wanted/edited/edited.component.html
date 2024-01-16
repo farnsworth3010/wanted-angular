@@ -1,0 +1,53 @@
+<div class="tab-container">
+  @if(!wantedService.fetching) {
+  <div class="wanted-grid">
+    @for(tr of data; track $index) {
+    <div class="wanted-grid-tile">
+      <app-criminal
+        [tr]="tr"
+        [openToDelete]="true"
+        [i]="$index"
+        (personClick)="selectPerson($index)"
+        (deleteClick)="deletePerson($event)" />
+    </div>
+    } @empty {
+    <div class="no-data">No edited data :c</div>
+    }
+  </div>
+  } @else {
+  <div class="wanted-grid">
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+  </div>
+  }
+</div>
+
+<app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching" [data]="data" />

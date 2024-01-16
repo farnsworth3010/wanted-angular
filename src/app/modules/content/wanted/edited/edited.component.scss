@@ -1,0 +1,36 @@
+.no-edits {
+  margin: 5rem auto;
+  display: block;
+  width: fit-content;
+}
+.tab-container {
+  padding: 1rem;
+}
+.wanted-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+.wanted-grid .wanted-grid-tile mat-card {
+  height: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+@media screen and (max-width: 800px) {
+  .wanted-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.no-data {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+mat-spinner {
+  display: block;
+  margin: 0 auto;
+  margin-top: 6rem;
+}
