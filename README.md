@@ -2,7 +2,7 @@
 
 wanted-angular is my demo project which uses public API [fbi.gov/wanted](https://fbi.gov/wanted)
 
-<img align="center" src="https://github.com/farnsworth3010/wanted-angular/blob/dev/screenshot.png" alt="Angular" width="75%"/>
+<img align="center" src="https://github.com/farnsworth3010/wanted-angular/blob/main/screenshot.png" alt="Angular" width="75%"/>
 
 # 🔧 Tech Stack
 
