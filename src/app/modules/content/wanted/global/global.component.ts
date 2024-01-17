@@ -59,6 +59,7 @@ export class GlobalComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router
   ) {}
+
   debTime = 1000;
   filtersForm = this.fb.group({
     sex: [''],
@@ -75,8 +76,7 @@ export class GlobalComponent implements OnInit {
   handlePageEvent({ pageIndex }: PageEvent): void {
     this.wantedService.data = null;
     this.wantedService.selectedPerson = null;
-    this.wantedService.page = pageIndex + 1;
-    this.router.navigate(['/content/crimes/wanted/', this.wantedService.page]);
+    this.router.navigate(['/content/crimes/wanted/', pageIndex + 1]);
   }
 
   selectPerson(id: number): void {
@@ -93,8 +93,13 @@ export class GlobalComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((wasEdited: boolean) => {
-        // mutation убрать
-        if (wasEdited) this.editedIds.push(tr.uid);
+        const newEdited = this.editedIds;
+
+        if (wasEdited) {
+          newEdited.push(tr.uid);
+        }
+
+        this.editedIds = newEdited;
         this.changeDetector.markForCheck();
       });
   }
@@ -102,11 +107,11 @@ export class GlobalComponent implements OnInit {
   ngOnInit(): void {
     this.filtersSub = this.filtersForm.valueChanges
       .pipe(
-        tap(() => (this.wantedService.fetching = true)),
-        // fetching -> behaviour subject
+        tap(() => this.wantedService.fetchingItem.next(true)),
         debounceTime(1000),
         switchMap(() => {
           this.wantedService.updateFilters(this.filtersForm.value);
+          this.router.navigate(['/content/crimes/wanted/', 1]);
           return this.wantedService.getData();
         }),
         takeUntilDestroyed(this.destroyRef)
@@ -119,13 +124,12 @@ export class GlobalComponent implements OnInit {
     this.routeSub = this.activatedRoute.paramMap
       .pipe(
         tap((map: ParamMap) => {
-          this.wantedService.fetching = true;
+          this.wantedService.fetchingItem.next(true);
+          this.changeDetector.markForCheck();
           if (Number(map.get('id'))) {
-
-            // page убрать
-            this.wantedService.page = Number(map.get('id'));
-
-            this.wantedService.pageItem.next(this.wantedService.page); // needed to update links in content.ts
+            this.wantedService.pageItem.next(Number(map.get('id')));
+          } else {
+            this.wantedService.pageItem.next(1);
           }
         }),
         debounceTime(this.debTime),
@@ -133,12 +137,12 @@ export class GlobalComponent implements OnInit {
       )
       .pipe(
         tap((edited: DocumentData) => {
-          console.log(edited);
+          const newEditedIds = this.editedIds;
           edited['forEach']((doc: DocumentData) => {
             let data = doc['data']();
-            this.editedIds.push(data['uid']);
-            // mutation
+            newEditedIds.push(data['uid']);
           });
+          this.editedIds = newEditedIds;
         }),
         switchMap(() => this.wantedService.getData()),
         takeUntilDestroyed(this.destroyRef)
@@ -153,11 +157,11 @@ export class GlobalComponent implements OnInit {
         },
       });
   }
+
   viewInEdits(tr: Crime) {
     this.wantedService.selectedPerson = tr;
 
-    // behavioursubject
-    this.wantedService.editsOpenedFromGlobal = true;
+    this.wantedService.editsOpenedFromGlobalItem.next(true);
 
     this.router.navigateByUrl('/content/crimes/edited');
   }

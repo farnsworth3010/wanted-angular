@@ -8,7 +8,7 @@
       [pageSize]="pageSize"
       [showFirstLastButtons]="true"
       [hidePageSize]="false"
-      [pageIndex]="this.wantedService.page - 1"
+      [pageIndex]="this.wantedService.pageItem.value - 1"
       aria-label="Select page"
       [class.mat-elevation-z1]="true" />
   </div>
@@ -39,7 +39,7 @@
       </div>
     </form>
   </mat-card>
-  @if (!wantedService.fetching) {
+  @if (!wantedService.fetchingItem.value) {
   <div class="wanted-grid">
     @for(tr of wantedService.data; track $index) {
     <div class="wanted-grid-tile">
@@ -92,7 +92,7 @@
       <app-criminal-skeleton />
     </div>
   </div>
-  } @if(wantedService.data?.length && !wantedService.fetching) {
+  } @if(wantedService.data?.length && !wantedService.fetchingItem.value) {
   <div class="pagination">
     <mat-paginator
       #paginator
@@ -102,7 +102,7 @@
       [pageSize]="pageSize"
       [showFirstLastButtons]="true"
       [hidePageSize]="false"
-      [pageIndex]="this.wantedService.page - 1"
+      [pageIndex]="this.wantedService.pageItem.value - 1"
       aria-label="Select page"
       [class.mat-elevation-z1]="true" />
   </div>
@@ -110,5 +110,5 @@
 </div>
 <app-details
   [selectedPerson]="wantedService.selectedPerson"
-  [fetching]="wantedService.fetching"
+  [fetching]="wantedService.fetchingItem.value"
   [data]="wantedService.data" />

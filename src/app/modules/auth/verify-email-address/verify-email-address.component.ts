@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
 import { AuthService } from '../../../core/services/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from '../../../core/interfaces/user';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-verify-email-address',
@@ -15,16 +16,26 @@ import { User } from '../../../core/interfaces/user';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VerifyEmailAddressComponent implements OnInit {
-  constructor(public authService: AuthService, private router: Router, private snackBar: MatSnackBar) {}
+  constructor(
+    public authService: AuthService,
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private changeDetectorRef: ChangeDetectorRef,
+    private destroyRef: DestroyRef
+  ) {}
+
   userData: User | null = null;
+
   ngOnInit(): void {
-    this.authService.stateItem$.subscribe((user: User | null) => {
+    this.authService.stateItem$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((user: User | null) => {
       if (user) {
         this.userData = user;
       }
-      // markforcheck
+
+      this.changeDetectorRef.markForCheck();
     });
   }
+
   sendVerificationMail() {
     this.authService.sendVerificationMail().subscribe({
       next: () => {

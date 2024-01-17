@@ -19,28 +19,33 @@ import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-
 })
 export class EditedComponent implements OnInit {
   constructor(public wantedService: WantedService, private changeDetector: ChangeDetectorRef) {}
+
   data: Crime[] = [];
+
   ngOnInit(): void {
-    this.wantedService.fetching = true;
+    this.wantedService.fetchingItem.next(true);
     this.wantedService
       .getEdited()
       .pipe(delay(1000))
       .subscribe((edited: DocumentData) => {
-        this.wantedService.fetching = false;
+        this.wantedService.fetchingItem.next(false);
         edited['forEach']((doc: DocumentData, index: number) => {
           this.data.push(doc['data']());
         });
-        if (this.wantedService.editsOpenedFromGlobal) {
-          this.wantedService.editsOpenedFromGlobal = false;
+
+        if (this.wantedService.editsOpenedFromGlobalItem.value) {
+          this.wantedService.editsOpenedFromGlobalItem.next(false);
           this.wantedService.selectedPerson = this.data.find(
             (obj: Crime) => obj.uid === this.wantedService.selectedPerson?.uid
           )!;
         } else {
           this.wantedService.selectedPerson = this.data[0];
         }
+
         this.changeDetector.markForCheck();
       });
   }
+
   deletePerson(id: string) {
     this.data.find((obj: Crime) => id === obj.uid)!.deleting = true;
     this.changeDetector.markForCheck();
@@ -49,6 +54,7 @@ export class EditedComponent implements OnInit {
       this.changeDetector.markForCheck();
     });
   }
+
   selectPerson(id: number): void {
     this.wantedService.selectedPerson = this.data[id];
     this.changeDetector.markForCheck();

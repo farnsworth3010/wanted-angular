@@ -1,22 +1,18 @@
 import { Routes } from '@angular/router';
-import { LoginResolveFn } from '../../core/services/login.resolve';
 import { AuthComponent } from './auth.component';
 
 export const authRoutes: Routes = [
   {
     path: '',
     component: AuthComponent,
-    resolve: {
-      ready: LoginResolveFn,
-    },
     children: [
       {
         path: 'sign-in',
-        loadComponent: () => import('./signin/sign-in.component').then(m => m.SigninComponent),
+        loadComponent: () => import('./sign-in/sign-in.component').then(m => m.SigninComponent),
       },
       {
         path: 'sign-up',
-        loadComponent: () => import('./signup/sign-up.component').then(m => m.SignupComponent),
+        loadComponent: () => import('./sign-up/sign-up.component').then(m => m.SignupComponent),
       },
       {
         path: 'verify-email-address',

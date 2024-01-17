@@ -1,5 +1,5 @@
 <div class="tab-container">
-  @if(!wantedService.fetching) {
+  @if(!wantedService.fetchingItem.value) {
   <div class="wanted-grid">
     @for(tr of data; track $index) {
     <div class="wanted-grid-tile">
@@ -53,4 +53,7 @@
   }
 </div>
 
-<app-details [selectedPerson]="wantedService.selectedPerson" [fetching]="wantedService.fetching" [data]="data" />
+<app-details
+  [selectedPerson]="wantedService.selectedPerson"
+  [fetching]="wantedService.fetchingItem.value"
+  [data]="data" />

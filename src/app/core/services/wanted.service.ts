@@ -8,49 +8,62 @@ import { Crime } from '../interfaces/crime';
 import { Filters, FiltersHTTPParam } from '../interfaces/filters';
 import { environment } from '../../../environments/environment';
 import { WantedRes } from '../interfaces/wanted-result';
-import { CustomField } from '../interfaces/custom-field';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WantedService {
   constructor(private http: HttpClient, private afs: AngularFirestore) {}
-  editsOpenedFromGlobal: boolean = false;
+
+  editsOpenedFromGlobalItem = new BehaviorSubject(false);
+  editsOpenedFromGlobalItem$ = this.editsOpenedFromGlobalItem.asObservable();
+
+  fetchingItem: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  fetchingItem$ = this.fetchingItem.asObservable();
+
+  pageItem: BehaviorSubject<number> = new BehaviorSubject(1);
+  pageItem$: Observable<number> = this.pageItem.asObservable();
+
   selectedPerson: null | Crime = null;
   data: null | Crime[] = null;
-  fetching: boolean = false;
   length: number = 0;
   pages: number = 0;
-  page: number = 1;
   filters: Filters | null = null;
-  pageItem: BehaviorSubject<number> = new BehaviorSubject(this.page);
-  pageItem$: Observable<number> = this.pageItem.asObservable();
+
   getData(): Observable<WantedRes> {
     this;
-    let filters!: FiltersHTTPParam;
-    // reduce
-    for (let key in this.filters) {
-      if (this.filters[key] !== null) {
-        filters[key] = this.filters[key]!;
-      }
+    let filters: FiltersHTTPParam = {};
+
+    if (this.filters !== null) {
+      const applied_filters = Object.keys(this.filters!);
+      applied_filters.forEach((filter: string) => {
+        if (this.filters![filter]) {
+          filters[filter] = this.filters![filter]!;
+        }
+      });
     }
+
     return this.http.get<WantedRes>(environment.apiUrl, {
       params: {
-        page: this.page,
+        page: this.pageItem.value,
         ...filters,
       },
     });
   }
+
   getEdited(): Observable<DocumentData> {
     return from(getDocs(collection(this.afs.firestore, 'edited')));
   }
+
   updateFilters(filters: Filters | null): void {
-    this.page = 1;
+    this.pageItem.next(1);
     this.filters = filters;
   }
+
   deleteEditedById(id: string): Observable<void> {
     return from(deleteDoc(doc(this.afs.firestore, `edited/${id}`)));
   }
+
   uploadEdited(
     uid: string,
     data: Crime,
@@ -74,11 +87,12 @@ export class WantedService {
         })
     );
   }
+
   updateData(res: WantedRes): void {
     this.selectedPerson = res.items[0];
     this.length = res.total;
     this.data = res.items;
     this.pages = res.page;
-    this.fetching = false;
+    this.fetchingItem.next(false);
   }
 }

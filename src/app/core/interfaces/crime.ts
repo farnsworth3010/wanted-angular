@@ -1,3 +1,20 @@
+interface File {
+  url: null | string;
+  name: null | string;
+}
+
+interface Image {
+  caption: null | string;
+  large: null | string;
+  thumb: null | string;
+  original: null | string;
+}
+
+interface CustomField {
+  name: string;
+  value: null | string | number;
+}
+
 export interface Crime {
   details: null | string;
   eyes_raw: null | string;
@@ -32,18 +49,11 @@ export interface Crime {
   dates_of_birth_used: null | string;
   publication: null | string;
   weight: null | string;
-  files: null | { url: null | string; name: null | string }[];
+  files: null | File[];
   ncic: null | string;
   race: null | string;
   eyes: null | string;
-  images:
-    | null
-    | {
-        caption: null | string;
-        large: null | string;
-        thumb: null | string;
-        original: null | string;
-      }[];
+  images: null | Image[];
   languages: null | string[];
   additional_information: null | string;
   field_offices: null | string[];
@@ -59,10 +69,8 @@ export interface Crime {
   weight_min: null | number;
   reward_min: null | number;
   suspects: null | string[];
-  customFields?: { name: string; value: null | string | number }[];
+  customFields?: CustomField[];
   deleting?: boolean;
   editing?: boolean;
   '@id': string;
 }
-
-// подтипы в отдельные типы

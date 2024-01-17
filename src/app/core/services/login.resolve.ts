@@ -13,13 +13,12 @@ export const LoginResolveFn: ResolveFn<Observable<boolean>> = (
   return authService.stateItem$.pipe(
     map(() => {
       const logged = authService.isLoggedIn;
+
       if (logged) {
         router.navigateByUrl('/content/home');
       }
+
       return true;
     })
   );
 };
-
-// добавить в public
-// не использовать resolvefn

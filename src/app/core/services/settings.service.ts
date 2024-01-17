@@ -9,10 +9,10 @@ export class SettingsService {
   $animationsState = this.animationsState.asObservable();
 
   officeState = new BehaviorSubject<string>('any');
-  $officeState = this.officeState.asObservable()
+  $officeState = this.officeState.asObservable();
 
   constructor() {
     this.animationsState.next(JSON.parse(localStorage.getItem('animations')!) ?? true);
-    this.officeState.next(localStorage.getItem('field_office')! ?? 'any')
+    this.officeState.next(localStorage.getItem('field_office')! ?? 'any');
   }
 }

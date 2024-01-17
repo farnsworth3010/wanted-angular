@@ -1,0 +1,23 @@
+.custom-fields-adding {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+mat-form-field {
+  margin-top: 22px;
+  margin-right: 1rem;
+}
+.custom-field {
+  display: flex;
+  align-items: center;
+}
+.custom-field-editing {
+  display: flex;
+  align-items: center;
+}
+.edit-custom-field-btn {
+  margin-right: 1rem;
+}
+.mat-mdc-form-field-bottom-align {
+  display: none;
+}

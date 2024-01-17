@@ -23,6 +23,7 @@ export class ForgotPasswordComponent {
     private router: Router,
     private fb: FormBuilder
   ) {}
+
   passResetForm = this.fb.group({
     email: ['', Validators.required],
   });

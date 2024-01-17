@@ -5,10 +5,11 @@ import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } fr
 export const authCanActivate: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   const authService = inject(AuthService);
   const router: Router = inject(Router);
-  if (authService.isLoggedIn) return true;
-  else {
-    router.navigateByUrl('/auth/sign-in');
-    return false;
+
+  if (authService.isLoggedIn) {
+    return true;
   }
+
+  router.navigateByUrl('/auth/sign-in');
+  return false;
 };
-// через stateitem

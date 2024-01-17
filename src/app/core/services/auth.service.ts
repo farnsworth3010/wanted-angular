@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
@@ -12,17 +12,11 @@ import { FirebaseCredential, FirebaseUser, User } from '../interfaces/user';
 })
 export class AuthService {
   constructor(
-    private afs: AngularFirestore,
-    private afAuth: AngularFireAuth,
+    public afs: AngularFirestore,
+    public afAuth: AngularFireAuth,
     private router: Router,
     private snackBar: MatSnackBar
-  ) {
-    this.afAuth.authState.subscribe((user: FirebaseUser | null) => {
-      if (user) this.setUserData(user);
-      else this.clearUser();
-      // app initialiser
-    });
-  }
+  ) {}
 
   private stateItem = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem('user')!));
   public stateItem$: Observable<User | null> = this.stateItem.asObservable();
@@ -42,8 +36,9 @@ export class AuthService {
   sendVerificationMail(): Observable<void | never> {
     return from(this.afAuth.currentUser).pipe(
       switchMap((user: FirebaseUser | null) => {
-        if (user) return user.sendEmailVerification();
-
+        if (user) {
+          return user.sendEmailVerification();
+        }
         return throwError(() => new Error('Error while sending verification mail...'));
       })
     );
@@ -67,8 +62,10 @@ export class AuthService {
   setUserData(user: FirebaseUser) {
     const { uid, email, displayName, photoURL, emailVerified } = user;
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${uid}`);
+
     localStorage.setItem('user', JSON.stringify(user));
     this.stateItem.next(user);
+
     return userRef.set(
       {
         uid,
@@ -82,12 +79,11 @@ export class AuthService {
       }
     );
   }
+
   get isLoggedIn(): boolean {
     const user: User | null = JSON.parse(localStorage.getItem('user')!);
     return user?.emailVerified ?? false;
   }
-  // в сервис
-  // один раз используется
 
   googleAuth(): Observable<FirebaseCredential> {
     return from(this.authLogin(new auth.GoogleAuthProvider()));
@@ -103,8 +99,4 @@ export class AuthService {
     this.snackBar.dismiss();
     this.router.navigateByUrl('/auth/sign-in');
   }
-
 }
-
-// отступы
-// if

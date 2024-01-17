@@ -1,88 +1,55 @@
 import { AuthService } from '../../../core/services/auth.service';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { MatSelectModule } from '@angular/material/select';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import {
-  AbstractControl,
-  FormBuilder,
-  ReactiveFormsModule,
-  ValidationErrors,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FirebaseCredential } from '../../../core/interfaces/user';
 
 @Component({
-  selector: 'app-signup',
+  selector: 'app-login',
   standalone: true,
   imports: [
-    MatSelectModule,
     MatInputModule,
     MatFormFieldModule,
-    ReactiveFormsModule,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
+    ReactiveFormsModule,
     RouterLink,
+    FormsModule,
   ],
-  templateUrl: './sign-up.component.html',
-  styleUrl: './sign-up.component.scss',
+  templateUrl: './sign-in.component.html',
+  styleUrl: './sign-in.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SignupComponent {
+export class SigninComponent {
   constructor(
     private authService: AuthService,
-    private snackBar: MatSnackBar,
     private router: Router,
+    private snackBar: MatSnackBar,
     private fb: FormBuilder
   ) {}
 
-  // вынести в utils
-  passValidator = (): ValidatorFn => {
-    return (abstractControl: AbstractControl): ValidationErrors | null => {
-      const firctCtrl = abstractControl.get('password');
-      const secondCtrl = abstractControl.get('passwordConfirm');
-      if (firctCtrl?.value !== secondCtrl?.value) {
-        secondCtrl?.setErrors({
-          ...secondCtrl.errors,
-          confirmedValidator: 'Passwords do not match',
-        });
-        return { confirmedValidator: 'Passwords do not match' };
-      } else {
-        secondCtrl?.setErrors(null);
-        return null;
-      }
-    };
-  };
-  // переделать валидатор с формы на контролы
-
+  signInForm = this.fb.group({
+    email: ['', Validators.required],
+    password: ['', Validators.required],
+  });
   hidePassword = true;
 
-  signUpForm = this.fb.group(
-    {
-      password: ['', [Validators.required, Validators.minLength(8)]],
-      passwordConfirm: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-    },
-    {
-      validators: [this.passValidator()],
-    }
-  );
-
   onSubmit() {
-    if (this.signUpForm.valid) {
+    if (this.signInForm.valid) {
       this.snackBar.open('Processing...', 'dismiss', { duration: 3000 });
-      const { email, password } = this.signUpForm.value;
-      this.authService.signUp(email!, password!).subscribe({
+      const { email, password } = this.signInForm.getRawValue();
+      this.authService.signIn(email!, password!).subscribe({
         next: (result: FirebaseCredential) => {
-          this.authService.sendVerificationMail();
           this.authService.setUserData(result.user!);
+          this.snackBar.dismiss();
+          this.router.navigateByUrl('/content/home');
         },
         error: (error: Error) => {
           this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
@@ -90,6 +57,7 @@ export class SignupComponent {
       });
     }
   }
+
   google() {
     this.snackBar.open('Processing...', 'dismiss', { duration: 3000 });
     this.authService.googleAuth().subscribe({
@@ -102,5 +70,9 @@ export class SignupComponent {
         this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
       },
     });
+  }
+
+  signInAsGuest() {
+    this.authService.signInAsGuest();
   }
 }

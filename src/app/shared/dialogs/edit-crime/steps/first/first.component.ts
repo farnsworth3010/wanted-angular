@@ -1,13 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { FormField } from '../../../../../core/interfaces/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
 
 @Component({
@@ -17,18 +16,40 @@ import { MatStepperModule } from '@angular/material/stepper';
     CommonModule,
     MatButtonToggleModule,
     MatButtonModule,
-    MatStepperModule,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
-    MatInputModule,
     CommonModule,
-    MatSelectModule,
-    MatCheckboxModule,
+    MatInputModule,
     MatIconModule,
+    MatStepperModule,
   ],
+  styleUrl: './first.component.scss',
   templateUrl: './first.component.html',
 })
 export class EditFirstStepComponent {
-    @Input() customForm: any
+  @Input() customForm: any;
+
+  formFields: FormField[] = [
+    {
+      placeholder: 'Title',
+      formControlName: 'title',
+    },
+    {
+      placeholder: 'Hair',
+      formControlName: 'hair',
+    },
+    {
+      placeholder: 'Race',
+      formControlName: 'race',
+    },
+    {
+      placeholder: 'Eyes',
+      formControlName: 'eyes',
+    },
+    {
+      placeholder: 'Reward',
+      formControlName: 'reward_text',
+    },
+  ];
 }
