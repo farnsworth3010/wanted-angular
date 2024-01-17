@@ -1,0 +1,15 @@
+<mat-toolbar>
+  <figure routerLink="/content/home" class="logo-container">
+    <img class="logo" src="../../../assets/logo.png" />
+    FBI
+  </figure>
+  <span class="spacer"></span>
+  @if(!hideUserData) {
+  <span class="user-firstname">{{ userData?.email }}</span>
+  <img class="profile-photo" appImageFallback fallbackUrl="../../../assets/avatar.png" [src]="userData?.photoURL" />
+  <button (click)="logOut()" mat-raised-button color="primary">
+    Log out
+    <mat-icon>logout</mat-icon>
+  </button>
+  }
+</mat-toolbar>

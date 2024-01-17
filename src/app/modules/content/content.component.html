@@ -1,0 +1,21 @@
+<app-header class="header" />
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav class="sidenav-sidenav" mode="side" [opened]="true">
+    <ul>
+      @for(i of menuItems; track $index) {
+      <li routerLinkActive="active" [routerLink]="i.link">
+        <mat-icon>{{ i.icon }}</mat-icon>
+        {{ i.name }}
+      </li>
+      }
+    </ul>
+    <a class="about-project" target="_blank" href="https://github.com/farnsworth3010/wanted-angular/">
+      <mat-icon>lightbulb</mat-icon>
+      About project
+    </a>
+  </mat-sidenav>
+  <mat-sidenav-content [@routeAnimations]="getAnimationsData()" class="sidenav-content">
+    <!-- fix scroll -->
+    <router-outlet />
+  </mat-sidenav-content>
+</mat-sidenav-container>

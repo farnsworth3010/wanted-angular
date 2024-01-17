@@ -1,0 +1,81 @@
+<form [formGroup]="addFieldForm">
+  <div class="custom-fields-adding">
+    <mat-form-field>
+      <mat-label>field type</mat-label>
+      <mat-select value="text" formControlName="type">
+        @for (type of fieldTypes; track $index) {
+        <mat-option [value]="type">{{ type }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Field name</mat-label>
+      <input matInput type="text" formControlName="name" placeholder="Address" />
+    </mat-form-field>
+    <button [disabled]="addFieldDisabled" (click)="addFieldHandle()" mat-raised-button color="primary">
+      Add
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div formArrayName="fields">
+    @for(input of addFieldForm.controls.fields.controls; track $index) {
+    <div class="custom-field">
+      @if(fields[$index].isEditing) {
+      <form class="custom-field-editing">
+        <mat-form-field>
+          <mat-label>field type</mat-label>
+          <mat-select #edType [value]="fields[$index].type">
+            @for (type of fieldTypes; track $index) {
+            <mat-option [value]="type">{{ type }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Field name</mat-label>
+          <input #edName matInput [value]="fields[$index].name" required="true" type="text" placeholder="Address" />
+        </mat-form-field>
+        <button
+          (click)="applyEditHandle(fields[$index].name, fields[$index].type, edName, edType)"
+          mat-raised-button
+          class="edit-custom-field-btn"
+          color="primary">
+          Apply
+          <mat-icon>done</mat-icon>
+        </button>
+        <button (click)="toggleFieldEditHandle(fields[$index].name)" mat-raised-button color="primary">
+          Cancel
+          <mat-icon>block</mat-icon>
+        </button>
+      </form>
+
+      } @else { @if(fields[$index].type !== 'checkbox') {
+      <mat-form-field>
+        <mat-label>{{ fields[$index].name }}</mat-label>
+        <input matInput [type]="fields[$index].type!" [formControlName]="$index" placeholder="" />
+      </mat-form-field>
+      } @else {
+      <mat-checkbox matInput [formControlName]="$index" placeholder="">
+        {{ fields[$index].name }}
+      </mat-checkbox>
+      }
+      <button
+        (click)="toggleFieldEditHandle(fields[$index].name)"
+        mat-raised-button
+        class="edit-custom-field-btn"
+        color="primary">
+        <mat-icon>edit</mat-icon>
+        edit
+      </button>
+      <button (click)="deleteFieldHandle(fields[$index].name)" mat-raised-button color="primary">
+        <mat-icon>delete</mat-icon>
+        delete
+      </button>
+      }
+    </div>
+    }
+  </div>
+  <div>
+    <button mat-button matStepperPrevious>Back</button>
+    <button mat-button matStepperNext>Next</button>
+  </div>
+</form>

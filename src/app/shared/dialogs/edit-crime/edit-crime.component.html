@@ -1,0 +1,22 @@
+<div class="content">
+  <mat-stepper [linear]="true" #stepper>
+    <mat-step [stepControl]="customForm">
+      <ng-template matStepLabel>Main info</ng-template>
+      <app-edit-first-step (send)="send()" [customForm]="customForm" />
+    </mat-step>
+    <mat-step [optional]="secondStepOptional" [stepControl]="addFieldForm" label="Add custom fields">
+      <app-edit-second-step
+        [addFieldForm]="addFieldForm"
+        [addFieldDisabled]="addFieldDisabled"
+        [$customFields]="$customFields"
+        (addField)="addField()"
+        (applyEdit)="applyEdit($event)"
+        (toggleFieldEdit)="toggleFieldEdit($event)"
+        (deleteField)="deleteField($event)" />
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <app-edit-third-step (reset)="stepper.reset()" (send)="send()" />
+    </mat-step>
+  </mat-stepper>
+</div>
