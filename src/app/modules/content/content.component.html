@@ -1,9 +1,9 @@
-<app-header [sideNav]="sideNav" class="header"  />
+<app-header [sideNav]="sideNav" #header class="header"  />
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav class="sidenav-sidenav" #sideNav>
     <ul>
       @for(i of menuItems; track $index) {
-      <li (click)="sideNav.toggle()" routerLinkActive="active" [routerLink]="i.link">
+      <li (click)="header.closeMenu()" routerLinkActive="active" [routerLink]="i.link">
         <mat-icon>{{ i.icon }}</mat-icon>
         {{ i.name }}
       </li>

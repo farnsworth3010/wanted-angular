@@ -1,6 +1,10 @@
 <mat-card>
   <mat-card-content>
     <h1>Settings</h1>
+    <div class="profile-info">
+      <img class="profile-photo" appImageFallback fallbackUrl="../../../assets/avatar.png" [src]="userData?.photoURL" />
+      <span class="user-firstname">{{ userData?.email }}</span>
+    </div>
     <mat-slide-toggle [disabled]="true" class="toggle" [formControl]="darkTheme">Dark theme</mat-slide-toggle>
     <br />
     <mat-slide-toggle class="toggle" [formControl]="animations">Animations</mat-slide-toggle>

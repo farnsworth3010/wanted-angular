@@ -39,20 +39,32 @@ export class HeaderComponent implements OnInit {
   @Input() hideUserData: boolean = false;
 
   userData: User | null = null;
-  checkWidth(): void {
+  isMobileWidth(): boolean {
     if (window.innerWidth < 769) {
+      return true;
+    }
+    return false;
+  }
+  ngOnInit(): void {
+    if (this.isMobileWidth()) {
       this.sideNav.mode = 'over';
       this.sideNav.close();
     } else {
       this.sideNav.mode = 'side';
       this.sideNav.open();
     }
-  }
-  ngOnInit(): void {
-    this.checkWidth();
+
     fromEvent(window, 'resize')
       .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe(() => this.checkWidth());
+      .subscribe(() => {
+        if (this.isMobileWidth()) {
+          this.sideNav.mode = 'over';
+          this.sideNav.close();
+        } else {
+          this.sideNav.mode = 'side';
+          this.sideNav.open();
+        }
+      });
 
     this.authService.stateItem$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: User | null) => {
       if (res) {
@@ -60,6 +72,12 @@ export class HeaderComponent implements OnInit {
       }
       this.changeDetectorRef.markForCheck();
     });
+  }
+  closeMenu(): void {
+    if (this.isMobileWidth()) {
+      this.sideNav.mode = 'over';
+      this.sideNav.close();
+    }
   }
 
   logOut(): void {
