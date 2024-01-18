@@ -1,7 +1,11 @@
 .wanted-right-menu {
   position: fixed;
   right: 0;
-  top: 64px;
+  top: 4rem;
+  @media screen and (max-width: 599px) {
+    top: 3.5rem;
+    
+  }
   padding: 1rem;
   box-sizing: border-box;
   width: 15.6rem;

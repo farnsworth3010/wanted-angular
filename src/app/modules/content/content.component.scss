@@ -1,10 +1,14 @@
 .sidenav-container {
   position: absolute;
-  top: var(--mat-toolbar-standard-height);
+  top: 4rem;
   bottom: 0;
   left: 0;
   right: 0;
   background: #eee;
+  @media screen and (max-width: 599px) {
+    top: 3.5rem;
+    
+  }
 }
 .header {
   z-index: 999;
@@ -58,5 +62,11 @@
   justify-content: center;
   mat-icon {
     margin-right: 0.5rem;
+  }
+}
+
+.log-out-mobile {
+  @media screen and (min-width: 769px){
+    display: none !important; 
   }
 }

@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, ElementRef, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { ChildrenOutletContexts, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { slideInAnimation } from '../../core/animations';
+import { AuthService } from '../../core/services/auth.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-content',
@@ -33,8 +35,20 @@ export class ContentComponent {
       name: 'Settings',
     },
   ];
-  constructor(private contexts: ChildrenOutletContexts) {}
+  constructor(
+    private contexts: ChildrenOutletContexts,
+    private authService: AuthService,
+    private destroyRef: DestroyRef
+  ) {}
   getAnimationsData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
+  }
+  logOut() {
+    this.authService
+      .signOut()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        this.authService.clearUser();
+      });
   }
 }

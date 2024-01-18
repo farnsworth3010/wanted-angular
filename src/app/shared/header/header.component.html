@@ -4,12 +4,19 @@
     FBI
   </figure>
   <span class="spacer"></span>
-  @if(!hideUserData) {
-  <span class="user-firstname">{{ userData?.email }}</span>
-  <img class="profile-photo" appImageFallback fallbackUrl="../../../assets/avatar.png" [src]="userData?.photoURL" />
-  <button (click)="logOut()" mat-raised-button color="primary">
-    Log out
-    <mat-icon>logout</mat-icon>
-  </button>
-  }
+  <div class="user-data">
+    @if(!hideUserData) {
+    <span class="user-firstname">{{ userData?.email }}</span>
+    <img class="profile-photo" appImageFallback fallbackUrl="../../../assets/avatar.png" [src]="userData?.photoURL" />
+    <button (click)="logOut()" mat-raised-button color="primary">
+      Log out
+      <mat-icon>logout</mat-icon>
+    </button>
+    }
+  </div>
+  <div>
+    <button (click)="toggleMenu()" mat-icon-button class="burger">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>

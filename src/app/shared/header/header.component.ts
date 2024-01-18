@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, Input, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  ElementRef,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +16,8 @@ import { CommonModule } from '@angular/common';
 import { User } from '../../core/interfaces/user';
 import { ImageFallbackDirective } from '../directives/image-fallback.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatSidenav } from '@angular/material/sidenav';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -25,10 +35,25 @@ export class HeaderComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef
   ) {}
 
+  @Input() sideNav!: MatSidenav;
   @Input() hideUserData: boolean = false;
-  userData: User | null = null;
 
+  userData: User | null = null;
+  checkWidth(): void {
+    if (window.innerWidth < 769) {
+      this.sideNav.mode = 'over';
+      this.sideNav.close();
+    } else {
+      this.sideNav.mode = 'side';
+      this.sideNav.open();
+    }
+  }
   ngOnInit(): void {
+    this.checkWidth();
+    fromEvent(window, 'resize')
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.checkWidth());
+
     this.authService.stateItem$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: User | null) => {
       if (res) {
         this.userData = res;
@@ -44,5 +69,8 @@ export class HeaderComponent implements OnInit {
       .subscribe(() => {
         this.authService.clearUser();
       });
+  }
+  toggleMenu(): void {
+    this.sideNav.toggle();
   }
 }
