@@ -29,6 +29,12 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  @media screen and (max-width: 768px) {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 .profile-photo {
   background: #cecece;
@@ -39,13 +45,14 @@
 
 .user-data {
   display: flex;
-  align-items: center; 
-  @media screen and (max-width: 768px){
+  align-items: center;
+  @media screen and (max-width: 768px) {
     display: none;
   }
 }
 .burger {
-  @media screen and (min-width: 769px){
+  margin-right: 1rem;
+  @media screen and (min-width: 769px) {
     display: none;
   }
 }

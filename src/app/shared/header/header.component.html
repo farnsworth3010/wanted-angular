@@ -1,7 +1,13 @@
 <mat-toolbar >
+  <div>
+    <button  #menuToggle (click)="toggleMenu()" mat-icon-button class="burger">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
   <figure routerLink="/content/home" class="logo-container">
     <img class="logo" src="../../../assets/logo.png" />
-    FBI
+    Wanted 
+    
   </figure>
   <span class="spacer"></span>
   <div class="user-data">
@@ -13,10 +19,5 @@
       <mat-icon>logout</mat-icon>
     </button>
     }
-  </div>
-  <div>
-    <button #menuToggle (click)="toggleMenu()" mat-icon-button class="burger">
-      <mat-icon>menu</mat-icon>
-    </button>
   </div>
 </mat-toolbar>

@@ -22,7 +22,7 @@ mat-grid-list {
 }
 .pagination {
   mat-paginator {
-    border-radius: 0.25rem;
+    border-radius: 1rem;
   }
 }
 mat-spinner {
@@ -74,6 +74,15 @@ form {
   gap: 1rem;
   padding-bottom: 1rem;
   position: relative;
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media screen and (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+.mat-mdc-card {
+  border-radius: 1rem;
 }
 .wanted-grid .wanted-grid-tile mat-card {
   height: 100%;

@@ -3,6 +3,17 @@ mat-card {
 }
 .home_logo {
   width: 100%;
+  max-width: 500px;
   border-radius: 3px;
+  margin: 2rem auto;
+  display: block;
   filter: brightness(0.8);
+}
+
+.mobile-wanted-link {
+  margin-top: 1rem;
+}
+.mat-mdc-card {
+  border-radius: 1rem;
+
 }

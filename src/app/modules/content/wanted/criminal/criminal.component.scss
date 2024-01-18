@@ -20,18 +20,19 @@ mat-card-actions {
   }
 }
 .wanted-photo {
-  width: 10vw;
-  height: 10vw;
+  width: 50%;
+  height: auto;
   object-fit: cover;
   margin-right: 1rem;
   border-radius: 0.25rem;
   background-color: #cecece;
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 0.7rem;
+  // min-width: 15rem;
   @media screen and (max-width: 768px) {
     width: 50%;
     height: auto;
-    margin: 0 auto;
-    margin-bottom: 0.7rem;
-    display: block
   }
 }
 mat-card {
@@ -56,6 +57,9 @@ mat-card-content {
 
 .details-mobile {
   @media screen and (min-width: 769px) {
-    display: none; 
+    display: none;
   }
+}
+.mat-mdc-card {
+  border-radius: 1rem;
 }
