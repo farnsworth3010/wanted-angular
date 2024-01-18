@@ -11,6 +11,9 @@ mat-card {
   display: flex;
   margin-bottom: 1rem;
   align-items: center;
+  @media screen and (min-width: 769px){
+    display: none; 
+  }
 }
 .profile-photo {
   background: #cecece;

@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -6,10 +7,11 @@ import {
   ElementRef,
   Input,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButton, MatButtonModule, MatIconButton } from '@angular/material/button';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { CommonModule } from '@angular/common';
@@ -28,7 +30,7 @@ import { isMobileWidth } from '../../core/utils/is-mobile';
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
   constructor(
     public router: Router,
     private authService: AuthService,
@@ -39,8 +41,9 @@ export class HeaderComponent implements OnInit {
   @Input() sideNav!: MatSidenav;
   @Input() hideUserData: boolean = false;
 
-  userData: User | null = null;
-  ngOnInit(): void {
+  @ViewChild('menuToggle') menuToggle!: MatIconButton;
+
+  sideNavMobileCheck(): void {
     if (isMobileWidth()) {
       this.sideNav.mode = 'over';
       this.sideNav.close();
@@ -48,17 +51,18 @@ export class HeaderComponent implements OnInit {
       this.sideNav.mode = 'side';
       this.sideNav.open();
     }
+  }
 
+  userData: User | null = null;
+
+  ngAfterViewInit(): void {}
+
+  ngOnInit(): void {
+    this.sideNavMobileCheck();
     fromEvent(window, 'resize')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        if (isMobileWidth()) {
-          this.sideNav.mode = 'over';
-          this.sideNav.close();
-        } else {
-          this.sideNav.mode = 'side';
-          this.sideNav.open();
-        }
+        this.sideNavMobileCheck();
       });
 
     this.authService.stateItem$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: User | null) => {
@@ -68,11 +72,13 @@ export class HeaderComponent implements OnInit {
       this.changeDetectorRef.markForCheck();
     });
   }
+
   closeMenu(): void {
     if (isMobileWidth()) {
       this.sideNav.mode = 'over';
       this.sideNav.close();
     }
+    this.menuToggle._elementRef.nativeElement.blur();
   }
 
   logOut(): void {
@@ -83,6 +89,7 @@ export class HeaderComponent implements OnInit {
         this.authService.clearUser();
       });
   }
+
   toggleMenu(): void {
     this.sideNav.toggle();
   }

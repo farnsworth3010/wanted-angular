@@ -11,13 +11,13 @@
       <mat-form-field class="form-input password-input">
         <mat-label>password</mat-label>
         <input formControlName="password" [type]="hidePassword ? 'password' : 'text'" matInput />
-        <!-- fix hide password -->
         <button
           mat-icon-button
           matSuffix
           (click)="hidePassword = !hidePassword"
           [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hidePassword"
+          type="button"
           tabindex="-1">
           <mat-icon>
             {{ hidePassword ? 'visibility_off' : 'visibility' }}
