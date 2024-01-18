@@ -1,13 +1,4 @@
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  Inject,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Crime } from '../../../core/interfaces/crime';
 import { ImageFallbackDirective } from '../../directives/image-fallback.directive';
@@ -23,9 +14,5 @@ import { DefaultFieldValuePipe } from '../../pipes/default-field-value.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailsDialogComponent {
-  constructor(
-    @Inject(MAT_DIALOG_DATA) public data: Crime,
-    private dialog: MatDialogRef<DetailsDialogComponent>,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: Crime) {}
 }

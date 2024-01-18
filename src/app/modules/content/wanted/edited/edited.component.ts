@@ -74,6 +74,15 @@ export class EditedComponent implements OnInit {
 
   selectPerson(id: number): void {
     this.wantedService.selectedPerson = this.data[id];
+    if (isMobileWidth()) {
+      this.dialog.open(DetailsDialogComponent, {
+        width: '95vw',
+        enterAnimationDuration: 300,
+        exitAnimationDuration: 300,
+        autoFocus: false,
+        data: this.wantedService.selectedPerson,
+      });
+    }
     this.changeDetector.markForCheck();
   }
 }
