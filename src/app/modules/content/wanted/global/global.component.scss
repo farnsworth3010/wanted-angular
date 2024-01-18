@@ -45,6 +45,7 @@ mat-tab-group {
   padding-bottom: 0;
   margin-bottom: 1rem;
   display: flex;
+  flex-wrap: wrap;
 }
 mat-form-field {
   width: fit-content;
@@ -61,6 +62,7 @@ mat-form-field {
 form {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 .form-input {
   margin-right: 1rem;
@@ -97,4 +99,6 @@ form {
   img {
     width: 10rem;
   }
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }

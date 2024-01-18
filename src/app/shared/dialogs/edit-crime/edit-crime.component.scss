@@ -6,3 +6,9 @@
 .sex-toggle {
   margin-right: 1rem;
 }
+.mat-horizontal-content-container {
+  padding: 0;
+} 
+:host ::ng-deep .mat-horizontal-content-container {
+  padding:0 !important;
+}

@@ -40,6 +40,10 @@ export class CriminalComponent {
   public selectPerson(i: number): void {
     this.personClick.emit(i);
   }
+  public selectPersonFromBtn($event: Event, i: number): void {
+    $event.stopPropagation();
+    this.selectPerson(i);
+  }
 
   public editHandle($event: Event, tr: Crime): void {
     $event.stopPropagation();

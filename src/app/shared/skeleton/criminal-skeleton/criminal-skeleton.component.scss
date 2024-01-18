@@ -24,6 +24,13 @@
   margin-right: 1rem;
   border-radius: 0.25rem;
   background-color: #cecece;
+  @media screen and (max-width: 768px) {
+    width: 50vw;
+    height: 50vw;
+    margin: 0 auto;
+    margin-bottom: 0.7rem;
+    display: block
+  }
 }
 mat-card {
   width: 100%;
@@ -43,6 +50,15 @@ mat-card {
 }
 mat-card-content {
   padding: 0;
+}
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .info-line {
+    width: 5rem;
+    margin-left: 1rem;
+  }
 }
 
 .info-line {

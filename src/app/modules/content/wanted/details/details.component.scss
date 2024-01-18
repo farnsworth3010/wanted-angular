@@ -2,6 +2,7 @@
   position: fixed;
   right: 0;
   top: 4rem;
+  z-index: 1;
   @media screen and (max-width: 599px) {
     top: 3.5rem;
     
@@ -30,6 +31,9 @@
       padding-bottom: 0.5rem;
       border-bottom: 1px solid #cecece;
     }
+  }
+  @media screen and (max-width: 768px){
+    display: none; 
   }
 }
 .wanted-photo {

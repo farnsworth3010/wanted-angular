@@ -6,6 +6,18 @@
     </div>
   </mat-card-title>
   <mat-card-content>
+    <div class="info">
+      <p>Sex: {{ tr.sex | defaultFieldValue }}</p>
+      <p>Hair: {{ tr.hair | defaultFieldValue }}</p>
+      <p>Race: {{ tr.race | defaultFieldValue }}</p>
+      <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button class="details-mobile" (click)="selectPersonFromBtn($event, i)" mat-button color="primary">
+      Details
+      <mat-icon>info</mat-icon>
+    </button>
     @if(openToEdit){ @if(tr.editing) {
     <button mat-button color="primary" class="deleting">
       <mat-spinner [diameter]="15" />
@@ -30,11 +42,5 @@
       <mat-icon>visibility</mat-icon>
     </button>
     }
-    <div class="info">
-      <p>Sex: {{ tr.sex | defaultFieldValue }}</p>
-      <p>Hair: {{ tr.hair | defaultFieldValue }}</p>
-      <p>Race: {{ tr.race | defaultFieldValue }}</p>
-      <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
-    </div>
-  </mat-card-content>
+  </mat-card-actions>
 </mat-card>

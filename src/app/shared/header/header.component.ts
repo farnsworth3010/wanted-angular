@@ -18,6 +18,7 @@ import { ImageFallbackDirective } from '../directives/image-fallback.directive';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav } from '@angular/material/sidenav';
 import { fromEvent } from 'rxjs';
+import { isMobileWidth } from '../../core/utils/is-mobile';
 
 @Component({
   selector: 'app-header',
@@ -39,14 +40,8 @@ export class HeaderComponent implements OnInit {
   @Input() hideUserData: boolean = false;
 
   userData: User | null = null;
-  isMobileWidth(): boolean {
-    if (window.innerWidth < 769) {
-      return true;
-    }
-    return false;
-  }
   ngOnInit(): void {
-    if (this.isMobileWidth()) {
+    if (isMobileWidth()) {
       this.sideNav.mode = 'over';
       this.sideNav.close();
     } else {
@@ -57,7 +52,7 @@ export class HeaderComponent implements OnInit {
     fromEvent(window, 'resize')
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(() => {
-        if (this.isMobileWidth()) {
+        if (isMobileWidth()) {
           this.sideNav.mode = 'over';
           this.sideNav.close();
         } else {
@@ -74,7 +69,7 @@ export class HeaderComponent implements OnInit {
     });
   }
   closeMenu(): void {
-    if (this.isMobileWidth()) {
+    if (isMobileWidth()) {
       this.sideNav.mode = 'over';
       this.sideNav.close();
     }

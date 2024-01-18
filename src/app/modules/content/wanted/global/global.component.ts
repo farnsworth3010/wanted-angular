@@ -9,7 +9,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { WantedService } from '../../../../core/services/wanted.service';
 import { ImageFallbackDirective } from '../../../../shared/directives/image-fallback.directive';
-import { DetailsComponent } from '../details/details.component';
 import { Subscription, debounceTime, switchMap, tap } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
@@ -23,6 +22,9 @@ import { Crime } from '../../../../core/interfaces/crime';
 import { NumberInput } from '@angular/cdk/coercion';
 import { WantedRes } from '../../../../core/interfaces/wanted-result';
 import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
+import { isMobileWidth } from '../../../../core/utils/is-mobile';
+import { DetailsComponent } from '../details/details.component';
+import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialog/details-dialog.component';
 @Component({
   selector: 'app-global',
   standalone: true,
@@ -72,7 +74,6 @@ export class GlobalComponent implements OnInit {
   pageSize: NumberInput = 20;
   editedIds: string[] = [];
   edited!: Crime[];
-
   handlePageEvent({ pageIndex }: PageEvent): void {
     this.wantedService.data = null;
     this.wantedService.selectedPerson = null;
@@ -81,12 +82,22 @@ export class GlobalComponent implements OnInit {
 
   selectPerson(id: number): void {
     this.wantedService.selectedPerson = this.wantedService.data![id];
+    if (isMobileWidth()) {
+      this.dialog.open(DetailsDialogComponent, {
+        width: '95vw',
+        enterAnimationDuration: 300,
+        exitAnimationDuration: 300,
+        autoFocus: false,
+        data: this.wantedService.selectedPerson,
+      });
+    }
   }
 
   editHandle(tr: Crime) {
     this.dialog
       .open(EditCrimeComponent, {
-        width: '50vw',
+        width: isMobileWidth() ? '95vw' : '50vw',
+        maxWidth: '95vw',
         enterAnimationDuration: 300,
         exitAnimationDuration: 300,
         data: tr,

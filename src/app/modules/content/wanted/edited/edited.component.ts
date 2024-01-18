@@ -8,6 +8,9 @@ import { CriminalComponent } from '../criminal/criminal.component';
 import { Crime } from '../../../../core/interfaces/crime';
 import { DocumentData } from '@angular/fire/compat/firestore';
 import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
+import { isMobileWidth } from '../../../../core/utils/is-mobile';
+import { MatDialog } from '@angular/material/dialog';
+import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialog/details-dialog.component';
 
 @Component({
   selector: 'app-edited',
@@ -18,7 +21,11 @@ import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditedComponent implements OnInit {
-  constructor(public wantedService: WantedService, private changeDetector: ChangeDetectorRef) {}
+  constructor(
+    public wantedService: WantedService,
+    private changeDetector: ChangeDetectorRef,
+    private dialog: MatDialog
+  ) {}
 
   data: Crime[] = [];
 
@@ -38,6 +45,16 @@ export class EditedComponent implements OnInit {
           this.wantedService.selectedPerson = this.data.find(
             (obj: Crime) => obj.uid === this.wantedService.selectedPerson?.uid
           )!;
+
+          if (isMobileWidth()) {
+            this.dialog.open(DetailsDialogComponent, {
+              width: '95vw',
+              enterAnimationDuration: 300,
+              exitAnimationDuration: 300,
+              autoFocus: false,
+              data: this.wantedService.selectedPerson,
+            });
+          }
         } else {
           this.wantedService.selectedPerson = this.data[0];
         }

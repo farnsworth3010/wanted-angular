@@ -2,10 +2,12 @@
   cursor: pointer;
 }
 
-.edit-button {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
+mat-card-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  padding: 0;
+  margin-top: auto;
 }
 .deleting {
   position: absolute;
@@ -24,6 +26,13 @@
   margin-right: 1rem;
   border-radius: 0.25rem;
   background-color: #cecece;
+  @media screen and (max-width: 768px) {
+    width: 50%;
+    height: auto;
+    margin: 0 auto;
+    margin-bottom: 0.7rem;
+    display: block
+  }
 }
 mat-card {
   width: 100%;
@@ -43,4 +52,10 @@ mat-card {
 }
 mat-card-content {
   padding: 0;
+}
+
+.details-mobile {
+  @media screen and (min-width: 769px) {
+    display: none; 
+  }
 }
