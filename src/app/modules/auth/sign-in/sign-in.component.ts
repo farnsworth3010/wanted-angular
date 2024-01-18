@@ -49,7 +49,12 @@ export class SigninComponent {
         next: (result: FirebaseCredential) => {
           this.authService.setUserData(result.user!);
           this.snackBar.dismiss();
-          this.router.navigateByUrl('/content/home');
+          if (result.user?.emailVerified) {
+            this.router.navigateByUrl('/content/home');
+          }
+          else {
+            this.snackBar.open('Please, verify your email first', 'dismiss', {duration: 3000})
+          }
         },
         error: (error: Error) => {
           this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
