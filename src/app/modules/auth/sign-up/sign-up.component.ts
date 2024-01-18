@@ -57,6 +57,7 @@ export class SignupComponent {
       this.authService.signUp(email!, password!).subscribe({
         next: (result: FirebaseCredential) => {
           this.authService.sendVerificationMail();
+          this.router.navigateByUrl('/auth/verify-email-address')
           this.authService.setUserData(result.user!);
         },
         error: (error: Error) => {

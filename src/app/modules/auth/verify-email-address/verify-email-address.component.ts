@@ -6,11 +6,13 @@ import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { User } from '../../../core/interfaces/user';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-verify-email-address',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, RouterLink],
+  imports: [CommonModule, MatButtonModule, RouterLink, MatCardModule ],
   templateUrl: './verify-email-address.component.html',
   styleUrl: './verify-email-address.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
