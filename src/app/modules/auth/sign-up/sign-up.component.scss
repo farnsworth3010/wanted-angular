@@ -19,6 +19,10 @@
   padding: 0;
   display: flex;
   justify-content: flex-end;
+  @media screen and (max-width: 350px) {
+    justify-content: space-between;
+    width: 100%;
+  }
 }
 .form-guest {
   margin-right: 1rem;

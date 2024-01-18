@@ -26,10 +26,10 @@
       </mat-form-field>
       <a class="forgot-password" routerLink="/auth/forgot-password">forgot password</a>
       <mat-card-actions class="form-actions">
-        <div>
-          <button class="form-guest" type="button" mat-button (click)="signInAsGuest()">Guest</button>
+        <div class="form-guest">
+          <button  type="button" mat-button (click)="signInAsGuest()">Guest</button>
         </div>
-        <div>
+        <div class="actions-right">
           <button type="button" mat-button (click)="google()">GAuth</button>
           <button class="form-guest" type="button" mat-button routerLink="/auth/sign-up">Sign up</button>
           <button color="primary" class="form-sign-in" type="submit" mat-raised-button>Sign in</button>
