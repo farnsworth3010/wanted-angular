@@ -1,28 +1,33 @@
-<div class="content">
-  <ul #list>
-    <li>
-      <img class="wanted-photo" appImageFallback [src]="data.images![0].original" />
-      <h2 class="title">{{ data.title }}</h2>
-    </li>
-    <li>Sex: {{ data.sex | defaultFieldValue }}</li>
-    <li>Age min: {{ data.age_min | defaultFieldValue }}</li>
-    <li>Age max: {{ data.age_max | defaultFieldValue }}</li>
-    <li>Hair: {{ data.hair | defaultFieldValue }}</li>
-    <li>Race: {{ data.race | defaultFieldValue }}</li>
-    <li>Eyes: {{ data.eyes | defaultFieldValue }}</li>
-    <li>Height max: {{ data.height_max | defaultFieldValue }}</li>
-    <li>
-      Publication:
-      {{ data.publication | date | defaultFieldValue }}
-    </li>
-    <li>
-      Caution:
-      <span [innerHTML]="data.caution | defaultFieldValue"></span>
-    </li>
-    <li>Reward: {{ data.reward_text | defaultFieldValue }}</li>
-    @if(data.customFields?.length) { @for(field of data.customFields; track $index ) {
-    <li>{{ field.name }}: {{ field.value }}</li>
-    } }
-    <a [href]="data.url" target="_blank">Link</a>
-  </ul>
+<h1 mat-dialog-title>
+  {{ data.title }}
+</h1>
+<ul mat-dialog-content #list>
+  <li>
+    <img class="wanted-photo" appImageFallback [src]="data.images![0].original" />
+  </li>
+  <li>Sex: {{ data.sex | defaultFieldValue }}</li>
+  <li>Age min: {{ data.age_min | defaultFieldValue }}</li>
+  <li>Age max: {{ data.age_max | defaultFieldValue }}</li>
+  <li>Hair: {{ data.hair | defaultFieldValue }}</li>
+  <li>Race: {{ data.race | defaultFieldValue }}</li>
+  <li>Eyes: {{ data.eyes | defaultFieldValue }}</li>
+  <li>Height max: {{ data.height_max | defaultFieldValue }}</li>
+  <li>
+    Publication:
+    {{ data.publication | date | defaultFieldValue }}
+  </li>
+  <li>
+    Caution:
+    <span [innerHTML]="data.caution | defaultFieldValue"></span>
+  </li>
+  <li>Reward: {{ data.reward_text | defaultFieldValue }}</li>
+  @if(data.customFields?.length) { @for(field of data.customFields; track $index ) {
+  <li>{{ field.name }}: {{ field.value }}</li>
+  } }
+  <a [href]="data.url" target="_blank">Link</a>
+</ul>
+<div mat-dialog-actions align="end">
+  <button mat-raised-button [mat-dialog-close]="true">Edit</button>
+  <button mat-raised-button (click)="copyLink(data.url)">Copy link</button>
+  <button mat-raised-button [mat-dialog-close]="false" color="primary">Close</button>
 </div>

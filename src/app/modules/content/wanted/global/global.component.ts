@@ -83,27 +83,37 @@ export class GlobalComponent implements OnInit {
   selectPerson(id: number): void {
     this.wantedService.selectedPerson = this.wantedService.data![id];
     if (isMobileWidth()) {
-      this.dialog.open(DetailsDialogComponent, {
-        width: '95vw',
-        enterAnimationDuration: 300,
-        exitAnimationDuration: 300,
-        autoFocus: false,
-        data: this.wantedService.selectedPerson,
-      });
+      this.dialog
+        .open(DetailsDialogComponent, {
+          width: '90vw',
+          maxWidth: '90vw',
+          height: '80vh',
+          maxHeight: '80vh',
+          enterAnimationDuration: 300,
+          exitAnimationDuration: 300,
+          autoFocus: false,
+          data: this.wantedService.selectedPerson,
+        })
+        .afterClosed()
+        .subscribe(editClicked => {
+          if (editClicked) {
+            this.editHandle(this.wantedService.selectedPerson!);
+          }
+        });
     }
   }
 
   editHandle(tr: Crime) {
     this.dialog
       .open(EditCrimeComponent, {
-        width: isMobileWidth() ? '95vw' : '50vw',
-        maxWidth: '95vw',
+        width: isMobileWidth() ? '90vw' : '50vw',
+        maxWidth: '90vw',
         enterAnimationDuration: 300,
         exitAnimationDuration: 300,
         data: tr,
       })
       .afterClosed()
-      .subscribe((wasEdited: boolean) => {
+      .subscribe(({wasEdited, data}) => {
         const newEdited = this.editedIds;
 
         if (wasEdited) {

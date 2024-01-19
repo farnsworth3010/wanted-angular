@@ -62,7 +62,7 @@ export interface Crime {
   status: null | string;
   build: null | string;
   nationality: null | string;
-  url: null | string;
+  url: string;
   poster_classification: null | string;
   complexion: null | string;
   uid: string;

@@ -6,7 +6,9 @@
       <app-criminal
         [tr]="tr"
         [openToDelete]="true"
+        [openToEdit]="true"
         [i]="$index"
+        (editClick)="editHandle(tr)"
         (personClick)="selectPerson($index)"
         (deleteClick)="deletePerson($event)" />
     </div>

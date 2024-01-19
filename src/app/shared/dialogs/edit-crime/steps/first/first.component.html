@@ -1,5 +1,4 @@
 <form class="form" [formGroup]="customForm">
-  <div>
     <mat-button-toggle-group class="sex-toggle" formControlName="sex" name="fontStyle" aria-label="Font Style">
       <mat-button-toggle value="Male">
         <i class="fa-solid fa-mars"></i>
@@ -14,8 +13,4 @@
       <input matInput [placeholder]="field.placeholder" [formControlName]="field.formControlName" />
     </mat-form-field>
     }
-  </div>
-  <div class="actions">
-    <button mat-button matStepperNext>Next</button>
-  </div>
 </form>

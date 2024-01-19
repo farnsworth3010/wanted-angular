@@ -11,6 +11,7 @@ import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-
 import { isMobileWidth } from '../../../../core/utils/is-mobile';
 import { MatDialog } from '@angular/material/dialog';
 import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialog/details-dialog.component';
+import { EditCrimeComponent } from '../../../../shared/dialogs/edit-crime/edit-crime.component';
 
 @Component({
   selector: 'app-edited',
@@ -47,13 +48,23 @@ export class EditedComponent implements OnInit {
           )!;
 
           if (isMobileWidth()) {
-            this.dialog.open(DetailsDialogComponent, {
-              width: '95vw',
-              enterAnimationDuration: 300,
-              exitAnimationDuration: 300,
-              autoFocus: false,
-              data: this.wantedService.selectedPerson,
-            });
+            this.dialog
+              .open(DetailsDialogComponent, {
+                width: '90vw',
+                maxWidth: '90vw',
+                height: '80vh',
+                maxHeight: '80vh',
+                enterAnimationDuration: 600,
+                exitAnimationDuration: 300,
+                autoFocus: false,
+                data: this.wantedService.selectedPerson,
+              })
+              .afterClosed()
+              .subscribe(editClick => {
+                if (editClick) {
+                  this.editHandle(this.wantedService.selectedPerson!);
+                }
+              });
           }
         } else {
           this.wantedService.selectedPerson = this.data[0];
@@ -72,16 +83,46 @@ export class EditedComponent implements OnInit {
     });
   }
 
+  editHandle(tr: Crime) {
+    this.dialog
+      .open(EditCrimeComponent, {
+        width: isMobileWidth() ? '90vw' : '50vw',
+        maxWidth: '90vw',
+        enterAnimationDuration: 300,
+        exitAnimationDuration: 300,
+        data: tr,
+      })
+      .afterClosed()
+      .subscribe((res?: { wasEdited: boolean; data?: Crime }) => {
+        if (res?.wasEdited) {
+          const id = this.data.findIndex((obj: Crime) => res.data!.uid === obj.uid);
+          const newData = this.data;
+          newData[id] = { ...this.data[id], ...res.data! };
+          this.data = newData;
+          this.changeDetector.markForCheck();
+        }
+      });
+  }
   selectPerson(id: number): void {
     this.wantedService.selectedPerson = this.data[id];
     if (isMobileWidth()) {
-      this.dialog.open(DetailsDialogComponent, {
-        width: '95vw',
-        enterAnimationDuration: 300,
-        exitAnimationDuration: 300,
-        autoFocus: false,
-        data: this.wantedService.selectedPerson,
-      });
+      this.dialog
+        .open(DetailsDialogComponent, {
+          width: '90vw',
+          maxWidth: '90vw',
+          height: '80vh',
+          maxHeight: '80vh',
+          enterAnimationDuration: 300,
+          exitAnimationDuration: 300,
+          autoFocus: false,
+          data: this.wantedService.selectedPerson,
+        })
+        .afterClosed()
+        .subscribe(editClick => {
+          if (editClick) {
+            this.editHandle(this.wantedService.selectedPerson!);
+          }
+        });
     }
     this.changeDetector.markForCheck();
   }

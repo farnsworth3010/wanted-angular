@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -39,6 +39,7 @@ import { BehaviorSubject } from 'rxjs';
     EditFirstStepComponent,
     EditSecondStepComponent,
     EditThirdStepComponent,
+    MatDialogModule,
   ],
   templateUrl: './edit-crime.component.html',
   styleUrl: './edit-crime.component.scss',
@@ -76,7 +77,7 @@ export class EditCrimeComponent {
   secondStepOptional: boolean = true;
 
   send(): void {
-    const { title, sex, hair, race, eyes, reward_text } = this.data;
+    const { title, sex, hair, race, eyes, reward_text, uid } = this.data;
     const {
       title: formTitle,
       sex: formSex,
@@ -94,28 +95,25 @@ export class EditCrimeComponent {
       reward_text !== formReward_text ||
       this.addFieldForm.get('fields')?.value.length
     ) {
-      this.dialog.close(true);
       this.snackBar.dismiss();
       const fields = this.addFieldForm.get('fields') as FormArray;
-
-      this.wantedService
-        .uploadEdited(this.data.uid, this.data, {
-          title: formTitle!,
-          sex: formSex!,
-          hair: formHair!,
-          race: formRace!,
-          eyes: formEyes!,
-          reward_text: formReward_text!,
-          customFields: Object.keys(this.customFields).map((name: string, index) => {
-            return {
-              name,
-              value: fields.at(index).getRawValue(),
-            };
-          }),
-        })
-        .subscribe(() => {
-          this.dialog.close(true);
-        });
+      const newData = {
+        title: formTitle!,
+        sex: formSex!,
+        hair: formHair!,
+        race: formRace!,
+        eyes: formEyes!,
+        reward_text: formReward_text!,
+        uid,
+        customFields: Object.keys(this.customFields).map((name: string, index) => {
+          return {
+            name,
+            value: fields.at(index).getRawValue(),
+          };
+        }),
+      };
+      this.dialog.close({ wasEdited: true, data: newData });
+      this.wantedService.uploadEdited(this.data.uid, this.data, newData).subscribe(() => {});
     } else {
       this.snackBar.open("You haven't changed anything!", 'dismiss', {
         duration: 3000,
@@ -124,7 +122,7 @@ export class EditCrimeComponent {
   }
 
   addField() {
-    this.secondStepOptional = false
+    this.secondStepOptional = false;
     const nameControl = this.addFieldForm.get('name');
     const typeControl = this.addFieldForm.get('type');
     const fields = this.addFieldForm.get('fields') as FormArray;
@@ -165,7 +163,7 @@ export class EditCrimeComponent {
     this.addFieldDisabled = false;
     this.customFieldsSubject.next(this.customFields);
     if (!fields.length) {
-      this.secondStepOptional = true
+      this.secondStepOptional = true;
     }
   }
 
