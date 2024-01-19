@@ -125,10 +125,10 @@ export class GlobalComponent implements OnInit {
         data: tr,
       })
       .afterClosed()
-      .subscribe(({ wasEdited, data }) => {
+      .subscribe((value?: { wasEdited?: boolean }) => {
         const newEdited = this.editedIds;
 
-        if (wasEdited) {
+        if (value?.wasEdited) {
           newEdited.push(tr.uid);
         }
 
