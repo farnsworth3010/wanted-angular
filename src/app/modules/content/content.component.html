@@ -21,6 +21,7 @@
     </ul>
   </mat-sidenav>
   <mat-sidenav-content #sideNavContent [@routeAnimations]="getAnimationsData()" class="sidenav-content">
+    <app-go-top [scrollElement]="sideNavContent" />
     <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -34,6 +34,7 @@ import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-
 import { isMobileWidth } from '../../../../core/utils/is-mobile';
 import { DetailsComponent } from '../details/details.component';
 import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialog/details-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-global',
   standalone: true,
@@ -60,7 +61,7 @@ import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialo
   styleUrl: './global.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GlobalComponent implements OnInit{
+export class GlobalComponent implements OnInit {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute,
@@ -68,7 +69,8 @@ export class GlobalComponent implements OnInit{
     private destroyRef: DestroyRef,
     private dialog: MatDialog,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {}
 
   debTime = 1000;
@@ -181,6 +183,9 @@ export class GlobalComponent implements OnInit{
         next: (res: WantedRes) => {
           this.wantedService.updateData(res);
           this.changeDetector.markForCheck();
+        },
+        error: (error: Error) => {
+          this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
         },
         complete: () => {
           this.wantedService.filters = null;

@@ -17,6 +17,11 @@ mat-grid-list {
     opacity: 0.5;
   }
 }
+.pagination-bottom {
+  @media screen and (max-width: 768px) {
+    margin-bottom: 4rem; 
+  }
+}
 .pagination-top {
   margin-bottom: 1rem;
 }

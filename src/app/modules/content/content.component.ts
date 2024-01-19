@@ -14,17 +14,18 @@ import { HeaderComponent } from '../../shared/header/header.component';
 import { slideInAnimation } from '../../core/animations';
 import { AuthService } from '../../core/services/auth.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { GoTopComponent } from '../../shared/go-top/go-top.component';
 
 @Component({
   selector: 'app-content',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, HeaderComponent, MatSidenavModule, RouterLink, MatIconModule, RouterLinkActive],
+  imports: [RouterOutlet, CommonModule, HeaderComponent, MatSidenavModule, RouterLink, MatIconModule, RouterLinkActive, GoTopComponent],
   templateUrl: './content.component.html',
   styleUrl: './content.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [slideInAnimation],
 })
-export class ContentComponent implements  OnInit {
+export class ContentComponent implements OnInit {
   menuItems = [
     {
       link: '/content/home',

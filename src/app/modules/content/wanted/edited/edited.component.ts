@@ -1,17 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { WantedService } from '../../../../core/services/wanted.service';
-import { DetailsComponent } from '../details/details.component';
+import { DocumentData } from '@angular/fire/compat/firestore';
+import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { delay } from 'rxjs';
-import { CriminalComponent } from '../criminal/criminal.component';
 import { Crime } from '../../../../core/interfaces/crime';
-import { DocumentData } from '@angular/fire/compat/firestore';
-import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
+import { WantedService } from '../../../../core/services/wanted.service';
 import { isMobileWidth } from '../../../../core/utils/is-mobile';
-import { MatDialog } from '@angular/material/dialog';
 import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialog/details-dialog.component';
 import { EditCrimeComponent } from '../../../../shared/dialogs/edit-crime/edit-crime.component';
+import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
+import { CriminalComponent } from '../criminal/criminal.component';
+import { DetailsComponent } from '../details/details.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-edited',
@@ -25,7 +26,8 @@ export class EditedComponent implements OnInit {
   constructor(
     public wantedService: WantedService,
     private changeDetector: ChangeDetectorRef,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   data: Crime[] = [];
@@ -35,42 +37,48 @@ export class EditedComponent implements OnInit {
     this.wantedService
       .getEdited()
       .pipe(delay(1000))
-      .subscribe((edited: DocumentData) => {
-        this.wantedService.fetchingItem.next(false);
-        edited['forEach']((doc: DocumentData, index: number) => {
-          this.data.push(doc['data']());
-        });
+      .subscribe({
+        next: (edited: DocumentData) => {
+          this.wantedService.fetchingItem.next(false);
+          edited['forEach']((doc: DocumentData, index: number) => {
+            this.data.push(doc['data']());
+          });
 
-        if (this.wantedService.editsOpenedFromGlobalItem.value) {
-          this.wantedService.editsOpenedFromGlobalItem.next(false);
-          this.wantedService.selectedPerson = this.data.find(
-            (obj: Crime) => obj.uid === this.wantedService.selectedPerson?.uid
-          )!;
+          if (this.wantedService.editsOpenedFromGlobalItem.value) {
+            this.wantedService.editsOpenedFromGlobalItem.next(false);
+            this.wantedService.selectedPerson = this.data.find(
+              (obj: Crime) => obj.uid === this.wantedService.selectedPerson?.uid
+            )!;
 
-          if (isMobileWidth()) {
-            this.dialog
-              .open(DetailsDialogComponent, {
-                width: '90vw',
-                maxWidth: '90vw',
-                height: '80vh',
-                maxHeight: '80vh',
-                enterAnimationDuration: 600,
-                exitAnimationDuration: 300,
-                autoFocus: false,
-                data: this.wantedService.selectedPerson,
-              })
-              .afterClosed()
-              .subscribe(editClick => {
-                if (editClick) {
-                  this.editHandle(this.wantedService.selectedPerson!);
-                }
-              });
+            if (isMobileWidth()) {
+              this.dialog
+                .open(DetailsDialogComponent, {
+                  width: '90vw',
+                  maxWidth: '90vw',
+                  height: '80vh',
+                  maxHeight: '80vh',
+                  enterAnimationDuration: 600,
+                  exitAnimationDuration: 300,
+                  autoFocus: false,
+                  data: this.wantedService.selectedPerson,
+                })
+                .afterClosed()
+                .subscribe(editClick => {
+                  if (editClick) {
+                    this.editHandle(this.wantedService.selectedPerson!);
+                  }
+                });
+            }
+          } else {
+            this.wantedService.selectedPerson = this.data[0];
           }
-        } else {
-          this.wantedService.selectedPerson = this.data[0];
-        }
 
-        this.changeDetector.markForCheck();
+          this.changeDetector.markForCheck();
+        },
+
+        error: (error: Error) => {
+          this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
+        },
       });
   }
 

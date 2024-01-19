@@ -30,13 +30,13 @@
           <mat-option value="black">black</mat-option>
         </mat-select>
       </mat-form-field>
-      <div class="age-range">
+      <!-- <div class="age-range">
         <p>Age range:</p>
         <mat-slider min="0" max="150" step="1" showTickMarks discrete>
           <input formControlName="age_min" value="0" matSliderStartThumb />
           <input formControlName="age_max" value="150" matSliderEndThumb />
         </mat-slider>
-      </div>
+      </div> -->
     </form>
   </mat-card>
   @if (!wantedService.fetchingItem.value) {
@@ -88,12 +88,9 @@
     <div class="wanted-grid-tile">
       <app-criminal-skeleton />
     </div>
-    <div class="wanted-grid-tile">
-      <app-criminal-skeleton />
-    </div>
   </div>
   } @if(wantedService.data?.length && !wantedService.fetchingItem.value) {
-  <div class="pagination">
+  <div class="pagination pagination-bottom">
     <mat-paginator
       #paginator
       class="demo-paginator"
