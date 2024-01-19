@@ -7,7 +7,6 @@
   background: #eee;
   @media screen and (max-width: 599px) {
     top: 3.5rem;
-    
   }
 }
 .header {
@@ -16,8 +15,8 @@
 .sidenav-sidenav {
   padding: 1rem;
   width: 12rem;
-  @media screen and (max-width: 768px){
-    width: 18rem; 
+  @media screen and (max-width: 768px) {
+    width: 18rem;
   }
   ul {
     list-style: none;
@@ -53,23 +52,12 @@
   transition: none !important;
 }
 .about-project {
-  position: absolute;
-  bottom: 3rem;
-  left: 50%;
-  transform: translateX(-50%);
   text-decoration: none;
-  color: #00000084;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: center;
-  mat-icon {
-    margin-right: 0.5rem;
-  }
+  color: #000000;
 }
 
 .log-out-mobile {
-  @media screen and (min-width: 769px){
-    display: none !important; 
+  @media screen and (min-width: 769px) {
+    display: none !important;
   }
 }

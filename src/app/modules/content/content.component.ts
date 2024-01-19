@@ -1,8 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, DestroyRef, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { ChildrenOutletContexts, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { MatSidenavContent, MatSidenavModule } from '@angular/material/sidenav';
+import {
+  ChildrenOutletContexts,
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
 import { HeaderComponent } from '../../shared/header/header.component';
 import { slideInAnimation } from '../../core/animations';
 import { AuthService } from '../../core/services/auth.service';
@@ -17,7 +24,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   changeDetection: ChangeDetectionStrategy.OnPush,
   animations: [slideInAnimation],
 })
-export class ContentComponent {
+export class ContentComponent implements  OnInit {
   menuItems = [
     {
       link: '/content/home',
@@ -38,11 +45,28 @@ export class ContentComponent {
   constructor(
     private contexts: ChildrenOutletContexts,
     private authService: AuthService,
-    private destroyRef: DestroyRef
+    private destroyRef: DestroyRef,
+    private router: Router
   ) {}
+
+  @ViewChild('sideNavContent') sideNavContent!: MatSidenavContent;
+
+  ngOnInit(): void {
+    this.router.events.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+      if (value instanceof NavigationEnd) {
+        this.sideNavContent.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: 'smooth',
+        });
+      }
+    });
+  }
+
   getAnimationsData() {
     return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
   }
+
   logOut() {
     this.authService
       .signOut()

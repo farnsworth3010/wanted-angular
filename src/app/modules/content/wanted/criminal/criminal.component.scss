@@ -20,8 +20,8 @@ mat-card-actions {
   }
 }
 .wanted-photo {
-  width: 50%;
-  height: auto;
+  width: 15vw;
+  height: 15vw;
   object-fit: cover;
   margin-right: 1rem;
   border-radius: 0.25rem;
@@ -30,9 +30,10 @@ mat-card-actions {
   display: block;
   margin-bottom: 0.7rem;
   // min-width: 15rem;
-  @media screen and (max-width: 768px) {
-    width: 50%;
-    height: auto;
+  min-height: 5rem;
+  @media screen and (max-width: 400px) {
+    width: 80vw;
+    height: 80vw;
   }
 }
 mat-card {

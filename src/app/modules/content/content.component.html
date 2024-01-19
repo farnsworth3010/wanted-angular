@@ -1,4 +1,4 @@
-<app-header [sideNav]="sideNav" #header class="header"  />
+<app-header [sideNav]="sideNav" #header class="header" />
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav class="sidenav-sidenav" #sideNav>
     <ul>
@@ -12,14 +12,15 @@
         <mat-icon>logout</mat-icon>
         Log out
       </li>
+      <a class="about-project" target="_blank" href="https://github.com/farnsworth3010/wanted-angular/">
+        <li>
+          <mat-icon>lightbulb</mat-icon>
+          GitHub
+        </li>
+      </a>
     </ul>
-    <a class="about-project" target="_blank" href="https://github.com/farnsworth3010/wanted-angular/">
-      <mat-icon>lightbulb</mat-icon>
-      About project
-    </a>
   </mat-sidenav>
-  <mat-sidenav-content [@routeAnimations]="getAnimationsData()" class="sidenav-content">
-    <!-- fix scroll -->
+  <mat-sidenav-content #sideNavContent [@routeAnimations]="getAnimationsData()" class="sidenav-content">
     <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -40,7 +40,7 @@
     </form>
   </mat-card>
   @if (!wantedService.fetchingItem.value) {
-  <div class="wanted-grid">
+  <div class="wanted-grid" #grid>
     @for(tr of wantedService.data; track $index) {
     <div class="wanted-grid-tile">
       <app-criminal
@@ -60,7 +60,7 @@
     }
   </div>
   } @else {
-  <div class="wanted-grid">
+  <div class="wanted-grid" #mockgrid>
     <div class="wanted-grid-tile">
       <app-criminal-skeleton />
     </div>

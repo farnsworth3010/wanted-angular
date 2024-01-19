@@ -7,7 +7,7 @@ import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getPerformance, providePerformance } from '@angular/fire/performance';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideRouter, withComponentInputBinding, withInMemoryScrolling } from '@angular/router';
 import { environment } from '../environments/environment';
 import { routes } from './app.routes';
 import { wantedInterceptor } from './core/interceptors/wanted-interceptor';
@@ -20,7 +20,14 @@ export const appConfig: ApplicationConfig = {
       useFactory: initializeApplication,
       multi: true,
     },
-    provideRouter(routes, withComponentInputBinding()),
+    provideRouter(
+      routes,
+      withComponentInputBinding(),
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'top',
+        anchorScrolling: 'enabled',
+      })
+    ),
     provideAnimations(),
     provideHttpClient(withInterceptors([wantedInterceptor])),
     importProvidersFrom(AngularFireModule.initializeApp(environment.firebase)),

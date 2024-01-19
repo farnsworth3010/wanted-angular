@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -51,7 +60,7 @@ import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialo
   styleUrl: './global.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class GlobalComponent implements OnInit {
+export class GlobalComponent implements OnInit{
   constructor(
     private changeDetector: ChangeDetectorRef,
     private activatedRoute: ActivatedRoute,
@@ -74,6 +83,7 @@ export class GlobalComponent implements OnInit {
   pageSize: NumberInput = 20;
   editedIds: string[] = [];
   edited!: Crime[];
+
   handlePageEvent({ pageIndex }: PageEvent): void {
     this.wantedService.data = null;
     this.wantedService.selectedPerson = null;
@@ -113,7 +123,7 @@ export class GlobalComponent implements OnInit {
         data: tr,
       })
       .afterClosed()
-      .subscribe(({wasEdited, data}) => {
+      .subscribe(({ wasEdited, data }) => {
         const newEdited = this.editedIds;
 
         if (wasEdited) {
@@ -124,7 +134,6 @@ export class GlobalComponent implements OnInit {
         this.changeDetector.markForCheck();
       });
   }
-
   ngOnInit(): void {
     this.filtersSub = this.filtersForm.valueChanges
       .pipe(
