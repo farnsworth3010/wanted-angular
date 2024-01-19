@@ -1,4 +1,4 @@
-# 🚓  wanted-angular
+# 🚓 wanted-angular
 
 wanted-angular is my demo project which uses public API [fbi.gov/wanted](https://fbi.gov/wanted)
 
@@ -13,10 +13,10 @@ wanted-angular is my demo project which uses public API [fbi.gov/wanted](https:/
 - Typescript
 - Firebase
 
-
 ## Prerequisites
 
 You have to create a file with the API URL and your firebase key
+
 ```ts
 // src/environments/environment.ts
 
@@ -33,7 +33,6 @@ export const environment = {
   },
   apiUrl: 'https://api.fbi.gov/wanted/v1/list',
 };
-
 ```
 
 ## 👾 Development server
