@@ -54,12 +54,13 @@ export class WantedService {
   }
 
   getEdited(): Observable<DocumentData> {
+    console.log('edited');
     return from(this.auth.afAuth.currentUser).pipe(
       switchMap((user: FirebaseUser | null) => {
-        // if (user) {
-        return getDocs(collection(this.afs.firestore, `edited/USER_${user?.uid}/criminals`));
-        // }
-        // return throwError(() => new Error('Error while fetching edited'));
+        if (user) {
+          return getDocs(collection(this.afs.firestore, `edited/USER_${user?.uid}/criminals`));
+        }
+        return throwError(() => new Error('Error while fetching edited'));
       })
     );
   }

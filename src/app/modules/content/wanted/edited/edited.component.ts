@@ -40,6 +40,7 @@ export class EditedComponent implements OnInit {
       .subscribe({
         next: (edited: DocumentData) => {
           this.wantedService.fetchingItem.next(false);
+
           edited['forEach']((doc: DocumentData, index: number) => {
             this.data.push(doc['data']());
           });
@@ -55,7 +56,6 @@ export class EditedComponent implements OnInit {
           } else {
             this.wantedService.selectedPerson = this.data[0];
           }
-
           this.changeDetector.markForCheck();
         },
         error: (error: Error) => {
@@ -87,10 +87,13 @@ export class EditedComponent implements OnInit {
   deletePerson(id: string) {
     this.data.find((obj: Crime) => id === obj.uid)!.deleting = true;
     this.changeDetector.markForCheck();
-    this.wantedService.deleteEditedById(id).subscribe(() => {
-      this.data = this.data.filter((obj: Crime) => id !== obj.uid);
-      this.changeDetector.markForCheck();
-    });
+    this.wantedService
+      .deleteEditedById(id)
+      .pipe(delay(1000))
+      .subscribe(() => {
+        this.data = this.data.filter((obj: Crime) => id !== obj.uid);
+        this.changeDetector.markForCheck();
+      });
   }
 
   editHandle(tr: Crime) {

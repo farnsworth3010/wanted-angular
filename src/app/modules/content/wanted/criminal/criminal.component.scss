@@ -41,10 +41,6 @@ mat-card {
   height: 100%;
   padding: 1rem;
   transition: 0.2s;
-  &:hover {
-    box-shadow: none;
-    transition: 0.2s;
-  }
 }
 .edited {
   background-color: #fefff3;
@@ -63,4 +59,8 @@ mat-card-content {
 }
 .mat-mdc-card {
   border-radius: 1rem;
+}
+
+.spinner-deleting {
+  width: 5.56rem
 }
