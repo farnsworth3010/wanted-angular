@@ -58,7 +58,6 @@ export class WantedComponent implements OnInit {
         value[0].link = `/content/crimes/wanted/${page}`;
         return value;
       });
-      this.changeDetector.detectChanges();
     });
   }
 }
