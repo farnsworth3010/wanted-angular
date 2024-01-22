@@ -11,7 +11,7 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Field name</mat-label>
-        <input matInput type="text" formControlName="name" placeholder="Address" />
+        <input matInput type="text" formControlName="name" placeholder="ex. Adress" />
       </mat-form-field>
       <button [disabled]="addFieldDisabled" (click)="addFieldHandle()" mat-raised-button color="primary">
         Add
@@ -33,7 +33,7 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Field name</mat-label>
-            <input #edName matInput [value]="fields[$index].name" required="true" type="text" placeholder="Address" />
+            <input #edName matInput [value]="fields[$index].name" required="true" type="text" placeholder="ex. Address" />
           </mat-form-field>
           <button
             (click)="applyEditHandle(fields[$index].name, fields[$index].type, edName, edType)"

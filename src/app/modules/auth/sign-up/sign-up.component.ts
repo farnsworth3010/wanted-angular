@@ -56,12 +56,12 @@ export class SignupComponent {
       const { email, password } = this.signUpForm.value;
       this.authService.signUp(email!, password!).subscribe({
         next: (result: FirebaseCredential) => {
-          this.authService.sendVerificationMail().subscribe(
-            {error: (error: Error)=> {
-              console.log(error.message)
-            }}
-          );
-          this.router.navigateByUrl('/auth/verify-email-address')
+          this.authService.sendVerificationMail().subscribe({
+            error: (error: Error) => {
+              console.log(error.message);
+            },
+          });
+          this.router.navigateByUrl('/auth/verify-email-address');
           this.authService.setUserData(result.user!);
         },
         error: (error: Error) => {

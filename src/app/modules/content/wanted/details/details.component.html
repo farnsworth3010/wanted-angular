@@ -2,7 +2,7 @@
   @if(!fetching) { @if(data?.length) {
   <ul>
     <li>
-      <img class="wanted-photo" appImageFallback [src]="(selectedPerson?.images)![0].original" />
+      <img alt="wanted photo" class="wanted-photo" appImageFallback [src]="(selectedPerson?.images)![0].original" />
       <h2 class="title">{{ selectedPerson?.title }}</h2>
     </li>
     <li>Sex: {{ selectedPerson?.sex | defaultFieldValue }}</li>

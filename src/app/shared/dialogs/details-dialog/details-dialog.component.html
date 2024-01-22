@@ -3,7 +3,7 @@
 </h1>
 <ul mat-dialog-content #list>
   <li>
-    <img class="wanted-photo" appImageFallback [src]="data.images![0].original" />
+    <img alt="wanted photo" class="wanted-photo" appImageFallback [src]="data.images![0].original" />
   </li>
   <li>Sex: {{ data.sex | defaultFieldValue }}</li>
   <li>Description: {{ data.description | defaultFieldValue }}</li>

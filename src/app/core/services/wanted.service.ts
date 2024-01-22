@@ -54,7 +54,6 @@ export class WantedService {
   }
 
   getEdited(): Observable<DocumentData> {
-    console.log('edited');
     return from(this.auth.afAuth.currentUser).pipe(
       switchMap((user: FirebaseUser | null) => {
         if (user) {

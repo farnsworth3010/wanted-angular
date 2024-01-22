@@ -52,7 +52,6 @@ export class WantedComponent implements OnInit {
   ]);
 
   ngOnInit(): void {
-    console.log(this.navLinks())
     this.wantedService.pageItem$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((page: number) => {
       this.navLinks.update((value: navLink[]) => {
         value[0].link = `/content/crimes/wanted/${page}`;

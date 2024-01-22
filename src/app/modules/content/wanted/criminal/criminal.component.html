@@ -1,11 +1,14 @@
-<mat-card (click)="selectPerson(i)">
+<mat-card [class.captured]="tr.status === 'captured'" (click)="selectPerson(i)">
   <mat-card-title>
     <div class="header-container">
-      <img appImageFallback class="wanted-photo" [src]="tr.images![0].original" />
+      <img alt="wanted photo" appImageFallback class="wanted-photo" [src]="tr.images![0].original" />
       <h2>{{ tr.title }}</h2>
     </div>
   </mat-card-title>
   <mat-card-content>
+    @if (tr.status === 'captured') {
+    <img class="captured-image" src="../../../../../assets/wanted/captured.png" />
+    }
     <div class="info">
       <p>Sex: {{ tr.sex | defaultFieldValue }}</p>
       <p>Hair: {{ tr.hair | defaultFieldValue }}</p>
@@ -13,6 +16,7 @@
       <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
     </div>
   </mat-card-content>
+  @if (tr.status !== 'captured') {
   <mat-card-actions>
     <button class="details-mobile" (click)="selectPersonFromBtn($event, i)" mat-button color="primary">
       Details
@@ -43,4 +47,6 @@
     </button>
     }
   </mat-card-actions>
+
+  }
 </mat-card>
