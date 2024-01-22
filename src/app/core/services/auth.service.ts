@@ -36,6 +36,7 @@ export class AuthService {
   sendVerificationMail(): Observable<void | never> {
     return from(this.afAuth.currentUser).pipe(
       switchMap((user: FirebaseUser | null) => {
+        console.log(user)
         if (user) {
           return user.sendEmailVerification();
         }
