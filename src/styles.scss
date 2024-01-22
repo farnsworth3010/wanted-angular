@@ -44,3 +44,10 @@ $my-app-theme: mat.define-light-theme(
 );
 
 @include mat.all-component-themes($my-app-theme);
+
+.mat-dialog-container {
+  border-radius: 15px !important;
+}
+.mat-mdc-dialog-surface {
+  border-radius: 15px !important;
+}
