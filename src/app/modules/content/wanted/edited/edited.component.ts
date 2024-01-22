@@ -31,7 +31,6 @@ export class EditedComponent implements OnInit {
   ) {}
 
   data: Crime[] = [];
-  Arr = Array;
 
   ngOnInit(): void {
     this.wantedService.fetchingItem.next(true);
@@ -50,25 +49,8 @@ export class EditedComponent implements OnInit {
             this.wantedService.selectedPerson = this.data.find(
               (obj: Crime) => obj.uid === this.wantedService.selectedPerson?.uid
             )!;
-
             if (isMobileWidth()) {
-              this.dialog
-                .open(DetailsDialogComponent, {
-                  width: '90vw',
-                  maxWidth: '90vw',
-                  height: '80vh',
-                  maxHeight: '80vh',
-                  enterAnimationDuration: 600,
-                  exitAnimationDuration: 300,
-                  autoFocus: false,
-                  data: this.wantedService.selectedPerson,
-                })
-                .afterClosed()
-                .subscribe(editClick => {
-                  if (editClick) {
-                    this.editHandle(this.wantedService.selectedPerson!);
-                  }
-                });
+              this.openMobileDialog();
             }
           } else {
             this.wantedService.selectedPerson = this.data[0];
@@ -76,10 +58,29 @@ export class EditedComponent implements OnInit {
 
           this.changeDetector.markForCheck();
         },
-
         error: (error: Error) => {
           this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
         },
+      });
+  }
+
+  openMobileDialog(): void {
+    this.dialog
+      .open(DetailsDialogComponent, {
+        width: '90vw',
+        maxWidth: '90vw',
+        height: '80vh',
+        maxHeight: '80vh',
+        enterAnimationDuration: 600,
+        exitAnimationDuration: 300,
+        autoFocus: false,
+        data: this.wantedService.selectedPerson,
+      })
+      .afterClosed()
+      .subscribe(editClick => {
+        if (editClick) {
+          this.editHandle(this.wantedService.selectedPerson!);
+        }
       });
   }
 
@@ -112,26 +113,11 @@ export class EditedComponent implements OnInit {
         }
       });
   }
+
   selectPerson(id: number): void {
     this.wantedService.selectedPerson = this.data[id];
     if (isMobileWidth()) {
-      this.dialog
-        .open(DetailsDialogComponent, {
-          width: '90vw',
-          maxWidth: '90vw',
-          height: '80vh',
-          maxHeight: '80vh',
-          enterAnimationDuration: 300,
-          exitAnimationDuration: 300,
-          autoFocus: false,
-          data: this.wantedService.selectedPerson,
-        })
-        .afterClosed()
-        .subscribe(editClick => {
-          if (editClick) {
-            this.editHandle(this.wantedService.selectedPerson!);
-          }
-        });
+      this.openMobileDialog();
     }
     this.changeDetector.markForCheck();
   }

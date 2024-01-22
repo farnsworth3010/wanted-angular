@@ -1,7 +1,6 @@
-import { animate, group, query, style, transition, trigger } from '@angular/animations';
+import { animate, query, style, transition, trigger } from '@angular/animations';
 
-export const slideInAnimation = trigger('routeAnimations', [
-
+export const contentRouteAnimation = trigger('contentRouteAnimations', [
   transition('* <=> *', [
     style({ position: 'relative' }),
     query(':enter', [
@@ -15,6 +14,16 @@ export const slideInAnimation = trigger('routeAnimations', [
     ]),
     query(':enter', [animate('300ms ease-in-out', style({ opacity: 1, top: 0 }))]),
   ]),
-
 ]);
 
+export const authRouteAnimation = trigger('authRouteAnimations', [
+  transition('* <=> *', [
+    query(':enter', [
+      style({
+        transform: 'translate(-50%, -60%)',
+        opacity: 0,
+      }),
+    ], {optional: true}),
+    query(':enter', [animate('250ms ease-out', style({ opacity: 1, transform: 'translate(-50%, -50%)' }))], {optional: true}),
+  ]),
+]);

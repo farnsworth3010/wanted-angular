@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { slideInAnimation } from '../../core/animations';
+import { ChildrenOutletContexts, RouterOutlet } from '@angular/router';
+import { authRouteAnimation } from '../../core/animations';
 
 @Component({
   selector: 'app-auth',
@@ -8,10 +8,17 @@ import { slideInAnimation } from '../../core/animations';
   imports: [RouterOutlet],
   template: `
     <div class="background"></div>
-    <router-outlet />
+    <div [@authRouteAnimations]="getAnimationsData()">
+      <router-outlet />
+    </div>
   `,
   styleUrl: './auth.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: [slideInAnimation],
+  animations: [authRouteAnimation],
 })
-export class AuthComponent {}
+export class AuthComponent {
+  constructor(private contexts: ChildrenOutletContexts) {}
+  getAnimationsData() {
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
+  }
+}
