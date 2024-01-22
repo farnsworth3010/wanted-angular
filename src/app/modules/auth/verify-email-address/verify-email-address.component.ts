@@ -12,7 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-verify-email-address',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, RouterLink, MatCardModule ],
+  imports: [CommonModule, MatButtonModule, RouterLink, MatCardModule],
   templateUrl: './verify-email-address.component.html',
   styleUrl: './verify-email-address.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,6 +39,7 @@ export class VerifyEmailAddressComponent implements OnInit {
   }
 
   sendVerificationMail() {
+    this.snackBar.open('Sent', 'dissmiss', { duration: 3000 });
     this.authService.sendVerificationMail().subscribe({
       next: () => {
         this.router.navigateByUrl('/auth/verify-email-address');
