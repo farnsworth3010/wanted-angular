@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
 import { getDocs } from 'firebase/firestore';
-import { BehaviorSubject, Observable, from, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, from, of, switchMap, throwError } from 'rxjs';
 import { Crime } from '../interfaces/crime';
 import { Filters, FiltersHTTPParam } from '../interfaces/filters';
 import { environment } from '../../../environments/environment';
@@ -60,7 +60,7 @@ export class WantedService {
         if (user) {
           return getDocs(collection(this.afs.firestore, `edited/USER_${user?.uid}/criminals`));
         }
-        return throwError(() => new Error('Error while fetching edited'));
+        return of([]) 
       })
     );
   }
