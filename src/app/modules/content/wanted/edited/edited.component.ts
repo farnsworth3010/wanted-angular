@@ -31,6 +31,7 @@ export class EditedComponent implements OnInit {
   ) {}
 
   data: Crime[] = [];
+  Arr = Array;
 
   ngOnInit(): void {
     this.wantedService.fetchingItem.next(true);
