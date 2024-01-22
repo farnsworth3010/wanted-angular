@@ -6,12 +6,17 @@
     <img class="wanted-photo" appImageFallback [src]="data.images![0].original" />
   </li>
   <li>Sex: {{ data.sex | defaultFieldValue }}</li>
+  <li>Description: {{ data.description | defaultFieldValue }}</li>
+  <li>
+    Details:
+    <span [innerHTML]="data.details | defaultFieldValue"></span>
+  </li>
   <li>Age min: {{ data.age_min | defaultFieldValue }}</li>
   <li>Age max: {{ data.age_max | defaultFieldValue }}</li>
   <li>Hair: {{ data.hair | defaultFieldValue }}</li>
   <li>Race: {{ data.race | defaultFieldValue }}</li>
   <li>Eyes: {{ data.eyes | defaultFieldValue }}</li>
-  <li>Height max: {{ data.height_max | defaultFieldValue }}</li>
+  <li>Height max: {{ data.height_max | defaultFieldValue }}in</li>
   <li>
     Publication:
     {{ data.publication | date | defaultFieldValue }}
