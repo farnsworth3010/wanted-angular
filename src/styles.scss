@@ -61,17 +61,17 @@ $theme-dark: mat.define-dark-theme(
 }
 .theme-light {
   @include mat.all-component-themes($theme-light);
-}
   mat-toolbar {
-    background-color: #fff !important;
+    background-color: #fff;
   }
+}
 
   .wanted-right-menu {
     background-color: #fff !important;
   }
 .theme-dark {
   mat-sidenav-container {
-    background: #212121;
+    background: #212121 !important;
   }
   .wanted-right-menu {
     background-color: #303030 !important;
