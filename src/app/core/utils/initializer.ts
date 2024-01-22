@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
-import { of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { FirebaseUser } from '../interfaces/user';
+import { of } from 'rxjs';
 
 export function initializeApplication() {
   const auth = inject(AuthService);
@@ -12,5 +12,5 @@ export function initializeApplication() {
       auth.clearUser();
     }
   });
-  return () => of(true); // ???
+  return ()=>of(true)
 }

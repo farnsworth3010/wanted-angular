@@ -18,7 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { WantedService } from '../../../../core/services/wanted.service';
 import { ImageFallbackDirective } from '../../../../shared/directives/image-fallback.directive';
-import { Subscription, debounceTime, switchMap, tap } from 'rxjs';
+import { Subscription, debounceTime, from, switchMap, tap, throwError } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
@@ -35,6 +35,8 @@ import { isMobileWidth } from '../../../../core/utils/is-mobile';
 import { DetailsComponent } from '../details/details.component';
 import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialog/details-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../../../core/services/auth.service';
+import { FirebaseUser } from '../../../../core/interfaces/user';
 @Component({
   selector: 'app-global',
   standalone: true,
@@ -70,7 +72,8 @@ export class GlobalComponent implements OnInit {
     private dialog: MatDialog,
     private fb: FormBuilder,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private auth: AuthService
   ) {}
 
   debTime = 1000;
@@ -116,25 +119,29 @@ export class GlobalComponent implements OnInit {
   }
 
   editHandle(tr: Crime) {
-    this.dialog
-      .open(EditCrimeComponent, {
-        width: isMobileWidth() ? '90vw' : '50vw',
-        maxWidth: '90vw',
-        enterAnimationDuration: 300,
-        exitAnimationDuration: 300,
-        data: tr,
-      })
-      .afterClosed()
-      .subscribe((value?: { wasEdited?: boolean }) => {
-        const newEdited = this.editedIds;
+    if (this.auth.stateItem.getValue()?.email === 'Guest') {
+      this.snackBar.open('Only authorized users can edit data', 'dismiss', { duration: 3000 });
+    } else {
+      this.dialog
+        .open(EditCrimeComponent, {
+          width: isMobileWidth() ? '90vw' : '50vw',
+          maxWidth: '90vw',
+          enterAnimationDuration: 300,
+          exitAnimationDuration: 300,
+          data: tr,
+        })
+        .afterClosed()
+        .subscribe((value?: { wasEdited?: boolean }) => {
+          const newEdited = this.editedIds;
 
-        if (value?.wasEdited) {
-          newEdited.push(tr.uid);
-        }
+          if (value?.wasEdited) {
+            newEdited.push(tr.uid);
+          }
 
-        this.editedIds = newEdited;
-        this.changeDetector.markForCheck();
-      });
+          this.editedIds = newEdited;
+          this.changeDetector.markForCheck();
+        });
+    }
   }
   ngOnInit(): void {
     this.filtersSub = this.filtersForm.valueChanges
@@ -169,12 +176,10 @@ export class GlobalComponent implements OnInit {
       )
       .pipe(
         tap((edited: DocumentData) => {
-          const newEditedIds = this.editedIds;
           edited['forEach']((doc: DocumentData) => {
             let data = doc['data']();
-            newEditedIds.push(data['uid']);
+            this.editedIds.push(data['uid']);
           });
-          this.editedIds = newEditedIds;
         }),
         switchMap(() => this.wantedService.getData()),
         takeUntilDestroyed(this.destroyRef)

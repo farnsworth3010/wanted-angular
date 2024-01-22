@@ -6,11 +6,14 @@
         The official FBI Wanted list is maintained on the FBI website. This information may be copied and distributed,
         however, any unauthorized alteration of any portion of the FBI's Ten Most Wanted Fugitives posters is a
         violation of federal law.
+        <br/>
+        <br/>
+        (All your edits are local, only you can see them)
       </mat-card-content>
     </mat-card>
     <nav mat-tab-nav-bar [tabPanel]="tabPanel">
-      @for(link of navLinks; track $index) {
-      <a mat-tab-link [routerLink]="link.link" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
+      @for(link of navLinks(); track $index) {
+      <a [disabled]="link.disabled" mat-tab-link [routerLink]="link.link" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive">
         {{ link.label }}
       </a>
       }
