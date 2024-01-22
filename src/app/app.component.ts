@@ -20,7 +20,11 @@ export class AppComponent implements OnInit {
   ) {}
 
   animations: boolean = true;
+  isDark: boolean = false
 
+  @HostBinding('class') get themeMode() {
+    return this.isDark ? 'theme-dark' : 'theme-light'
+  }
   @HostBinding('@.disabled') get animationsDisabled() {
     return !this.animations;
   }
@@ -28,6 +32,10 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.settingsService.$animationsState.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: boolean) => {
       this.animations = res;
+      this.changeDetectorRef.markForCheck();
+    });
+    this.settingsService.$themeState.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: boolean) => {
+      this.isDark = res;
       this.changeDetectorRef.markForCheck();
     });
   }

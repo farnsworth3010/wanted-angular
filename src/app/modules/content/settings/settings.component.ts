@@ -58,6 +58,8 @@ export class SettingsComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe((res: string) => this.field_office.setValue(res));
 
+      this.darkTheme.setValue(this.settingsService.themeState.getValue());
+
     this.field_office.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.settingsService.officeState.next(this.field_office.value);
       localStorage.setItem('field_office', this.field_office.value);
@@ -66,6 +68,11 @@ export class SettingsComponent implements OnInit {
     this.animations.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
       this.settingsService.animationsState.next(this.animations.value);
       localStorage.setItem('animations', this.animations.value);
+    });
+
+    this.darkTheme.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
+      this.settingsService.themeState.next(this.darkTheme.value);
+      localStorage.setItem('theme', this.darkTheme.value);
     });
   }
 }

@@ -16,7 +16,6 @@
       <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
     </div>
   </mat-card-content>
-  @if (tr.status !== 'captured') {
   <mat-card-actions>
     <button class="details-mobile" (click)="selectPersonFromBtn($event, i)" mat-button color="primary">
       Details
@@ -47,6 +46,4 @@
     </button>
     }
   </mat-card-actions>
-
-  }
 </mat-card>
