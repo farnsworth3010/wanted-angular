@@ -28,8 +28,7 @@ export class CriminalComponent {
   @Input() openToDelete: boolean = false;
   @Input() openToEdit: boolean = false;
   @Input() edited: boolean = false;
-  @Input() tr!: Crime;
-  @Input() i: number = 0;
+  @Input() data!: Crime;
 
   @Output() viewInEditsClick = new EventEmitter();
   @Output() personClick = new EventEmitter();
@@ -37,26 +36,27 @@ export class CriminalComponent {
   @Output() deleteClick = new EventEmitter();
   @Output() editClick = new EventEmitter();
 
-  public selectPerson(i: number): void {
-    this.personClick.emit(i);
-  }
-  public selectPersonFromBtn($event: Event, i: number): void {
-    $event.stopPropagation();
-    this.selectPerson(i);
+  public selectPerson(): void {
+    this.personClick.emit();
   }
 
-  public editHandle($event: Event, tr: Crime): void {
+  public selectPersonFromBtn($event: Event): void {
     $event.stopPropagation();
-    this.editClick.emit(tr);
+    this.selectPerson();
+  }
+
+  public editHandle($event: Event): void {
+    $event.stopPropagation();
+    this.editClick.emit();
   }
 
   public deleteHandle($event: Event): void {
     $event.stopPropagation();
-    this.deleteClick.emit(this.tr['uid']);
+    this.deleteClick.emit();
   }
 
-  public viewInEditsHandle($event: Event, tr: Crime): void {
+  public viewInEditsHandle($event: Event): void {
     $event.stopPropagation();
-    this.viewInEditsClick.emit(tr);
+    this.viewInEditsClick.emit();
   }
 }

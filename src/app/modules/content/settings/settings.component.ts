@@ -44,35 +44,24 @@ export class SettingsComponent implements OnInit {
   userData: User | null = null;
 
   ngOnInit(): void {
-    this.authService.stateItem$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: User | null) => {
-      if (res) {
-        this.userData = res;
-      }
-      this.changeDetectorRef.markForCheck();
-    });
-    this.settingsService.$animationsState
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res: boolean) => this.animations.setValue(res));
+    const { animationsState, officeState, themeState } = this.settingsService;
 
-    this.settingsService.$officeState
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((res: string) => this.field_office.setValue(res));
+    this.userData = this.authService.stateItem.getValue();
 
-      this.darkTheme.setValue(this.settingsService.themeState.getValue());
+    this.animations.setValue(animationsState.getValue());
+    this.field_office.setValue(officeState.getValue());
+    this.darkTheme.setValue(themeState.getValue());
 
-    this.field_office.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.settingsService.officeState.next(this.field_office.value);
-      localStorage.setItem('field_office', this.field_office.value);
+    this.field_office.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+      this.settingsService.saveOfficeState(value);
     });
 
-    this.animations.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.settingsService.animationsState.next(this.animations.value);
-      localStorage.setItem('animations', this.animations.value);
+    this.animations.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+      this.settingsService.saveAnimationState(value);
     });
 
-    this.darkTheme.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(() => {
-      this.settingsService.themeState.next(this.darkTheme.value);
-      localStorage.setItem('theme', this.darkTheme.value);
+    this.darkTheme.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
+      this.settingsService.saveThemeState(value);
     });
   }
 }

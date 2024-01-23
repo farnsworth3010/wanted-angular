@@ -4,10 +4,8 @@
     @for(tr of data; track $index) {
     <div class="wanted-grid-tile">
       <app-criminal
-        [tr]="tr"
         [openToDelete]="true"
         [openToEdit]="true"
-        [i]="$index"
         (editClick)="editHandle(tr)"
         (personClick)="selectPerson($index)"
         (deleteClick)="deletePerson($event)" />

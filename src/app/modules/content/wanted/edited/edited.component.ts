@@ -106,11 +106,11 @@ export class EditedComponent implements OnInit {
         data: tr,
       })
       .afterClosed()
-      .subscribe((res?: { wasEdited: boolean; data?: Crime }) => {
+      .subscribe((res?: { wasEdited: boolean; data: Crime }) => {
         if (res?.wasEdited) {
-          const id = this.data.findIndex((obj: Crime) => res.data!.uid === obj.uid);
+          const id = this.data.findIndex((obj: Crime) => res.data.uid === obj.uid);
           const newData = this.data;
-          newData[id] = { ...this.data[id], ...res.data! };
+          newData[id] = { ...this.data[id], ...res.data };
           this.data = newData;
           this.changeDetector.markForCheck();
         }

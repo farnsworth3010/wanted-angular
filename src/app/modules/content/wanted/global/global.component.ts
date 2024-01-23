@@ -36,7 +36,7 @@ import { DetailsComponent } from '../details/details.component';
 import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialog/details-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../../../core/services/auth.service';
-import { FirebaseUser } from '../../../../core/interfaces/user';
+
 @Component({
   selector: 'app-global',
   standalone: true,
@@ -118,7 +118,7 @@ export class GlobalComponent implements OnInit {
     }
   }
 
-  editHandle(tr: Crime) {
+  editHandle(data: Crime) {
     if (this.auth.stateItem.getValue()?.email === 'Guest') {
       this.snackBar.open('Only authorized users can edit data', 'dismiss', { duration: 3000 });
     } else {
@@ -128,14 +128,14 @@ export class GlobalComponent implements OnInit {
           maxWidth: '90vw',
           enterAnimationDuration: 300,
           exitAnimationDuration: 300,
-          data: tr,
+          data,
         })
         .afterClosed()
         .subscribe((value?: { wasEdited?: boolean }) => {
           const newEdited = this.editedIds;
 
           if (value?.wasEdited) {
-            newEdited.push(tr.uid);
+            newEdited.push(data.uid);
           }
 
           this.editedIds = newEdited;

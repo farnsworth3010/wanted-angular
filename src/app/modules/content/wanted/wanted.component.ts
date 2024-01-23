@@ -29,7 +29,6 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class WantedComponent implements OnInit {
   constructor(
-    private changeDetector: ChangeDetectorRef,
     private wantedService: WantedService,
     private destroyRef: DestroyRef,
     private authService: AuthService

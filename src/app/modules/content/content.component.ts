@@ -43,6 +43,7 @@ export class ContentComponent implements OnInit {
       name: 'Settings',
     },
   ];
+
   constructor(
     private contexts: ChildrenOutletContexts,
     private authService: AuthService,

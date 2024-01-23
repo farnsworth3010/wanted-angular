@@ -30,25 +30,16 @@
           <mat-option value="black">black</mat-option>
         </mat-select>
       </mat-form-field>
-      <!-- <div class="age-range">
-        <p>Age range:</p>
-        <mat-slider min="0" max="150" step="1" showTickMarks discrete>
-          <input formControlName="age_min" value="0" matSliderStartThumb />
-          <input formControlName="age_max" value="150" matSliderEndThumb />
-        </mat-slider>
-      </div> -->
     </form>
   </mat-card>
   @if (!wantedService.fetchingItem.value) {
   <div class="wanted-grid" #grid>
-    @for(tr of wantedService.data; track $index) {
+    @for(data of wantedService.data; track $index) {
     <div class="wanted-grid-tile">
       <app-criminal
-        [tr]="tr"
-        [openToEdit]="!editedIds.includes(tr.uid)"
+        [openToEdit]="!editedIds.includes(data.uid)"
         (viewInEditsClick)="viewInEdits($event)"
-        [edited]="editedIds.includes(tr.uid)"
-        [i]="$index"
+        [edited]="editedIds.includes(data.uid)"
         (personClick)="selectPerson($index)"
         (editClick)="editHandle($event)" />
     </div>
