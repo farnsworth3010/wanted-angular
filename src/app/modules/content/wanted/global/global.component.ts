@@ -164,12 +164,7 @@ export class GlobalComponent implements OnInit {
       .pipe(
         tap((map: ParamMap) => {
           this.wantedService.fetchingItem.next(true);
-          this.changeDetector.markForCheck();
-          if (Number(map.get('id'))) {
-            this.wantedService.pageItem.next(Number(map.get('id')));
-          } else {
-            this.wantedService.pageItem.next(1);
-          }
+          this.wantedService.pageItem.next(Number(map.get('id')) ?? 1);
         }),
         debounceTime(this.debTime),
         switchMap(() => this.wantedService.getEdited())

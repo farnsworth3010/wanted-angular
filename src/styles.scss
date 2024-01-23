@@ -13,7 +13,7 @@ body {
 }
 .shine {
   background: #eee;
-  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+  background: linear-gradient(to right, #cecece 0%, #cbcbcb 20%, #ababab 40%, #cecece 100%);
   border-radius: 5px;
   background-size: 200% 100%;
   animation: 1s shine linear infinite;
@@ -66,9 +66,9 @@ $theme-dark: mat.define-dark-theme(
   }
 }
 
-  .wanted-right-menu {
-    background-color: #fff !important;
-  }
+.wanted-right-menu {
+  background-color: #fff !important;
+}
 .theme-dark {
   mat-sidenav-container {
     background: #212121 !important;
