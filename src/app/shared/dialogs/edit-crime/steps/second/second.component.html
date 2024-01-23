@@ -42,14 +42,14 @@
               placeholder="ex. Address" />
           </mat-form-field>
           <button
-            (click)="applyEditHandle(fields[$index].name, fields[$index].type, edName, edType)"
+            (click)="applyEditHandle(fields[$index].name!, fields[$index].type!, edName, edType)"
             mat-raised-button
             class="edit-custom-field-btn"
             color="primary">
             Apply
             <mat-icon>done</mat-icon>
           </button>
-          <button (click)="toggleFieldEditHandle(fields[$index].name)" mat-raised-button color="primary">
+          <button (click)="toggleFieldEditHandle(fields[$index].name!)" mat-raised-button color="primary">
             Cancel
             <mat-icon>block</mat-icon>
           </button>
@@ -66,14 +66,14 @@
         </mat-checkbox>
         }
         <button
-          (click)="toggleFieldEditHandle(fields[$index].name)"
+          (click)="toggleFieldEditHandle(fields[$index].name!)"
           mat-raised-button
           class="edit-custom-field-btn"
           color="primary">
           <mat-icon>edit</mat-icon>
           edit
         </button>
-        <button (click)="deleteFieldHandle(fields[$index].name)" mat-raised-button color="primary">
+        <button (click)="deleteFieldHandle(fields[$index].name!)" mat-raised-button color="primary">
           <mat-icon>delete</mat-icon>
           delete
         </button>

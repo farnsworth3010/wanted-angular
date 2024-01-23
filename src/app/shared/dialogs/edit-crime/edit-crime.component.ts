@@ -130,9 +130,7 @@ export class EditCrimeComponent {
       const control = this.fb.control('', Validators.required);
       const { name, type } = this.addFieldForm.getRawValue();
       const field = { type, isEditing: false };
-      const temp = this.customFieldsSubject.value;
-      temp[name!] = field;
-      this.customFieldsSubject.next(temp);
+      this.customFieldsSubject.next({ [name!]: field, ...this.customFieldsSubject.value });
 
       fields.push(control);
 
@@ -146,9 +144,8 @@ export class EditCrimeComponent {
   }
 
   toggleFieldEdit(name: string): void {
-    const temp = this.customFieldsSubject.value;
-    temp[name].isEditing = !temp[name].isEditing;
-    this.customFieldsSubject.next(temp);
+    const { isEditing, type } = this.customFieldsSubject.value[name];
+    this.customFieldsSubject.next({...this.customFieldsSubject.value, [name]: { isEditing: !isEditing, type } });
   }
 
   deleteField(name: string): void {
@@ -171,12 +168,11 @@ export class EditCrimeComponent {
       // if input is not empty
       if (nameInput.value === name) {
         // if name hasn't changed
-        const temp = this.customFieldsSubject.value;
-        temp[nameInput.value] = {
+        const field = {
           type: typeInput.value,
           isEditing: false,
         };
-        this.customFieldsSubject.next(temp);
+        this.customFieldsSubject.next({ [nameInput.value]: field, ...this.customFieldsSubject.value });
       } else {
         // if new name is different
         if (Object.keys(this.customFieldsSubject.value).findIndex((x: string) => x === nameInput.value) === -1) {
@@ -191,11 +187,10 @@ export class EditCrimeComponent {
             type: typeInput.value,
             isEditing: false,
           };
-          newObj[nameInput.value] = field;
 
           fields.push(control);
 
-          this.customFieldsSubject.next(newObj);
+          this.customFieldsSubject.next({ [nameInput.value]: field, ...newObj });
         } else {
           this.snackBar.open('You can create inputs with a unique name only!', 'dismiss', { duration: 3000 });
         }
