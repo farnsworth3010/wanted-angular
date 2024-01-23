@@ -1,24 +1,55 @@
 <div class="tab-container">
   @if(!wantedService.fetchingItem.value) {
   <div class="wanted-grid">
-    @for(tr of data; track $index) {
+    @for(data of data; track $index) {
     <div class="wanted-grid-tile">
       <app-criminal
-        [tr]="tr"
+        [data]="data"
         [openToDelete]="true"
-        [i]="$index"
+        [openToEdit]="true"
+        (editClick)="editHandle(data)"
         (personClick)="selectPerson($index)"
-        (deleteClick)="deletePerson($event)" />
+        (deleteClick)="deletePerson(data.uid)" />
     </div>
     } @empty {
     <div class="no-data-block">
-      <img src="../../../../../assets/nodata.png" />
+      <img alt="no data" src="../../../../../assets/nodata.png" />
       <p>No edited data</p>
     </div>
     }
   </div>
   } @else {
   <div class="wanted-grid">
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
     <div class="wanted-grid-tile">
       <app-criminal-skeleton />
     </div>

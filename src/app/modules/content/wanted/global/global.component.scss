@@ -17,12 +17,17 @@ mat-grid-list {
     opacity: 0.5;
   }
 }
+.pagination-bottom {
+  @media screen and (max-width: 768px) {
+    margin-bottom: 4rem; 
+  }
+}
 .pagination-top {
   margin-bottom: 1rem;
 }
 .pagination {
   mat-paginator {
-    border-radius: 0.25rem;
+    border-radius: 1rem;
   }
 }
 mat-spinner {
@@ -45,6 +50,7 @@ mat-tab-group {
   padding-bottom: 0;
   margin-bottom: 1rem;
   display: flex;
+  flex-wrap: wrap;
 }
 mat-form-field {
   width: fit-content;
@@ -61,6 +67,7 @@ mat-form-field {
 form {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 .form-input {
   margin-right: 1rem;
@@ -72,6 +79,15 @@ form {
   gap: 1rem;
   padding-bottom: 1rem;
   position: relative;
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media screen and (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+.mat-mdc-card {
+  border-radius: 1rem;
 }
 .wanted-grid .wanted-grid-tile mat-card {
   height: 100%;
@@ -97,4 +113,6 @@ form {
   img {
     width: 10rem;
   }
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }

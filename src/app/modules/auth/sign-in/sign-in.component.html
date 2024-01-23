@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-header>
-    <h2>FBI Sign in</h2>
+    <h2>Wanted Sign in</h2>
   </mat-card-header>
   <mat-card-content>
     <form (ngSubmit)="onSubmit()" [formGroup]="signInForm">
@@ -11,13 +11,13 @@
       <mat-form-field class="form-input password-input">
         <mat-label>password</mat-label>
         <input formControlName="password" [type]="hidePassword ? 'password' : 'text'" matInput />
-        <!-- fix hide password -->
         <button
           mat-icon-button
           matSuffix
           (click)="hidePassword = !hidePassword"
           [attr.aria-label]="'Hide password'"
           [attr.aria-pressed]="hidePassword"
+          type="button"
           tabindex="-1">
           <mat-icon>
             {{ hidePassword ? 'visibility_off' : 'visibility' }}
@@ -26,11 +26,11 @@
       </mat-form-field>
       <a class="forgot-password" routerLink="/auth/forgot-password">forgot password</a>
       <mat-card-actions class="form-actions">
-        <div>
-          <button class="form-guest" type="button" mat-button (click)="signInAsGuest()">Guest</button>
+        <div class="form-guest">
+          <button  type="button" mat-button (click)="signInAsGuest()">Guest</button>
         </div>
-        <div>
-          <button type="button" mat-button (click)="google()">Sign in with Google</button>
+        <div class="actions-right">
+          <button type="button" mat-button (click)="google()">GAuth</button>
           <button class="form-guest" type="button" mat-button routerLink="/auth/sign-up">Sign up</button>
           <button color="primary" class="form-sign-in" type="submit" mat-raised-button>Sign in</button>
         </div>

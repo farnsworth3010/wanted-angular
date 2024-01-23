@@ -3,6 +3,9 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  @media screen and (max-width: 768px){
+    width: 95vw;
+  }
 }
 .mat-mdc-card-content {
   display: flex;
@@ -16,7 +19,13 @@
   padding: 0;
   display: flex;
   justify-content: flex-end;
+  @media screen and (max-width: 350px) {
+    justify-content: space-between;
+    width: 100%;
+  }
 }
-.form-guest {
-  margin-right: 1rem;
+
+.mat-mdc-card {
+  border-radius: 1rem;
+
 }

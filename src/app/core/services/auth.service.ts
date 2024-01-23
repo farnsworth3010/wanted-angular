@@ -18,7 +18,7 @@ export class AuthService {
     private snackBar: MatSnackBar
   ) {}
 
-  private stateItem = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem('user')!));
+  public stateItem = new BehaviorSubject<User | null>(JSON.parse(localStorage.getItem('user')!));
   public stateItem$: Observable<User | null> = this.stateItem.asObservable();
 
   signIn(email: string, password: string): Observable<FirebaseCredential> {

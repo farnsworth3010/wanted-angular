@@ -21,7 +21,7 @@
 }
 
 .mat-toolbar {
-  background: #fff;
+  // background: #fff;
   border-bottom: 1px solid var(--mat-sidenav-container-divider-color);
 }
 
@@ -29,10 +29,30 @@
   display: flex;
   align-items: center;
   cursor: pointer;
+  @media screen and (max-width: 768px) {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 .profile-photo {
   background: #cecece;
   width: 2rem;
   border-radius: 50%;
+  margin-right: 0.5rem;
+}
+
+.user-data {
+  display: flex;
+  align-items: center;
+  @media screen and (max-width: 768px) {
+    display: none;
+  }
+}
+.burger {
   margin-right: 1rem;
+  @media screen and (min-width: 769px) {
+    display: none;
+  }
 }

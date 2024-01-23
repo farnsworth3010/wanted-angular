@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { FormArray, FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MAT_DIALOG_DATA, MatDialogClose, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogClose, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -39,6 +39,7 @@ import { BehaviorSubject } from 'rxjs';
     EditFirstStepComponent,
     EditSecondStepComponent,
     EditThirdStepComponent,
+    MatDialogModule,
   ],
   templateUrl: './edit-crime.component.html',
   styleUrl: './edit-crime.component.scss',
@@ -53,8 +54,7 @@ export class EditCrimeComponent {
     private wantedService: WantedService
   ) {}
 
-  customFields: Record<string, CustomField> = {};
-  customFieldsSubject = new BehaviorSubject<Record<string, CustomField>>(this.customFields);
+  customFieldsSubject = new BehaviorSubject<Record<string, CustomField>>({});
   $customFields = this.customFieldsSubject.asObservable();
 
   customForm = this.fb.group({
@@ -76,7 +76,7 @@ export class EditCrimeComponent {
   secondStepOptional: boolean = true;
 
   send(): void {
-    const { title, sex, hair, race, eyes, reward_text } = this.data;
+    const { title, sex, hair, race, eyes, reward_text, uid } = this.data;
     const {
       title: formTitle,
       sex: formSex,
@@ -94,28 +94,25 @@ export class EditCrimeComponent {
       reward_text !== formReward_text ||
       this.addFieldForm.get('fields')?.value.length
     ) {
-      this.dialog.close(true);
       this.snackBar.dismiss();
       const fields = this.addFieldForm.get('fields') as FormArray;
-
-      this.wantedService
-        .uploadEdited(this.data.uid, this.data, {
-          title: formTitle!,
-          sex: formSex!,
-          hair: formHair!,
-          race: formRace!,
-          eyes: formEyes!,
-          reward_text: formReward_text!,
-          customFields: Object.keys(this.customFields).map((name: string, index) => {
-            return {
-              name,
-              value: fields.at(index).getRawValue(),
-            };
-          }),
-        })
-        .subscribe(() => {
-          this.dialog.close(true);
-        });
+      const newData = {
+        title: formTitle!,
+        sex: formSex!,
+        hair: formHair!,
+        race: formRace!,
+        eyes: formEyes!,
+        reward_text: formReward_text!,
+        uid,
+        customFields: Object.keys(this.customFieldsSubject.value).map((name: string, index) => {
+          return {
+            name,
+            value: fields.at(index).getRawValue(),
+          };
+        }),
+      };
+      this.dialog.close({ wasEdited: true, data: newData });
+      this.wantedService.uploadEdited(this.data.uid, this.data, newData).subscribe(() => {});
     } else {
       this.snackBar.open("You haven't changed anything!", 'dismiss', {
         duration: 3000,
@@ -124,7 +121,7 @@ export class EditCrimeComponent {
   }
 
   addField() {
-    this.secondStepOptional = false
+    this.secondStepOptional = false;
     const nameControl = this.addFieldForm.get('name');
     const typeControl = this.addFieldForm.get('type');
     const fields = this.addFieldForm.get('fields') as FormArray;
@@ -132,12 +129,8 @@ export class EditCrimeComponent {
     if (typeControl?.valid && nameControl?.valid && this.addFieldForm.value.name) {
       const control = this.fb.control('', Validators.required);
       const { name, type } = this.addFieldForm.getRawValue();
-
-      this.customFields[name!] = {
-        type,
-        isEditing: false,
-      };
-      this.customFieldsSubject.next(this.customFields);
+      const field = { type, isEditing: false };
+      this.customFieldsSubject.next({ [name!]: field, ...this.customFieldsSubject.value });
 
       fields.push(control);
 
@@ -151,21 +144,21 @@ export class EditCrimeComponent {
   }
 
   toggleFieldEdit(name: string): void {
-    this.customFields[name].isEditing = !this.customFields[name].isEditing;
-    this.customFieldsSubject.next(this.customFields);
+    const { isEditing, type } = this.customFieldsSubject.value[name];
+    this.customFieldsSubject.next({...this.customFieldsSubject.value, [name]: { isEditing: !isEditing, type } });
   }
 
   deleteField(name: string): void {
     const fields = this.addFieldForm.get('fields') as FormArray;
-    const id = Object.keys(this.customFields).findIndex((value: string) => value === name);
-
+    const id = Object.keys(this.customFieldsSubject.value).findIndex((value: string) => value === name);
     fields.removeAt(id);
-    delete this.customFields[name];
+
+    const { [name]: _, ...newObj } = this.customFieldsSubject.value;
 
     this.addFieldDisabled = false;
-    this.customFieldsSubject.next(this.customFields);
+    this.customFieldsSubject.next(newObj);
     if (!fields.length) {
-      this.secondStepOptional = true
+      this.secondStepOptional = true;
     }
   }
 
@@ -175,29 +168,29 @@ export class EditCrimeComponent {
       // if input is not empty
       if (nameInput.value === name) {
         // if name hasn't changed
-        this.customFields[nameInput.value] = {
+        const field = {
           type: typeInput.value,
           isEditing: false,
         };
-        this.customFieldsSubject.next(this.customFields);
+        this.customFieldsSubject.next({ [nameInput.value]: field, ...this.customFieldsSubject.value });
       } else {
         // if new name is different
-        if (Object.keys(this.customFields).findIndex((x: string) => x === nameInput.value) === -1) {
+        if (Object.keys(this.customFieldsSubject.value).findIndex((x: string) => x === nameInput.value) === -1) {
           // if new name is unique
           const fields = this.addFieldForm.get('fields') as FormArray;
-          const id = Object.keys(this.customFields).findIndex((value: string) => value === name);
+          const id = Object.keys(this.customFieldsSubject.value).findIndex((value: string) => value === name);
           const control = this.fb.control('', Validators.required);
 
           fields.removeAt(id);
-          delete this.customFields[name];
-
-          this.customFields[nameInput.value] = {
+          const { [name]: _, ...newObj } = this.customFieldsSubject.value;
+          const field = {
             type: typeInput.value,
             isEditing: false,
           };
+
           fields.push(control);
 
-          this.customFieldsSubject.next(this.customFields);
+          this.customFieldsSubject.next({ [nameInput.value]: field, ...newObj });
         } else {
           this.snackBar.open('You can create inputs with a unique name only!', 'dismiss', { duration: 3000 });
         }

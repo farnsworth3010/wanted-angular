@@ -7,9 +7,9 @@
       [length]="wantedService.length"
       [pageSize]="pageSize"
       [showFirstLastButtons]="true"
-      [hidePageSize]="false"
       [pageIndex]="this.wantedService.pageItem.value - 1"
       aria-label="Select page"
+      [hidePageSize]="true"
       [class.mat-elevation-z1]="true" />
   </div>
   <mat-card class="filters">
@@ -30,37 +30,59 @@
           <mat-option value="black">black</mat-option>
         </mat-select>
       </mat-form-field>
-      <div class="age-range">
-        <p>Age range:</p>
-        <mat-slider min="0" max="150" step="1" showTickMarks discrete>
-          <input formControlName="age_min" value="0" matSliderStartThumb />
-          <input formControlName="age_max" value="150" matSliderEndThumb />
-        </mat-slider>
-      </div>
     </form>
   </mat-card>
   @if (!wantedService.fetchingItem.value) {
-  <div class="wanted-grid">
-    @for(tr of wantedService.data; track $index) {
+  <div class="wanted-grid" #grid>
+    @for(data of wantedService.data; track $index) {
     <div class="wanted-grid-tile">
       <app-criminal
-        [tr]="tr"
-        [openToEdit]="!editedIds.includes(tr.uid)"
-        (viewInEditsClick)="viewInEdits($event)"
-        [edited]="editedIds.includes(tr.uid)"
-        [i]="$index"
+        [data]="data"
+        [openToEdit]="!editedIds.includes(data.uid)"
+        (viewInEditsClick)="viewInEdits(data)"
+        [edited]="editedIds.includes(data.uid)"
         (personClick)="selectPerson($index)"
-        (editClick)="editHandle($event)" />
+        (editClick)="editHandle(data)" />
     </div>
     } @empty {
     <div class="no-data-block">
-      <img src="../../../../../assets/nodata.png" />
+      <img alt="no data" src="../../../../../assets/nodata.png" />
       <p>No data for your search query</p>
     </div>
     }
   </div>
   } @else {
-  <div class="wanted-grid">
+  <div class="wanted-grid" #mockgrid>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
+    <div class="wanted-grid-tile">
+      <app-criminal-skeleton />
+    </div>
     <div class="wanted-grid-tile">
       <app-criminal-skeleton />
     </div>
@@ -93,7 +115,7 @@
     </div>
   </div>
   } @if(wantedService.data?.length && !wantedService.fetchingItem.value) {
-  <div class="pagination">
+  <div class="pagination pagination-bottom">
     <mat-paginator
       #paginator
       class="demo-paginator"
@@ -101,7 +123,7 @@
       [length]="wantedService.length"
       [pageSize]="pageSize"
       [showFirstLastButtons]="true"
-      [hidePageSize]="false"
+      [hidePageSize]="true"
       [pageIndex]="this.wantedService.pageItem.value - 1"
       aria-label="Select page"
       [class.mat-elevation-z1]="true" />

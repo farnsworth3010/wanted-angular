@@ -5,16 +5,25 @@
         <h1>WANTED</h1>
         The official FBI Wanted list is maintained on the FBI website. This information may be copied and distributed,
         however, any unauthorized alteration of any portion of the FBI's Ten Most Wanted Fugitives posters is a
-        violation of federal law (18 U.S.C., Section 709). Persons who make or reproduce these alterations are subject
-        to prosecution and, if convicted, shall be fined or imprisoned for not more than one year, or both.
+        violation of federal law.
+        <br />
+        <br />
+        (All your edits are local, only you can see them)
       </mat-card-content>
     </mat-card>
+    <!-- <mat-tab-group>
+      @for (link of navLinks(); track link.link) {
+      <mat-tab (click)="changeTab(link.link)" [ink" [label]="link.label"/>
+      }
+    </mat-tab-group> -->
     <nav mat-tab-nav-bar [tabPanel]="tabPanel">
-      @for(link of navLinks; track $index) {
+      @for(link of navLinks(); track link.link) {
       <a
+        [disabled]="link.disabled"
         mat-tab-link
         [routerLink]="link.link"
-        routerLinkActive
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLinkActive="mdc-tab-indicator--active"
         #rla="routerLinkActive"
         [active]="rla.isActive">
         {{ link.label }}

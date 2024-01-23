@@ -1,18 +1,32 @@
 .custom-fields-adding {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   margin-top: 1rem;
+  @media screen and (max-width: 768px){
+    margin-bottom: 1rem;
+  }
 }
 mat-form-field {
   margin-top: 22px;
   margin-right: 1rem;
+  @media screen and (max-width: 768px){
+   width: 100%; 
+   margin-top: 0;
+   margin-right: 0;
+  }
 }
 .custom-field {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  @media screen and (max-width: 768px){
+    margin-bottom: 1rem;
+  }
 }
 .custom-field-editing {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 .edit-custom-field-btn {
@@ -20,4 +34,13 @@ mat-form-field {
 }
 .mat-mdc-form-field-bottom-align {
   display: none;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.actions {
+  display: block;
+  margin-top: auto;
 }

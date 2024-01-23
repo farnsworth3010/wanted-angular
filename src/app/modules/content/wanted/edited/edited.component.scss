@@ -11,6 +11,13 @@
   grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
   padding-bottom: 1rem;
+  position: relative;
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media screen and (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
 }
 .wanted-grid .wanted-grid-tile mat-card {
   height: 100%;
@@ -35,15 +42,12 @@ mat-spinner {
   margin-top: 6rem;
 }
 .no-data-block {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, 50%);
   margin: 0 auto;
   width: fit-content;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
   img {
     width: 10rem;
   }

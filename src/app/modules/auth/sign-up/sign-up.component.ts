@@ -11,6 +11,7 @@ import { Router, RouterLink } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FirebaseCredential } from '../../../core/interfaces/user';
 import { passValidator } from '../../../core/utils/validators/pass.validator';
+import { concatMap, map, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -54,15 +55,22 @@ export class SignupComponent {
     if (this.signUpForm.valid) {
       this.snackBar.open('Processing...', 'dismiss', { duration: 3000 });
       const { email, password } = this.signUpForm.value;
-      this.authService.signUp(email!, password!).subscribe({
-        next: (result: FirebaseCredential) => {
-          this.authService.sendVerificationMail();
-          this.authService.setUserData(result.user!);
-        },
-        error: (error: Error) => {
-          this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
-        },
-      });
+      this.authService
+        .signUp(email!, password!)
+        .pipe(
+          switchMap((result: FirebaseCredential) => {
+            return this.authService.sendVerificationMail().pipe(map(() => result));
+          })
+        )
+        .subscribe({
+          next: (result: FirebaseCredential) => {
+            this.router.navigateByUrl('/auth/verify-email-address');
+            this.authService.setUserData(result.user!);
+          },
+          error: (error: Error) => {
+            this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
+          },
+        });
     }
   }
 

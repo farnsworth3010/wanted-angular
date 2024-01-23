@@ -1,3 +1,7 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
 html,
 body {
   height: 100%;
@@ -7,15 +11,99 @@ body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
+.shine {
+  background: #eee;
+  background: linear-gradient(to right, #cecece 0%, #cbcbcb 20%, #ababab 40%, #cecece 100%);
+  border-radius: 5px;
+  background-size: 200% 100%;
+  animation: 1s shine linear infinite;
+}
+.rounded {
+  border-radius: 1rem;
+}
+
+$my-app-primary: mat.define-palette(mat.$deep-purple-palette);
+$my-app-accent: mat.define-palette(mat.$red-palette, A200, A100, A400);
+$my-app-warn: mat.define-palette(mat.$red-palette);
+$my-app-warn: mat.define-palette(mat.$red-palette);
+
+$theme-light: mat.define-light-theme(
+  (
+    color: (
+      primary: $my-app-primary,
+      accent: $my-app-accent,
+      warn: $my-app-warn,
+    ),
+  )
+);
+$theme-dark: mat.define-dark-theme(
+  (
+    color: (
+      primary: $my-app-primary,
+      accent: $my-app-accent,
+      warn: $my-app-warn,
+    ),
+  )
+);
+
+.mat-dialog-container {
+  border-radius: 15px !important;
+}
+.mat-mdc-dialog-surface {
+  border-radius: 15px !important;
+}
+
+.mat-step-optional {
+  font-size: 0.7rem !important;
+}
+.theme-dark {
+  @include mat.all-component-colors($theme-dark);
+}
+.theme-light {
+  @include mat.all-component-colors($theme-light);
+  mat-toolbar {
+    background-color: #fff;
+  }
+}
+
+.wanted-right-menu {
+  background-color: #fff !important;
+}
+.theme-dark {
+  mat-sidenav-container {
+    background: #212121 !important;
+  }
+  .wanted-right-menu {
+    background-color: #303030 !important;
+  }
+  mat-toolbar {
+    background-color: #303030;
+  }
+  mat-sidenav {
+    background: #303030;
+  }
+  .shine {
+    background: linear-gradient(to right, #656871 0%, #888b94 20%, #656871 40%, #656871 100%);
+    border-radius: 5px;
+    background-size: 200% 100%;
+    animation: 1s shine linear infinite;
+  }
+  mat-card-header {
+    color: #fff;
+  }
+  mat-card-content p {
+    color: #fff;
+  }
+  a {
+    color: #ababab;
+  }
+  .about-project {
+    color: #fff !important;
+  }
+}
+
 @keyframes shine {
   to {
     background-position-x: -200%;
   }
-}
-.shine {
-  background: #eee;
-  background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
-  border-radius: 5px;
-  background-size: 200% 100%;
-  animation: 1.5s shine linear infinite;
 }

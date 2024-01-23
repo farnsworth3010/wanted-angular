@@ -2,16 +2,21 @@
   @if(!fetching) { @if(data?.length) {
   <ul>
     <li>
-      <img class="wanted-photo" appImageFallback [src]="(selectedPerson?.images)![0].original" />
+      <img alt="wanted photo" class="wanted-photo" appImageFallback [src]="(selectedPerson?.images)![0].original" />
       <h2 class="title">{{ selectedPerson?.title }}</h2>
     </li>
     <li>Sex: {{ selectedPerson?.sex | defaultFieldValue }}</li>
+    <li>Description: {{ selectedPerson?.description | defaultFieldValue }}</li>
+    <li>
+      Details:
+      <span [innerHTML]="selectedPerson?.details| defaultFieldValue"></span>
+    </li>
     <li>Age min: {{ selectedPerson?.age_min | defaultFieldValue }}</li>
     <li>Age max: {{ selectedPerson?.age_max | defaultFieldValue }}</li>
     <li>Hair: {{ selectedPerson?.hair | defaultFieldValue }}</li>
     <li>Race: {{ selectedPerson?.race | defaultFieldValue }}</li>
     <li>Eyes: {{ selectedPerson?.eyes | defaultFieldValue }}</li>
-    <li>Height max: {{ selectedPerson?.height_max | defaultFieldValue }}</li>
+    <li>Height max: {{ selectedPerson?.height_max| defaultFieldValue }}in</li>
     <li>
       Publication:
       {{ selectedPerson?.publication | date | defaultFieldValue }}
@@ -28,7 +33,7 @@
   </ul>
   } } @else {
   <ul class="skeleton-list">
-    <div class="shine wanted-photo"></div>
+    <div class="shine wanted-photo wanted-photo-skeleton"></div>
     <li class="shine info-line skeleton-title"></li>
     <li class="info-line shine"></li>
     <li class="info-line shine"></li>

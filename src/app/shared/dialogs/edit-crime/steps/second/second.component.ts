@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, Signal } from '@angular/core';
+import { FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -37,9 +37,13 @@ export class EditSecondStepComponent implements OnInit {
   constructor(private destroyRef: DestroyRef) {}
   fieldTypes: string[] = ['text', 'date', 'number', 'checkbox'];
   @Input({ required: true }) addFieldDisabled: boolean = false;
-  @Input({ required: true }) addFieldForm: any;
-  @Input() $customFields!: Observable<Record<string, CustomField>>;
-  fields!: any[];
+  @Input({ required: true }) addFieldForm!: FormGroup<{
+    type: FormControl<string | null>;
+    name: FormControl<string | null>;
+    fields: FormArray<FormControl<unknown>>;
+  }>;
+  @Input() customFields!: Observable<Record<string, CustomField>>;
+  fields!: CustomField[];
 
   @Output() addField = new EventEmitter();
   @Output() applyEdit = new EventEmitter();
@@ -47,7 +51,7 @@ export class EditSecondStepComponent implements OnInit {
   @Output() deleteField = new EventEmitter();
 
   ngOnInit(): void {
-    this.$customFields.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: Record<string, CustomField>) => {
+    this.customFields.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: Record<string, CustomField>) => {
       this.fields = Object.keys(res).map((value: string) => ({
         name: value,
         type: res[value].type,
@@ -64,8 +68,8 @@ export class EditSecondStepComponent implements OnInit {
     this.toggleFieldEdit.emit(name);
   }
 
-  deleteFieldHandle(id: number): void {
-    this.deleteField.emit(id);
+  deleteFieldHandle(name: string): void {
+    this.deleteField.emit(name);
   }
 
   addFieldHandle(): void {

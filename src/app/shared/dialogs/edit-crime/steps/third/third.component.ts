@@ -11,15 +11,4 @@ import { MatStepperModule } from '@angular/material/stepper';
 })
 export class EditThirdStepComponent {
   @Input() customForm: any;
-
-  @Output() reset = new EventEmitter();
-  @Output() send = new EventEmitter();
-
-  resetHandle(): void {
-    this.reset.emit();
-  }
-
-  sendHandle(): void {
-    this.send.emit();
-  }
 }

@@ -1,17 +1,19 @@
-<p>Thank You for registering!</p>
-@if (userData) {
-<p>
-  We have sent a confirmation email to
-  <strong>{{ userData.email }}</strong>
-  .
-</p>
-<p>Please check your email and click on the link to verfiy your email address.</p>
-}
-<div>
-  <button type="button" class="signup-btn" (click)="sendVerificationMail()" mat-raised-button color="primary">
-    Resend Verification Email
-  </button>
-</div>
-<div class="redirectToLogin">
-  <button type="button" mat-button [routerLink]="'/auth/sign-in'">Sign in</button>
-</div>
+<div></div>
+<mat-card>
+  <mat-card-header>
+    <h2>Thank You for registering!</h2>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      We have sent a confirmation email to
+      <strong>{{ userData!.email }}</strong>.
+    </p>
+    <p>Please check your email and click on the link to verfiy your email address.</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button class="redirect-to-login" type="button" mat-button routerLink="/auth/sign-in">Sign in</button>
+    <button type="button" class="signup-btn" (click)="sendVerificationMail()" mat-raised-button color="primary">
+      Resend Verification Email
+    </button>
+  </mat-card-actions>
+</mat-card>

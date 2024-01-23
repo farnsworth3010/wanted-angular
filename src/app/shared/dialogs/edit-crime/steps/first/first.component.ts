@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FormField } from '../../../../../core/interfaces/form-field';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-edit-first-step',
@@ -23,6 +24,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatInputModule,
     MatIconModule,
     MatStepperModule,
+    MatDialogModule
   ],
   styleUrl: './first.component.scss',
   templateUrl: './first.component.html',

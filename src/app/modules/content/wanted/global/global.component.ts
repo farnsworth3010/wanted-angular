@@ -1,5 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DestroyRef, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DestroyRef,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -9,8 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { WantedService } from '../../../../core/services/wanted.service';
 import { ImageFallbackDirective } from '../../../../shared/directives/image-fallback.directive';
-import { DetailsComponent } from '../details/details.component';
-import { Subscription, debounceTime, switchMap, tap } from 'rxjs';
+import { Subscription, debounceTime, from, switchMap, tap, throwError } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { MatSliderModule } from '@angular/material/slider';
@@ -23,6 +31,12 @@ import { Crime } from '../../../../core/interfaces/crime';
 import { NumberInput } from '@angular/cdk/coercion';
 import { WantedRes } from '../../../../core/interfaces/wanted-result';
 import { CriminalSkeletonComponent } from '../../../../shared/skeleton/criminal-skeleton/criminal-skeleton.component';
+import { isMobileWidth } from '../../../../core/utils/is-mobile';
+import { DetailsComponent } from '../details/details.component';
+import { DetailsDialogComponent } from '../../../../shared/dialogs/details-dialog/details-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from '../../../../core/services/auth.service';
+
 @Component({
   selector: 'app-global',
   standalone: true,
@@ -57,7 +71,9 @@ export class GlobalComponent implements OnInit {
     private destroyRef: DestroyRef,
     private dialog: MatDialog,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private auth: AuthService
   ) {}
 
   debTime = 1000;
@@ -81,29 +97,52 @@ export class GlobalComponent implements OnInit {
 
   selectPerson(id: number): void {
     this.wantedService.selectedPerson = this.wantedService.data![id];
+    if (isMobileWidth()) {
+      this.dialog
+        .open(DetailsDialogComponent, {
+          width: '90vw',
+          maxWidth: '90vw',
+          height: '80vh',
+          maxHeight: '80vh',
+          enterAnimationDuration: 300,
+          exitAnimationDuration: 300,
+          autoFocus: false,
+          data: this.wantedService.selectedPerson,
+        })
+        .afterClosed()
+        .subscribe(editClicked => {
+          if (editClicked) {
+            this.editHandle(this.wantedService.selectedPerson!);
+          }
+        });
+    }
   }
 
-  editHandle(tr: Crime) {
-    this.dialog
-      .open(EditCrimeComponent, {
-        width: '50vw',
-        enterAnimationDuration: 300,
-        exitAnimationDuration: 300,
-        data: tr,
-      })
-      .afterClosed()
-      .subscribe((wasEdited: boolean) => {
-        const newEdited = this.editedIds;
+  editHandle(data: Crime) {
+    if (this.auth.stateItem.getValue()?.email === 'Guest') {
+      this.snackBar.open('Only authorized users can edit data', 'dismiss', { duration: 3000 });
+    } else {
+      this.dialog
+        .open(EditCrimeComponent, {
+          width: isMobileWidth() ? '90vw' : '50vw',
+          maxWidth: '90vw',
+          enterAnimationDuration: 300,
+          exitAnimationDuration: 300,
+          data,
+        })
+        .afterClosed()
+        .subscribe((value?: { wasEdited?: boolean }) => {
+          const newEdited = this.editedIds;
 
-        if (wasEdited) {
-          newEdited.push(tr.uid);
-        }
+          if (value?.wasEdited) {
+            newEdited.push(data.uid);
+          }
 
-        this.editedIds = newEdited;
-        this.changeDetector.markForCheck();
-      });
+          this.editedIds = newEdited;
+          this.changeDetector.markForCheck();
+        });
+    }
   }
-
   ngOnInit(): void {
     this.filtersSub = this.filtersForm.valueChanges
       .pipe(
@@ -125,24 +164,17 @@ export class GlobalComponent implements OnInit {
       .pipe(
         tap((map: ParamMap) => {
           this.wantedService.fetchingItem.next(true);
-          this.changeDetector.markForCheck();
-          if (Number(map.get('id'))) {
-            this.wantedService.pageItem.next(Number(map.get('id')));
-          } else {
-            this.wantedService.pageItem.next(1);
-          }
+          this.wantedService.pageItem.next(Number(map.get('id')) ?? 1);
         }),
         debounceTime(this.debTime),
         switchMap(() => this.wantedService.getEdited())
       )
       .pipe(
         tap((edited: DocumentData) => {
-          const newEditedIds = this.editedIds;
           edited['forEach']((doc: DocumentData) => {
             let data = doc['data']();
-            newEditedIds.push(data['uid']);
+            this.editedIds.push(data['uid']);
           });
-          this.editedIds = newEditedIds;
         }),
         switchMap(() => this.wantedService.getData()),
         takeUntilDestroyed(this.destroyRef)
@@ -151,6 +183,9 @@ export class GlobalComponent implements OnInit {
         next: (res: WantedRes) => {
           this.wantedService.updateData(res);
           this.changeDetector.markForCheck();
+        },
+        error: (error: Error) => {
+          this.snackBar.open(error.message, 'dismiss', { duration: 3000 });
         },
         complete: () => {
           this.wantedService.filters = null;

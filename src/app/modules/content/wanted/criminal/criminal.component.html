@@ -1,40 +1,49 @@
-<mat-card (click)="selectPerson(i)">
+<mat-card [class.captured]="data.status === 'captured'" (click)="selectPerson()">
   <mat-card-title>
     <div class="header-container">
-      <img appImageFallback class="wanted-photo" [src]="tr.images![0].original" />
-      <h2>{{ tr.title }}</h2>
+      <img alt="wanted photo" appImageFallback class="wanted-photo" [src]="data.images![0].original" />
+      <h2>{{ data.title }}</h2>
     </div>
   </mat-card-title>
   <mat-card-content>
-    @if(openToEdit){ @if(tr.editing) {
-    <button mat-button color="primary" class="deleting">
+    @if (data.status === 'captured') {
+    <img class="captured-image" src="../../../../../assets/wanted/captured.png" />
+    }
+    <div class="info">
+      <p>Sex: {{ data.sex | defaultFieldValue }}</p>
+      <p>Hair: {{ data.hair | defaultFieldValue }}</p>
+      <p>Race: {{ data.race | defaultFieldValue }}</p>
+      <p>Eyes: {{ data.eyes | defaultFieldValue }}</p>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button class="details-mobile" (click)="selectPersonFromBtn($event)" mat-button color="primary">
+      Details
+      <mat-icon>info</mat-icon>
+    </button>
+    @if(openToEdit){ @if(data.editing) {
+    <button mat-button color="primary">
       <mat-spinner [diameter]="15" />
     </button>
     } @else {
-    <button (click)="editHandle($event, tr)" mat-button color="primary" class="edit-button">
+    <button (click)="editHandle($event)" mat-button color="primary">
       Edit
       <mat-icon>edit</mat-icon>
     </button>
-    } } @if(openToDelete) { @if(tr.deleting) {
-    <button mat-button color="primary" class="deleting">
+    } } @if(openToDelete) { @if(data.deleting) {
+    <button class="spinner-deleting" mat-button color="primary">
       <mat-spinner [diameter]="15" />
     </button>
     } @else {
-    <button mat-button (click)="deleteHandle($event)" color="primary" class="edit-button">
+    <button mat-button (click)="deleteHandle($event)" color="primary">
       Delete
       <mat-icon>delete</mat-icon>
     </button>
     } } @if(edited) {
-    <button (click)="viewInEditsHandle($event, tr)" mat-button color="primary" class="edit-button">
-      View in edits
+    <button (click)="viewInEditsHandle($event)" mat-button color="primary">
+      Edited Details
       <mat-icon>visibility</mat-icon>
     </button>
     }
-    <div class="info">
-      <p>Sex: {{ tr.sex | defaultFieldValue }}</p>
-      <p>Hair: {{ tr.hair | defaultFieldValue }}</p>
-      <p>Race: {{ tr.race | defaultFieldValue }}</p>
-      <p>Eyes: {{ tr.eyes | defaultFieldValue }}</p>
-    </div>
-  </mat-card-content>
+  </mat-card-actions>
 </mat-card>

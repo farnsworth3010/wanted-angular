@@ -3,6 +3,13 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+  @media screen and (max-width: 768px){
+    width: 95vw;
+  }
+}
+.mat-mdc-card {
+  border-radius: 1rem;
+
 }
 .mat-mdc-card-content {
   display: flex;
@@ -16,9 +23,7 @@
   padding: 0;
   display: flex;
   justify-content: space-between;
-}
-.form-guest {
-  margin-right: 1rem;
+  flex-wrap: wrap;
 }
 .password-input {
   z-index: 1;
@@ -30,4 +35,14 @@
   display: block;
   width: fit-content;
   margin-left: auto;
+}
+form {
+  width: 100%;
+}
+.actions-right {
+  @media screen and (max-width: 350px){
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
 }

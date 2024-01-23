@@ -1,21 +1,27 @@
-<app-header class="header" />
+<app-header [sideNav]="sideNav" #header class="header" />
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav class="sidenav-sidenav" mode="side" [opened]="true">
+  <mat-sidenav class="sidenav-sidenav" #sideNav>
     <ul>
       @for(i of menuItems; track $index) {
-      <li routerLinkActive="active" [routerLink]="i.link">
+      <li (click)="header.closeMenu()" routerLinkActive="active" [routerLink]="i.link">
         <mat-icon>{{ i.icon }}</mat-icon>
         {{ i.name }}
       </li>
       }
+      <li (click)="logOut()" class="log-out-mobile">
+        <mat-icon>logout</mat-icon>
+        Log out
+      </li>
+      <a class="about-project" target="_blank" href="https://github.com/farnsworth3010/wanted-angular/">
+        <li>
+          <mat-icon>lightbulb</mat-icon>
+          GitHub
+        </li>
+      </a>
     </ul>
-    <a class="about-project" target="_blank" href="https://github.com/farnsworth3010/wanted-angular/">
-      <mat-icon>lightbulb</mat-icon>
-      About project
-    </a>
   </mat-sidenav>
-  <mat-sidenav-content [@routeAnimations]="getAnimationsData()" class="sidenav-content">
-    <!-- fix scroll -->
+  <mat-sidenav-content #sideNavContent [@contentRouteAnimations]="getAnimationsData()" class="sidenav-content">
+    <app-go-top [scrollElement]="sideNavContent" />
     <router-outlet />
   </mat-sidenav-content>
 </mat-sidenav-container>

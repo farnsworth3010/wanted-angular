@@ -6,7 +6,8 @@ import { LoginResolveFn } from './core/services/login.resolve';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./modules/public/public.component').then(m => m.PublicComponent),
+    redirectTo: 'auth/sign-in',
+    pathMatch: 'full'
   },
   {
     path: 'content',

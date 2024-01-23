@@ -8,4 +8,12 @@
 .wanted-container {
   position: relative;
   padding-right: 15.6rem;
+  @media screen and (max-width: 768px){
+    padding-right: 0; 
+  }
+}
+
+.mat-mdc-card {
+  border-radius: 1rem;
+
 }

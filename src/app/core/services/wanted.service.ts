@@ -3,17 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, DocumentData } from '@angular/fire/compat/firestore';
 import { getDocs } from 'firebase/firestore';
-import { BehaviorSubject, Observable, from } from 'rxjs';
+import { BehaviorSubject, Observable, from, of, switchMap, throwError } from 'rxjs';
 import { Crime } from '../interfaces/crime';
 import { Filters, FiltersHTTPParam } from '../interfaces/filters';
 import { environment } from '../../../environments/environment';
 import { WantedRes } from '../interfaces/wanted-result';
+import { AuthService } from './auth.service';
+import { FirebaseUser } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WantedService {
-  constructor(private http: HttpClient, private afs: AngularFirestore) {}
+  constructor(private http: HttpClient, private afs: AngularFirestore, private auth: AuthService) {}
 
   editsOpenedFromGlobalItem = new BehaviorSubject(false);
   editsOpenedFromGlobalItem$ = this.editsOpenedFromGlobalItem.asObservable();
@@ -52,7 +54,14 @@ export class WantedService {
   }
 
   getEdited(): Observable<DocumentData> {
-    return from(getDocs(collection(this.afs.firestore, 'edited')));
+    return from(this.auth.afAuth.currentUser).pipe(
+      switchMap((user: FirebaseUser | null) => {
+        if (user) {
+          return getDocs(collection(this.afs.firestore, `edited/USER_${user?.uid}/criminals`));
+        }
+        return of([]) 
+      })
+    );
   }
 
   updateFilters(filters: Filters | null): void {
@@ -61,7 +70,14 @@ export class WantedService {
   }
 
   deleteEditedById(id: string): Observable<void> {
-    return from(deleteDoc(doc(this.afs.firestore, `edited/${id}`)));
+    return from(this.auth.afAuth.currentUser).pipe(
+      switchMap((user: FirebaseUser | null) => {
+        if (user) {
+          return deleteDoc(doc(this.afs.firestore, `edited/USER_${user.uid}/criminals/${id}`));
+        }
+        return throwError(() => new Error('Error while deleting'));
+      })
+    );
   }
 
   uploadEdited(
@@ -77,14 +93,21 @@ export class WantedService {
       customFields: any[];
     }
   ): Observable<any> {
-    return from(
-      this.afs
-        .collection('edited')
-        .doc(uid)
-        .set({
-          ...data,
-          ...newData,
-        })
+    return from(this.auth.afAuth.currentUser).pipe(
+      switchMap((user: FirebaseUser | null) => {
+        if (user) {
+          return this.afs
+            .collection('edited')
+            .doc('USER_' + user.uid)
+            .collection('criminals')
+            .doc(uid)
+            .set({
+              ...data,
+              ...newData,
+            });
+        }
+        return throwError(() => new Error('Error while editing'));
+      })
     );
   }
 

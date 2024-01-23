@@ -1,0 +1,28 @@
+.content {
+  padding: 1rem;
+}
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  padding-right: 0.9rem;
+  .title {
+    margin-bottom: 0;
+  }
+  li {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #cecece;
+  }
+}
+.wanted-photo {
+  width: 50vw;
+  height: 50vw;
+  object-fit: cover;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  display: block;
+  border-radius: 0.25rem;
+  background-color: #cecece;
+}
