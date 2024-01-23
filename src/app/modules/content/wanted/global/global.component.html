@@ -37,11 +37,12 @@
     @for(data of wantedService.data; track $index) {
     <div class="wanted-grid-tile">
       <app-criminal
+        [data]="data"
         [openToEdit]="!editedIds.includes(data.uid)"
-        (viewInEditsClick)="viewInEdits($event)"
+        (viewInEditsClick)="viewInEdits(data)"
         [edited]="editedIds.includes(data.uid)"
         (personClick)="selectPerson($index)"
-        (editClick)="editHandle($event)" />
+        (editClick)="editHandle(data)" />
     </div>
     } @empty {
     <div class="no-data-block">

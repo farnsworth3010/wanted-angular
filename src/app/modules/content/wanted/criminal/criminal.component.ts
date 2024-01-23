@@ -28,7 +28,7 @@ export class CriminalComponent {
   @Input() openToDelete: boolean = false;
   @Input() openToEdit: boolean = false;
   @Input() edited: boolean = false;
-  @Input() data!: Crime;
+  @Input({required: true}) data!: Crime;
 
   @Output() viewInEditsClick = new EventEmitter();
   @Output() personClick = new EventEmitter();

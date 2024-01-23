@@ -57,10 +57,10 @@ $theme-dark: mat.define-dark-theme(
   font-size: 0.7rem !important;
 }
 .theme-dark {
-  @include mat.all-component-themes($theme-dark);
+  @include mat.all-component-colors($theme-dark);
 }
 .theme-light {
-  @include mat.all-component-themes($theme-light);
+  @include mat.all-component-colors($theme-light);
   mat-toolbar {
     background-color: #fff;
   }

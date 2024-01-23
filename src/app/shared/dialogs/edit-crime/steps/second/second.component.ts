@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, DestroyRef, EventEmitter, Input, OnInit, Output, Signal } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -38,16 +38,15 @@ export class EditSecondStepComponent implements OnInit {
   fieldTypes: string[] = ['text', 'date', 'number', 'checkbox'];
   @Input({ required: true }) addFieldDisabled: boolean = false;
   @Input({ required: true }) addFieldForm: any;
-  @Input() $customFields!: Observable<Record<string, CustomField>>;
+  @Input() customFields!: Observable<Record<string, CustomField>>;
   fields!: any[];
 
   @Output() addField = new EventEmitter();
   @Output() applyEdit = new EventEmitter();
   @Output() toggleFieldEdit = new EventEmitter();
   @Output() deleteField = new EventEmitter();
-
   ngOnInit(): void {
-    this.$customFields.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: Record<string, CustomField>) => {
+    this.customFields.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((res: Record<string, CustomField>) => {
       this.fields = Object.keys(res).map((value: string) => ({
         name: value,
         type: res[value].type,

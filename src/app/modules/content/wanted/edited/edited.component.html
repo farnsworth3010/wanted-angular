@@ -1,14 +1,15 @@
 <div class="tab-container">
   @if(!wantedService.fetchingItem.value) {
   <div class="wanted-grid">
-    @for(tr of data; track $index) {
+    @for(data of data; track $index) {
     <div class="wanted-grid-tile">
       <app-criminal
+        [data]="data"
         [openToDelete]="true"
         [openToEdit]="true"
-        (editClick)="editHandle(tr)"
+        (editClick)="editHandle(data)"
         (personClick)="selectPerson($index)"
-        (deleteClick)="deletePerson($event)" />
+        (deleteClick)="deletePerson(data.uid)" />
     </div>
     } @empty {
     <div class="no-data-block">

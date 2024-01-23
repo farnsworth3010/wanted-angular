@@ -33,7 +33,13 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Field name</mat-label>
-            <input #edName matInput [value]="fields[$index].name" required="true" type="text" placeholder="ex. Address" />
+            <input
+              #edName
+              matInput
+              [value]="fields[$index].name"
+              required="true"
+              type="text"
+              placeholder="ex. Address" />
           </mat-form-field>
           <button
             (click)="applyEditHandle(fields[$index].name, fields[$index].type, edName, edType)"
