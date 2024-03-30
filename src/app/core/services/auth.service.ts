@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as auth from 'firebase/auth';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/compat/firestore';
-import { Router } from '@angular/router';
-import { BehaviorSubject, from, Observable, switchMap, throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FirebaseCredential, FirebaseUser, User } from '../interfaces/user';
+import {AngularFireAuth} from '@angular/fire/compat/auth';
+import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/compat/firestore';
+import {Router} from '@angular/router';
+import {BehaviorSubject, from, Observable, switchMap, throwError} from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {FirebaseCredential, FirebaseUser, User} from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root',
